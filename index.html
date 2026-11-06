@@ -1,0 +1,4291 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>FinGlass Pro — Личные Финансы</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        :root {
+
+            --glass-blur: 22px;
+
+            --bg-grad-1: #071914;
+
+            --bg-grad-2: #0f2e26;
+
+            --bg-grad-3: #09131c;
+
+            --orb-1: rgba(16, 185, 129, 0.28);
+
+            --orb-2: rgba(59, 130, 246, 0.22);
+
+            --orb-3: rgba(168, 85, 247, 0.18);
+
+            --glass-bg: rgba(255, 255, 255, 0.08);
+
+            --glass-bg-strong: rgba(20, 32, 30, 0.78);
+
+            --glass-border: rgba(255, 255, 255, 0.16);
+
+            --text-main: #ffffff;
+
+            --text-muted: rgba(255, 255, 255, 0.62);
+
+            --accent-color: #10b981;
+
+        }
+
+
+
+        [data-theme="obsidian"] {
+
+            --bg-grad-1: #090a0f;
+
+            --bg-grad-2: #121521;
+
+            --bg-grad-3: #060709;
+
+            --orb-1: rgba(56, 189, 248, 0.2);
+
+            --orb-2: rgba(99, 102, 241, 0.18);
+
+            --orb-3: rgba(236, 72, 153, 0.14);
+
+            --glass-bg: rgba(255, 255, 255, 0.07);
+
+            --glass-bg-strong: rgba(15, 18, 28, 0.82);
+
+            --glass-border: rgba(255, 255, 255, 0.14);
+
+        }
+
+
+
+        [data-theme="indigo"] {
+
+            --bg-grad-1: #0f0c29;
+
+            --bg-grad-2: #24243e;
+
+            --bg-grad-3: #1a103c;
+
+            --orb-1: rgba(139, 92, 246, 0.3);
+
+            --orb-2: rgba(236, 72, 153, 0.25);
+
+            --orb-3: rgba(56, 189, 248, 0.2);
+
+            --glass-bg: rgba(255, 255, 255, 0.08);
+
+            --glass-bg-strong: rgba(23, 18, 48, 0.82);
+
+            --glass-border: rgba(255, 255, 255, 0.18);
+
+        }
+
+
+
+        [data-theme="pearl"] {
+
+            --bg-grad-1: #e4efe9;
+
+            --bg-grad-2: #d4e7df;
+
+            --bg-grad-3: #e8eef5;
+
+            --orb-1: rgba(16, 185, 129, 0.28);
+
+            --orb-2: rgba(59, 130, 246, 0.22);
+
+            --orb-3: rgba(244, 114, 182, 0.2);
+
+            --glass-bg: rgba(255, 255, 255, 0.65);
+
+            --glass-bg-strong: rgba(255, 255, 255, 0.88);
+
+            --glass-border: rgba(255, 255, 255, 0.85);
+
+            --text-main: #0f172a;
+
+            --text-muted: rgba(15, 23, 42, 0.62);
+
+        }
+
+
+
+        * {
+
+            box-sizing: border-box;
+
+            -webkit-tap-highlight-color: transparent;
+
+            user-select: none;
+
+        }
+
+
+
+        body {
+
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+            background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2), var(--bg-grad-3));
+
+            color: var(--text-main);
+
+            margin: 0;
+
+            padding: 0;
+
+            overflow-x: hidden;
+
+            min-height: 100vh;
+
+        }
+
+
+
+        .glass-panel {
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(180%);
+
+            border: 1px solid var(--glass-border);
+
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.22), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+
+        }
+
+
+
+        .glass-modal {
+
+            background: var(--glass-bg-strong);
+
+            backdrop-filter: blur(calc(var(--glass-blur) * 1.4)) saturate(190%);
+
+            -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 1.4)) saturate(190%);
+
+            border: 1px solid var(--glass-border);
+
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+
+        }
+
+
+
+        .glass-btn {
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(16px);
+
+            -webkit-backdrop-filter: blur(16px);
+
+            border: 1px solid var(--glass-border);
+
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.2);
+
+        }
+
+
+
+        .glass-btn:active {
+
+            transform: scale(0.94);
+
+        }
+
+
+
+        .orb {
+
+            position: fixed;
+
+            border-radius: 50%;
+
+            filter: blur(65px);
+
+            pointer-events: none;
+
+            z-index: 0;
+
+            animation: floatOrb 16s infinite ease-in-out alternate;
+
+        }
+
+        @keyframes floatOrb {
+
+            0% { transform: translate(0, 0) scale(1); }
+
+            100% { transform: translate(25px, -30px) scale(1.12); }
+
+        }
+
+
+
+        .cat-node {
+
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+
+        }
+
+        .cat-node:hover {
+
+            transform: translate(-50%, -50%) scale(1.1);
+
+            z-index: 30;
+
+        }
+
+        .cat-node:active {
+
+            transform: translate(-50%, -50%) scale(0.93);
+
+        }
+
+
+
+        ::-webkit-scrollbar {
+
+            width: 5px;
+
+            height: 5px;
+
+        }
+
+        ::-webkit-scrollbar-track {
+
+            background: transparent;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+
+            background: rgba(255, 255, 255, 0.2);
+
+            border-radius: 999px;
+
+        }
+
+
+
+        .receipt-preview {
+
+            font-family: 'JetBrains Mono', monospace;
+
+            white-space: pre;
+
+            overflow-x: auto;
+
+            user-select: text;
+
+            line-height: 1.45;
+
+        }
+
+
+
+        .calc-key {
+
+            transition: all 0.12s ease;
+
+        }
+
+        .calc-key:active {
+
+            transform: scale(0.92);
+
+            background: rgba(255,255,255,0.22);
+
+        }
+
+    </style>
+
+</head>
+
+<body class="flex justify-center items-start md:py-4 min-h-screen">
+
+
+
+    <div class="orb w-80 h-80 top-[-5%] left-[-10%]" style="background: var(--orb-1);"></div>
+
+    <div class="orb w-96 h-96 bottom-[5%] right-[-10%]" style="background: var(--orb-2); animation-delay: -5s;"></div>
+
+    <div class="orb w-72 h-72 top-[40%] left-[20%]" style="background: var(--orb-3); animation-delay: -9s;"></div>
+
+
+
+    <div id="appRoot" class="relative z-10 w-full max-w-[440px] min-h-screen md:min-h-[880px] md:h-[92vh] md:rounded-[44px] glass-panel flex flex-col justify-between overflow-hidden shadow-2xl">
+
+        
+
+        <header class="px-4 pt-3 pb-2.5 glass-panel rounded-b-3xl z-30 border-t-0 border-x-0">
+
+            <div class="flex items-center justify-between gap-1">
+
+                <button onclick="toggleMainView()" id="viewToggleBtn" class="glass-btn w-10 h-10 rounded-2xl flex items-center justify-center text-lg" title="Переключить вид (Диаграмма / Список)">
+
+                    <i class="ph ph-list-dashes"></i>
+
+                </button>
+
+
+
+                <div class="flex flex-col items-center cursor-pointer" onclick="openLimitModal()">
+
+                    <div class="flex items-center gap-1.5">
+
+                        <span class="font-bold text-base tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300" style="color: var(--text-main);">FinGlass</span>
+
+                        <span class="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Pro</span>
+
+                    </div>
+
+                    <span id="subHeaderStatus" class="text-[11px] opacity-70 flex items-center gap-1">
+
+                        <span>Все счета</span>
+
+                        <span>•</span>
+
+                        <span id="currencyBadge">₽</span>
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="flex items-center gap-1.5">
+
+                    <button onclick="openCategoryEditorModal()" class="glass-btn px-2.5 h-9 rounded-2xl flex items-center gap-1 text-xs font-semibold text-emerald-300 border-emerald-400/30" title="Добавить или изменить категории этого месяца">
+
+                        <i class="ph-bold ph-plus text-sm"></i>
+
+                        <span class="hidden sm:inline">Категория</span>
+
+                    </button>
+
+                    <button onclick="openSearchModal()" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base" title="Поиск по операциям">
+
+                        <i class="ph ph-magnifying-glass"></i>
+
+                    </button>
+
+                    <button onclick="openReceiptModal()" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base text-emerald-400" title="Сформировать выписку-чек (.txt)">
+
+                        <i class="ph ph-receipt"></i>
+
+                    </button>
+
+                    <button onclick="openSettingsModal()" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base" title="Настройки и кастомизация">
+
+                        <i class="ph ph-sliders-horizontal"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="mt-2.5 flex items-center justify-between px-1">
+
+                <button onclick="shiftPeriod(-1)" class="glass-btn px-2.5 py-1 rounded-xl flex items-center gap-1 text-xs opacity-75 hover:opacity-100">
+
+                    <i class="ph ph-caret-left"></i>
+
+                    <span id="prevPeriodLabel">Пред.</span>
+
+                </button>
+
+
+
+                <div class="flex flex-col items-center">
+
+                    <button onclick="resetToTodayContext()" class="px-3 py-1 rounded-xl glass-btn flex items-center gap-1.5 text-xs font-semibold tracking-wide shadow-sm">
+
+                        <i class="ph ph-calendar-blank text-emerald-400"></i>
+
+                        <span id="currentPeriodLabel">10 окт. - 9 нояб.</span>
+
+                    </button>
+
+                </div>
+
+
+
+                <button onclick="shiftPeriod(1)" class="glass-btn px-2.5 py-1 rounded-xl flex items-center gap-1 text-xs opacity-75 hover:opacity-100">
+
+                    <span id="nextPeriodLabel">След.</span>
+
+                    <i class="ph ph-caret-right"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <div id="contextMemoryBanner" class="mt-2 px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-between text-[11px] transition-all duration-300">
+
+                <div class="flex items-center gap-1.5">
+
+                    <i class="ph-fill ph-clock-countdown text-amber-400 text-sm animate-pulse"></i>
+
+                    <span id="memoryDateText">Память даты: <b>Сегодня</b></span>
+
+                </div>
+
+                <div class="flex items-center gap-2">
+
+                    <span id="inactivityCountdown" class="font-mono font-semibold text-amber-300">05:00</span>
+
+                    <button onclick="simulateFiveMinTimeout()" class="px-1.5 py-0.5 rounded bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-300/30 text-[10px]" title="Мгновенно протестировать истечение 5 минут бездействия">
+
+                        Тест 5м
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <main class="flex-1 relative flex flex-col justify-center overflow-hidden">
+
+            
+
+            <section id="wheelView" class="w-full h-full flex flex-col items-center justify-center relative px-2 py-1">
+
+                <div id="wheelStage" class="relative w-full max-w-[395px] aspect-square flex items-center justify-center mx-auto">
+
+                    <svg id="donutSvg" viewBox="0 0 400 400" class="w-full h-full overflow-visible">
+
+                        <defs>
+
+                            <filter id="glowFilter" x="-20%" y="-20%" width="140%" height="140%">
+
+                                <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.35"/>
+
+                            </filter>
+
+                        </defs>
+
+                        <g id="connectorLinesGroup"></g>
+
+                        <circle cx="200" cy="200" r="88" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="34"></circle>
+
+                        <g id="donutArcsGroup" filter="url(#glowFilter)"></g>
+
+                        <circle cx="200" cy="200" r="71" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"></circle>
+
+                        <circle cx="200" cy="200" r="105" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"></circle>
+
+                    </svg>
+
+
+
+                    <div onclick="openLimitModal()" class="absolute w-[136px] h-[136px] rounded-full glass-panel flex flex-col items-center justify-center text-center p-2 cursor-pointer hover:scale-105 transition-transform shadow-inner z-20" title="Нажмите, чтобы изменить лимит только для этого месяца">
+
+                        <span class="text-[9px] uppercase tracking-wider opacity-60 font-medium">Лимит месяца</span>
+
+                        <div id="centerLimitValue" class="text-sm font-bold text-sky-400 tracking-tight mt-0.5 flex items-center gap-0.5">
+
+                            70 000,00 ₽
+
+                            <i class="ph ph-pencil-simple text-[10px] opacity-60"></i>
+
+                        </div>
+
+                        <div class="w-12 h-[1px] bg-white/15 my-1"></div>
+
+                        <span class="text-[9px] uppercase tracking-wider opacity-60 font-medium">Потрачено</span>
+
+                        <div id="centerExpenseValue" class="text-sm font-bold text-rose-400 tracking-tight mt-0.5">
+
+                            93 837,00 ₽
+
+                        </div>
+
+                        <div id="centerIncomeBadge" class="hidden text-[9px] text-emerald-400 font-medium mt-0.5">
+
+                            +0 ₽ доп.
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div id="perimeterIconsContainer" class="absolute inset-0 pointer-events-none"></div>
+
+                </div>
+
+            </section>
+
+
+
+            <section id="listView" class="hidden w-full h-full flex-col px-4 py-2 overflow-y-auto space-y-2.5 max-h-[540px]">
+
+                <div class="flex items-center justify-between px-1 mb-1">
+
+                    <span class="text-xs font-semibold uppercase tracking-wider opacity-70">Детализация за период</span>
+
+                    <button onclick="openCategoryEditorModal()" class="text-xs text-emerald-400 flex items-center gap-1 hover:underline">
+
+                        <i class="ph ph-plus-circle"></i> Категории
+
+                    </button>
+
+                </div>
+
+                <div id="accordionCategoriesList" class="space-y-2 pb-4"></div>
+
+            </section>
+
+
+
+        </main>
+
+
+
+        <footer class="px-4 pt-1 pb-4 z-30 flex flex-col gap-3">
+
+            <div class="flex items-center justify-between gap-2.5">
+
+                <button onclick="toggleMainView()" class="glass-btn w-11 h-11 rounded-2xl flex items-center justify-center text-xl opacity-80 hover:opacity-100" title="Список операций">
+
+                    <i class="ph ph-list"></i>
+
+                </button>
+
+
+
+                <button id="balanceCapsule" onclick="toggleMainView()" class="flex-1 py-2.5 px-4 rounded-2xl glass-panel border transition-all duration-300 flex flex-col items-center justify-center shadow-lg active:scale-98">
+
+                    <div class="flex items-center gap-1.5">
+
+                        <span class="text-xs font-medium opacity-85">Баланс</span>
+
+                        <span id="balanceAmountText" class="text-base font-extrabold tracking-tight">-23 837,00 ₽</span>
+
+                    </div>
+
+                    <span id="balanceSubText" class="text-[10px] opacity-65">Нажмите для раскрытия списка трат</span>
+
+                </button>
+
+
+
+                <button onclick="openLimitModal()" class="glass-btn w-11 h-11 rounded-2xl flex items-center justify-center text-xl opacity-80 hover:opacity-100" title="Изменить стартовый лимит этого месяца">
+
+                    <i class="ph ph-sliders"></i>
+
+                </button>
+
+            </div>
+
+
+
+            <div class="flex items-center justify-around px-4 pt-0.5">
+
+                <button onclick="openTransactionModal('expense', null)" class="group relative w-20 h-20 rounded-full glass-panel border-2 border-rose-400/60 flex items-center justify-center shadow-[0_0_30px_rgba(244,63,94,0.28)] active:scale-90 transition-all">
+
+                    <div class="w-16 h-16 rounded-full bg-rose-500/15 group-hover:bg-rose-500/25 flex items-center justify-center transition-colors">
+
+                        <i class="ph-bold ph-minus text-3xl text-rose-400"></i>
+
+                    </div>
+
+                </button>
+
+
+
+                <div class="flex flex-col items-center text-center gap-1.5 max-w-[140px]">
+
+                    <button onclick="openCategoryEditorModal()" class="glass-btn px-3 py-1.5 rounded-xl text-[11px] font-semibold text-emerald-300 border border-emerald-400/30 flex items-center gap-1 shadow-sm">
+
+                        <i class="ph-bold ph-squares-four"></i>
+
+                        <span>+ Категория</span>
+
+                    </button>
+
+                    <span class="text-[10px] opacity-55 leading-tight">Нажмите на иконку вокруг круга для ввода</span>
+
+                </div>
+
+
+
+                <button onclick="openTransactionModal('income', null)" class="group relative w-20 h-20 rounded-full glass-panel border-2 border-emerald-400/60 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.28)] active:scale-90 transition-all">
+
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/15 group-hover:bg-emerald-500/25 flex items-center justify-center transition-colors">
+
+                        <i class="ph-bold ph-plus text-3xl text-emerald-400"></i>
+
+                    </div>
+
+                </button>
+
+            </div>
+
+        </footer>
+
+
+
+        <div id="txModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm p-0 md:p-4">
+
+            <div class="w-full max-w-[440px] glass-modal rounded-t-[36px] md:rounded-[36px] p-4 flex flex-col justify-between animate-fade-in border-t border-white/25 max-h-[96vh] overflow-y-auto">
+
+                <div class="flex items-center justify-between pb-2 border-b border-white/10">
+
+                    <button onclick="closeTxModal()" class="glass-btn w-9 h-9 rounded-xl flex items-center justify-center">
+
+                        <i class="ph ph-arrow-left text-lg"></i>
+
+                    </button>
+
+                    <h3 id="txModalTitle" class="font-bold text-base">Новый расход</h3>
+
+                    <button onclick="toggleTxTypeInModal()" class="glass-btn px-2.5 py-1.5 rounded-xl flex items-center gap-1 text-xs" title="Переключить Расход/Доход">
+
+                        <i class="ph ph-arrows-left-right"></i>
+
+                        <span id="txTypeSwitchLabel">Расход</span>
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="my-2.5 flex items-center justify-between gap-2 glass-panel px-3 py-2 rounded-2xl">
+
+                    <div class="flex items-center gap-2">
+
+                        <i class="ph ph-calendar text-emerald-400 text-lg"></i>
+
+                        <div class="flex flex-col">
+
+                            <span class="text-[10px] opacity-65">Дата операции (умная память)</span>
+
+                            <span id="txFormattedDateLabel" class="text-xs font-semibold">Вторник, 3 ноября</span>
+
+                        </div>
+
+                    </div>
+
+                    <input type="date" id="txDateInput" onchange="onTxDateManualChange()" class="bg-white/10 border border-white/20 rounded-xl px-2.5 py-1 text-xs font-medium text-white focus:outline-none">
+
+                </div>
+
+
+
+                <div id="txCategorySelectorBar" class="mb-2.5">
+
+                    <div class="text-[10px] opacity-65 mb-1 px-1">Категория:</div>
+
+                    <div id="txCategoryPills" class="flex items-center gap-1.5 overflow-x-auto pb-1"></div>
+
+                </div>
+
+
+
+                <div id="txDisplayBox" class="rounded-2xl p-3.5 mb-2.5 flex items-center justify-between border border-white/25 shadow-inner transition-colors" style="background: rgba(16, 185, 129, 0.18);">
+
+                    <div class="flex items-center gap-2">
+
+                        <div id="txSelectedCatIconBox" class="w-10 h-10 rounded-xl glass-panel flex items-center justify-center text-xl">
+
+                            <i class="ph ph-car"></i>
+
+                        </div>
+
+                        <span id="txCurrencyLabel" class="text-xs font-bold opacity-75">RUB</span>
+
+                    </div>
+
+
+
+                    <div class="flex flex-col items-end flex-1 mx-3 overflow-hidden">
+
+                        <span id="calcExpressionPreview" class="text-[11px] font-mono opacity-65 h-4"></span>
+
+                        <span id="calcMainDisplay" class="text-3xl font-extrabold tracking-tight font-mono truncate">0</span>
+
+                    </div>
+
+
+
+                    <button onclick="calcBackspace()" class="glass-btn w-10 h-10 rounded-xl flex items-center justify-center text-lg active:scale-90">
+
+                        <i class="ph ph-backspace"></i>
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="mb-3 relative">
+
+                    <i class="ph ph-pencil-line absolute left-3.5 top-1/2 -translate-y-1/2 opacity-60 text-base"></i>
+
+                    <input type="text" id="txNoteInput" placeholder="Заметка (например: за бензин)..." class="w-full glass-panel pl-10 pr-4 py-2.5 rounded-2xl text-sm placeholder:opacity-50 focus:outline-none focus:border-emerald-400/60" style="color: var(--text-main);">
+
+                </div>
+
+
+
+                <div class="grid grid-cols-4 gap-2 mb-3">
+
+                    <button onclick="calcInput('1')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">1</button>
+
+                    <button onclick="calcInput('2')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">2</button>
+
+                    <button onclick="calcInput('3')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">3</button>
+
+                    <button onclick="calcOperator('+')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-emerald-400">+</button>
+
+
+
+                    <button onclick="calcInput('4')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">4</button>
+
+                    <button onclick="calcInput('5')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">5</button>
+
+                    <button onclick="calcInput('6')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">6</button>
+
+                    <button onclick="calcOperator('-')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-emerald-400">−</button>
+
+
+
+                    <button onclick="calcInput('7')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">7</button>
+
+                    <button onclick="calcInput('8')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">8</button>
+
+                    <button onclick="calcInput('9')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">9</button>
+
+                    <button onclick="calcOperator('*')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-emerald-400">×</button>
+
+
+
+                    <button onclick="calcInput('.')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold">.</button>
+
+                    <button onclick="calcInput('0')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">0</button>
+
+                    <button onclick="calcEvaluate()" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-amber-300">=</button>
+
+                    <button onclick="calcOperator('/')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-emerald-400">÷</button>
+
+                </div>
+
+
+
+                <button id="submitTxBtn" onclick="saveTransaction()" class="w-full py-3.5 rounded-2xl font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg bg-gradient-to-r from-emerald-500 to-teal-500 text-white active:scale-98 transition-transform">
+
+                    <i id="submitBtnIcon" class="ph ph-car text-lg"></i>
+
+                    <span id="submitBtnText">ДОБАВИТЬ 'МАШИНА'</span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="limitModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+
+            <div class="w-full max-w-[390px] glass-modal rounded-[32px] p-5 flex flex-col gap-3.5 border border-white/25">
+
+                <div class="flex items-center justify-between">
+
+                    <h3 class="font-bold text-base flex items-center gap-2">
+
+                        <i class="ph ph-wallet text-sky-400 text-xl"></i>
+
+                        <span>Лимит на месяц</span>
+
+                    </h3>
+
+                    <button onclick="closeLimitModal()" class="glass-btn w-8 h-8 rounded-xl flex items-center justify-center">
+
+                        <i class="ph ph-x"></i>
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="p-3 rounded-2xl bg-sky-500/10 border border-sky-400/25 text-xs leading-relaxed opacity-90">
+
+                    Вы настраиваете стартовый бюджет (зарплату) для периода <b id="limitModalPeriodName" class="text-sky-300"></b>.
+
+                    <div class="mt-1 text-[11px] opacity-75">
+
+                        <i class="ph ph-shield-check text-emerald-400"></i> Изменение этой суммы <b>не изменит</b> лимиты и диаграммы в предыдущих или других месяцах!
+
+                    </div>
+
+                </div>
+
+
+
+                <div>
+
+                    <label class="text-xs opacity-70 block mb-1">Сумма лимита на этот период:</label>
+
+                    <input type="number" id="periodLimitInput" class="w-full glass-panel px-4 py-3 rounded-2xl text-xl font-bold font-mono focus:outline-none focus:border-sky-400" placeholder="70000" style="color: var(--text-main);">
+
+                </div>
+
+
+
+                <div class="flex items-center gap-2 text-xs">
+
+                    <input type="checkbox" id="alsoUpdateDefaultLimitCheckbox" class="w-4 h-4 rounded accent-emerald-500">
+
+                    <label for="alsoUpdateDefaultLimitCheckbox" class="opacity-80">Сделать суммой по умолчанию для <b>будущих</b> новых месяцев</label>
+
+                </div>
+
+
+
+                <div class="flex gap-2 pt-1">
+
+                    <button onclick="closeLimitModal()" class="flex-1 py-2.5 rounded-xl glass-btn text-xs font-semibold">Отмена</button>
+
+                    <button onclick="savePeriodLimit()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-emerald-500 text-white text-xs font-bold shadow-lg">Сохранить лимит</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="receiptModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-3">
+
+            <div class="w-full max-w-[430px] glass-modal rounded-[32px] p-4 flex flex-col gap-3 max-h-[92vh] overflow-hidden border border-white/25">
+
+                <div class="flex items-center justify-between pb-2 border-b border-white/10">
+
+                    <div class="flex items-center gap-2">
+
+                        <i class="ph ph-receipt text-emerald-400 text-xl"></i>
+
+                        <h3 class="font-bold text-base">Выписка-чек (.txt)</h3>
+
+                    </div>
+
+                    <button onclick="closeReceiptModal()" class="glass-btn w-8 h-8 rounded-xl flex items-center justify-center">
+
+                        <i class="ph ph-x"></i>
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="flex gap-1.5 overflow-x-auto pb-1">
+
+                    <button onclick="setReceiptPreset('current')" class="glass-btn px-2.5 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap">Текущий период</button>
+
+                    <button onclick="setReceiptPreset('prev')" class="glass-btn px-2.5 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap">Прошлый период</button>
+
+                    <button onclick="setReceiptPreset('all')" class="glass-btn px-2.5 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap">За всё время</button>
+
+                </div>
+
+
+
+                <div class="grid grid-cols-2 gap-2">
+
+                    <div class="glass-panel p-2 rounded-xl">
+
+                        <span class="text-[10px] opacity-60 block">С даты:</span>
+
+                        <input type="date" id="receiptStartDate" onchange="generateReceiptText()" class="bg-transparent text-xs font-semibold w-full focus:outline-none mt-0.5" style="color: var(--text-main);">
+
+                    </div>
+
+                    <div class="glass-panel p-2 rounded-xl">
+
+                        <span class="text-[10px] opacity-60 block">По дату:</span>
+
+                        <input type="date" id="receiptEndDate" onchange="generateReceiptText()" class="bg-transparent text-xs font-semibold w-full focus:outline-none mt-0.5" style="color: var(--text-main);">
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="flex-1 overflow-y-auto glass-panel rounded-2xl p-3 bg-black/30 border border-white/10 max-h-[320px]">
+
+                    <div id="receiptPreviewBox" class="receipt-preview text-[11px] text-emerald-200"></div>
+
+                </div>
+
+
+
+                <div class="flex flex-col gap-2 pt-1">
+
+                    <button onclick="saveReceiptWithFilePicker()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg">
+
+                        <i class="ph ph-folder-open text-base"></i>
+
+                        <span>Сохранить .TXT (Выбрать папку)</span>
+
+                    </button>
+
+                    <div class="flex gap-2">
+
+                        <button onclick="shareReceiptSystem()" class="flex-1 py-2.5 rounded-xl glass-btn text-xs font-semibold flex items-center justify-center gap-1.5">
+
+                            <i class="ph ph-share-network text-emerald-400"></i>
+
+                            <span>Отправить / Vivo Файлы</span>
+
+                        </button>
+
+                        <button onclick="copyReceiptToClipboard()" class="flex-1 py-2.5 rounded-xl glass-btn text-xs font-semibold flex items-center justify-center gap-1.5">
+
+                            <i class="ph ph-copy text-sky-400"></i>
+
+                            <span>Копировать текст</span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="settingsModal" class="hidden fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
+
+            <div class="w-full max-w-[380px] h-full glass-modal p-5 flex flex-col justify-between overflow-y-auto border-l border-white/25">
+
+                <div class="space-y-4">
+
+                    <div class="flex items-center justify-between pb-3 border-b border-white/15">
+
+                        <div class="flex items-center gap-2.5">
+
+                            <div class="w-10 h-10 rounded-2xl glass-panel flex items-center justify-center text-emerald-400 text-xl">
+
+                                <i class="ph ph-gear-six"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h3 class="font-bold text-base">Настройки</h3>
+
+                                <p class="text-[11px] opacity-65">Кастомизация и параметры</p>
+
+                            </div>
+
+                        </div>
+
+                        <button onclick="closeSettingsModal()" class="glass-btn w-9 h-9 rounded-xl flex items-center justify-center">
+
+                            <i class="ph ph-x text-lg"></i>
+
+                        </button>
+
+                    </div>
+
+
+
+                    <div class="glass-panel p-3.5 rounded-2xl space-y-2.5">
+
+                        <div class="text-xs font-semibold uppercase tracking-wider opacity-75 flex items-center gap-1.5">
+
+                            <i class="ph ph-sparkle text-emerald-400"></i> Тема Glassmorphism
+
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+
+                            <button onclick="setAppTheme('emerald')" class="glass-btn p-2 rounded-xl text-xs font-medium flex items-center gap-2">
+
+                                <span class="w-4 h-4 rounded-full bg-emerald-500"></span> Изумруд Pro
+
+                            </button>
+
+                            <button onclick="setAppTheme('obsidian')" class="glass-btn p-2 rounded-xl text-xs font-medium flex items-center gap-2">
+
+                                <span class="w-4 h-4 rounded-full bg-slate-800 border border-white/40"></span> Обсидиан iOS
+
+                            </button>
+
+                            <button onclick="setAppTheme('indigo')" class="glass-btn p-2 rounded-xl text-xs font-medium flex items-center gap-2">
+
+                                <span class="w-4 h-4 rounded-full bg-indigo-500"></span> Космо Индиго
+
+                            </button>
+
+                            <button onclick="setAppTheme('pearl')" class="glass-btn p-2 rounded-xl text-xs font-medium flex items-center gap-2">
+
+                                <span class="w-4 h-4 rounded-full bg-teal-100 border border-slate-400"></span> Светлый жемчуг
+
+                            </button>
+
+                        </div>
+
+
+
+                        <div class="pt-1">
+
+                            <div class="flex justify-between text-xs mb-1">
+
+                                <span class="opacity-75">Сила размытия стекла (Blur)</span>
+
+                                <span id="blurValLabel" class="font-mono">22px</span>
+
+                            </div>
+
+                            <input type="range" min="8" max="40" value="22" oninput="changeBlurStrength(this.value)" class="w-full accent-emerald-400">
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="glass-panel p-3.5 rounded-2xl space-y-3">
+
+                        <div class="text-xs font-semibold uppercase tracking-wider opacity-75 flex items-center gap-1.5">
+
+                            <i class="ph ph-calendar-check text-sky-400"></i> Расчетный период и валюта
+
+                        </div>
+
+
+
+                        <div class="flex items-center justify-between">
+
+                            <div>
+
+                                <div class="text-xs font-medium">Начало месяца (число)</div>
+
+                                <div class="text-[10px] opacity-60">Напр. 10 (10 окт. - 9 нояб.) или 1</div>
+
+                            </div>
+
+                            <select id="startDaySelect" onchange="updateStartDayOfMonth(this.value)" class="glass-panel px-3 py-1.5 rounded-xl text-xs font-bold bg-black/30 focus:outline-none">
+
+                                <option value="1">1 число</option>
+
+                                <option value="5">5 число</option>
+
+                                <option value="10">10 число</option>
+
+                                <option value="15">15 число</option>
+
+                                <option value="20">20 число</option>
+
+                                <option value="25">25 число</option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="flex items-center justify-between">
+
+                            <span class="text-xs font-medium">Валюта</span>
+
+                            <select id="currencySelect" onchange="updateCurrency(this.value)" class="glass-panel px-3 py-1.5 rounded-xl text-xs font-bold bg-black/30 focus:outline-none">
+
+                                <option value="₽">RUB (₽)</option>
+
+                                <option value="$">USD ($)</option>
+
+                                <option value="€">EUR (€)</option>
+
+                                <option value="₸">KZT (₸)</option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <div class="flex items-center justify-between">
+
+                            <div>
+
+                                <div class="text-xs font-medium">Базовый лимит по умолчанию</div>
+
+                                <div class="text-[10px] opacity-60">Только для новых месяцев</div>
+
+                            </div>
+
+                            <input type="number" id="defaultMonthlyLimitInput" onchange="updateDefaultBaseLimit(this.value)" class="glass-panel w-28 px-2.5 py-1.5 rounded-xl text-xs font-bold font-mono text-right focus:outline-none" value="70000">
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="glass-panel p-3.5 rounded-2xl space-y-2">
+
+                        <div class="flex items-center justify-between">
+
+                            <span class="text-xs font-semibold uppercase tracking-wider opacity-75">Категории и иконки</span>
+
+                            <button onclick="openCategoryEditorModal()" class="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-semibold">
+
+                                Изменить / +
+
+                            </button>
+
+                        </div>
+
+                        <p class="text-[11px] opacity-65">Настройте названия, цвета и выбирайте из 28+ иконок для круговой диаграммы.</p>
+
+                    </div>
+
+
+
+                    <div class="glass-panel p-3.5 rounded-2xl space-y-2.5">
+
+                        <div class="text-xs font-semibold uppercase tracking-wider opacity-75 flex items-center gap-1.5">
+
+                            <i class="ph ph-database text-amber-400"></i> База всех платежей
+
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+
+                            <button onclick="exportFullDatabaseJson()" class="glass-btn py-2 px-2.5 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5">
+
+                                <i class="ph ph-download-simple text-emerald-400"></i> Бэкап базы
+
+                            </button>
+
+                            <label class="glass-btn py-2 px-2.5 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 cursor-pointer">
+
+                                <i class="ph ph-upload-simple text-sky-400"></i> Импорт базы
+
+                                <input type="file" accept=".json" onchange="importFullDatabaseJson(event)" class="hidden">
+
+                            </label>
+
+                        </div>
+
+                        <div class="flex gap-2 pt-1">
+
+                            <button onclick="loadDemoScreenshotsData()" class="flex-1 glass-btn py-2 rounded-xl text-[11px] opacity-85 hover:opacity-100">
+
+                                Загрузить демо-данные
+
+                            </button>
+
+                            <button onclick="clearAllTransactionsConfirm()" class="flex-1 glass-btn py-2 rounded-xl text-[11px] text-rose-400 border-rose-500/30">
+
+                                Очистить траты
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="pt-4 text-center text-[11px] opacity-50">
+
+                    FinGlass Pro v2.4 • Оптимизировано для Vivo X200 Ultra
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="catEditorModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-3">
+
+            <div class="w-full max-w-[420px] glass-modal rounded-[32px] p-4 flex flex-col gap-3 max-h-[92vh] overflow-hidden border border-white/25">
+
+                <div class="flex items-center justify-between pb-2 border-b border-white/10">
+
+                    <div>
+
+                        <h3 class="font-bold text-base">Категории месяца</h3>
+
+                        <p id="catEditorPeriodSubtitle" class="text-[11px] text-emerald-300 opacity-85">Период: Текущий</p>
+
+                    </div>
+
+                    <button onclick="closeCategoryEditorModal()" class="glass-btn w-8 h-8 rounded-xl flex items-center justify-center">
+
+                        <i class="ph ph-x"></i>
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-400/25 text-[11px] leading-snug opacity-90">
+
+                    <i class="ph-fill ph-shield-check text-emerald-400"></i> Все категории автоматически переносятся в следующие месяцы. Удаление категории убирает её <b>только из текущего и будущих месяцев</b> — в прошлых месяцах она полностью сохраняется!
+
+                </div>
+
+
+
+                <div class="glass-panel p-3 rounded-2xl space-y-2.5">
+
+                    <div class="flex items-center justify-between">
+
+                        <span class="text-xs font-semibold opacity-85" id="catFormTitle">Новая категория</span>
+
+                        <button id="cancelEditCatBtn" onclick="resetCategoryForm()" class="hidden text-[11px] text-amber-300 underline">Отменить ред.</button>
+
+                    </div>
+
+                    <div class="flex gap-2">
+
+                        <input type="text" id="newCatNameInput" placeholder="Название (напр. Кафе, Авто)" class="flex-1 glass-panel px-3 py-2 rounded-xl text-xs focus:outline-none" style="color: var(--text-main);">
+
+                        <input type="color" id="newCatColorInput" value="#10b981" class="w-10 h-9 rounded-xl bg-transparent border-0 cursor-pointer" title="Цвет сектора и иконки">
+
+                    </div>
+
+                    <div class="text-[10px] opacity-65">Выберите векторную иконку (28 вариантов):</div>
+
+                    <div id="iconPickerGrid" class="grid grid-cols-7 gap-1.5 max-h-28 overflow-y-auto p-1"></div>
+
+                    <button id="saveCatSubmitBtn" onclick="saveCustomCategory()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-bold shadow-md">
+
+                        + Добавить категорию в этот и след. месяцы
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="text-xs font-semibold opacity-75 px-1 flex items-center justify-between">
+
+                    <span>Категории на диаграмме (<span id="activeCatsCountBadge">7</span>):</span>
+
+                </div>
+
+                <div id="existingCatsManageList" class="flex-1 overflow-y-auto space-y-1.5 pr-1"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="searchModal" class="hidden fixed inset-0 z-50 flex items-start justify-center bg-black/65 backdrop-blur-sm p-3 pt-10">
+
+            <div class="w-full max-w-[420px] glass-modal rounded-[32px] p-4 flex flex-col gap-3 max-h-[82vh] overflow-hidden border border-white/25">
+
+                <div class="flex items-center gap-2">
+
+                    <i class="ph ph-magnifying-glass text-emerald-400 text-lg"></i>
+
+                    <input type="text" id="searchQueryInput" oninput="performSearch()" placeholder="Поиск по заметкам, суммам, категориям..." class="flex-1 bg-transparent text-sm focus:outline-none" style="color: var(--text-main);">
+
+                    <button onclick="closeSearchModal()" class="glass-btn w-8 h-8 rounded-xl flex items-center justify-center">
+
+                        <i class="ph ph-x"></i>
+
+                    </button>
+
+                </div>
+
+                <div id="searchResultsContainer" class="flex-1 overflow-y-auto space-y-2 pt-2 border-t border-white/10"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="toastBox" class="pointer-events-none fixed top-5 left-1/2 -translate-x-1/2 z-[100] opacity-0 transition-all duration-300 transform -translate-y-3">
+
+            <div class="glass-modal px-4 py-2.5 rounded-2xl border border-emerald-400/40 shadow-2xl flex items-center gap-2 text-xs font-semibold">
+
+                <i class="ph-fill ph-check-circle text-emerald-400 text-base"></i>
+
+                <span id="toastMessage">Операция выполнена</span>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <script>
+
+        const STORAGE_KEY = 'FINGLASS_PRO_DB_V3';
+
+
+
+        const AVAILABLE_ICONS = [
+
+            'ph-basket', 'ph-car', 'ph-tooth', 'ph-martini',
+
+            'ph-t-shirt', 'ph-house-line', 'ph-soccer-ball', 'ph-coffee',
+
+            'ph-phone-call', 'ph-gift', 'ph-taxi', 'ph-thermometer',
+
+            'ph-dress', 'ph-gas-pump', 'ph-airplane-tilt', 'ph-paw-print',
+
+            'ph-trend-up', 'ph-game-controller', 'ph-book-open', 'ph-music-notes',
+
+            'ph-first-aid-kit', 'ph-wrench', 'ph-credit-card', 'ph-coins',
+
+            'ph-baby', 'ph-bicycle', 'ph-film-slate', 'ph-laptop'
+
+        ];
+
+
+
+        const DEFAULT_CATEGORIES = [
+
+            { id: 'cat_food', name: 'Еда', icon: 'ph-basket', color: '#f472b6' },
+
+            { id: 'cat_car', name: 'Машина', icon: 'ph-car', color: '#94a3b8' },
+
+            { id: 'cat_hygiene', name: 'Гигиена', icon: 'ph-tooth', color: '#60a5fa' },
+
+            { id: 'cat_fun', name: 'Развлечения', icon: 'ph-martini', color: '#fbbf24' },
+
+            { id: 'cat_clothes', name: 'Одежда', icon: 'ph-t-shirt', color: '#c084fc' },
+
+            { id: 'cat_home', name: 'Жилье', icon: 'ph-house-line', color: '#38bdf8' },
+
+            { id: 'cat_sport', name: 'Спорт', icon: 'ph-soccer-ball', color: '#34d399' }
+
+        ];
+
+
+
+        function getInitialDemoTransactions() {
+
+            const now = new Date();
+
+            return [
+
+                { id: 't1', type: 'expense', categoryId: 'cat_sport', amount: 809, note: 'Озон сумка для коньков', date: formatDateISO(addDays(now, -1)) },
+
+                { id: 't2', type: 'expense', categoryId: 'cat_sport', amount: 1280, note: 'Чехлы на лезвия', date: formatDateISO(addDays(now, -1)) },
+
+                { id: 't3', type: 'expense', categoryId: 'cat_sport', amount: 54269, note: 'Авито коньки Hyperlite 8', date: formatDateISO(addDays(now, -2)) },
+
+                { id: 't4', type: 'expense', categoryId: 'cat_sport', amount: 500, note: 'Билеты на каток Я и Маня', date: formatDateISO(addDays(now, -4)) },
+
+                { id: 't5', type: 'expense', categoryId: 'cat_sport', amount: 3500, note: 'Тёме на секцию футбол', date: formatDateISO(addDays(now, -12)) },
+
+                { id: 't6', type: 'expense', categoryId: 'cat_hygiene', amount: 10417, note: 'Косметика и уход за месяц', date: formatDateISO(addDays(now, -5)) },
+
+                { id: 't7', type: 'expense', categoryId: 'cat_clothes', amount: 6205, note: 'Куртка и термобелье', date: formatDateISO(addDays(now, -6)) },
+
+                { id: 't8', type: 'expense', categoryId: 'cat_home', amount: 5870, note: 'Коммунальные платежи ЖКХ', date: formatDateISO(addDays(now, -8)) },
+
+                { id: 't9', type: 'expense', categoryId: 'cat_food', amount: 5000, note: 'Супермаркет продукты на неделю', date: formatDateISO(addDays(now, -3)) },
+
+                { id: 't10', type: 'expense', categoryId: 'cat_car', amount: 3372, note: 'За бензин АИ-95 полный бак', date: formatDateISO(addDays(now, -2)) },
+
+                { id: 't11', type: 'expense', categoryId: 'cat_fun', amount: 1845, note: 'Кино и коктейли', date: formatDateISO(addDays(now, -7)) }
+
+            ];
+
+        }
+
+
+
+        let appData = {
+
+            settings: {
+
+                currency: '₽',
+
+                startDayOfMonth: 10,
+
+                defaultMonthlyLimit: 70000,
+
+                theme: 'emerald',
+
+                blurPx: 22
+
+            },
+
+            periodSnapshots: {},
+
+            categories: [...DEFAULT_CATEGORIES],
+
+            archivedCategories: {},
+
+            transactions: []
+
+        };
+
+
+
+        let uiState = {
+
+            currentView: 'wheel',
+
+            activePeriodKey: '',
+
+            lastPaymentDateISO: null,
+
+            lastPaymentTimestamp: null,
+
+            inactivitySecondsLeft: 300,
+
+            expandedCategoryIds: { 'cat_sport': true },
+
+            modalTxType: 'expense',
+
+            modalCategoryId: 'cat_car',
+
+            calcCurrentVal: '0',
+
+            calcPrevVal: null,
+
+            calcOperator: null,
+
+            calcFreshInput: true,
+
+            selectedNewCatIcon: 'ph-car',
+
+            editingCatId: null
+
+        };
+
+
+
+        function formatDateISO(d) {
+
+            const year = d.getFullYear();
+
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+
+            const day = String(d.getDate()).padStart(2, '0');
+
+            return `${year}-${month}-${day}`;
+
+        }
+
+
+
+        function addDays(d, days) {
+
+            const copy = new Date(d);
+
+            copy.setDate(copy.getDate() + days);
+
+            return copy;
+
+        }
+
+
+
+        function getPeriodKeyForDate(dateStrOrObj) {
+
+            const d = typeof dateStrOrObj === 'string' ? new Date(dateStrOrObj + 'T12:00:00') : new Date(dateStrOrObj);
+
+            const startDay = Number(appData.settings.startDayOfMonth) || 1;
+
+            let year = d.getFullYear();
+
+            let month = d.getMonth();
+
+
+
+            if (startDay > 1 && d.getDate() < startDay) {
+
+                month -= 1;
+
+                if (month < 0) {
+
+                    month = 11;
+
+                    year -= 1;
+
+                }
+
+            }
+
+            return `${year}-${String(month + 1).padStart(2, '0')}`;
+
+        }
+
+
+
+        function getPeriodBounds(periodKey) {
+
+            const [yStr, mStr] = periodKey.split('-');
+
+            const year = Number(yStr);
+
+            const month = Number(mStr) - 1;
+
+            const startDay = Number(appData.settings.startDayOfMonth) || 1;
+
+
+
+            const startDate = new Date(year, month, startDay, 0, 0, 0);
+
+            let endYear = year;
+
+            let endMonth = month + 1;
+
+            if (endMonth > 11) {
+
+                endMonth = 0;
+
+                endYear += 1;
+
+            }
+
+            const endDate = new Date(endYear, endMonth, startDay - 1, 23, 59, 59);
+
+            return {
+
+                startISO: formatDateISO(startDate),
+
+                endISO: formatDateISO(endDate),
+
+                startDate,
+
+                endDate
+
+            };
+
+        }
+
+
+
+        function formatPeriodHeaderLabel(periodKey) {
+
+            const bounds = getPeriodBounds(periodKey);
+
+            const monthsShort = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
+
+            const monthsFull = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+
+            
+
+            const startDay = Number(appData.settings.startDayOfMonth) || 1;
+
+            if (startDay === 1) {
+
+                return `${monthsFull[bounds.startDate.getMonth()]} ${bounds.startDate.getFullYear()}`;
+
+            }
+
+            const sDay = bounds.startDate.getDate();
+
+            const sMon = monthsShort[bounds.startDate.getMonth()];
+
+            const eDay = bounds.endDate.getDate();
+
+            const eMon = monthsShort[bounds.endDate.getMonth()];
+
+            return `${sDay} ${sMon} - ${eDay} ${eMon}`;
+
+        }
+
+
+
+        function shiftPeriodKey(periodKey, deltaMonths) {
+
+            const [yStr, mStr] = periodKey.split('-');
+
+            let year = Number(yStr);
+
+            let month = Number(mStr) - 1 + deltaMonths;
+
+            while (month < 0) { month += 12; year -= 1; }
+
+            while (month > 11) { month -= 12; year += 1; }
+
+            return `${year}-${String(month + 1).padStart(2, '0')}`;
+
+        }
+
+
+
+        function cloneCategoriesList(list) {
+
+            return (list || DEFAULT_CATEGORIES).map(c => ({ ...c }));
+
+        }
+
+
+
+        function ensurePeriodSnapshot(periodKey) {
+
+            if (!appData.periodSnapshots[periodKey]) {
+
+                const allKeys = Object.keys(appData.periodSnapshots).sort();
+
+                let inheritedCats = null;
+
+                for (let i = allKeys.length - 1; i >= 0; i--) {
+
+                    if (allKeys[i] < periodKey && Array.isArray(appData.periodSnapshots[allKeys[i]].categories)) {
+
+                        inheritedCats = cloneCategoriesList(appData.periodSnapshots[allKeys[i]].categories);
+
+                        break;
+
+                    }
+
+                }
+
+                if (!inheritedCats) {
+
+                    inheritedCats = cloneCategoriesList(appData.categories);
+
+                }
+
+
+
+                appData.periodSnapshots[periodKey] = {
+
+                    limit: Number(appData.settings.defaultMonthlyLimit) || 70000,
+
+                    categories: inheritedCats,
+
+                    lockedAt: new Date().toISOString()
+
+                };
+
+                saveDatabase();
+
+            } else if (!Array.isArray(appData.periodSnapshots[periodKey].categories)) {
+
+                appData.periodSnapshots[periodKey].categories = cloneCategoriesList(appData.categories);
+
+                saveDatabase();
+
+            }
+
+            return appData.periodSnapshots[periodKey].limit;
+
+        }
+
+
+
+        function getCategoriesForPeriod(periodKey = uiState.activePeriodKey) {
+
+            ensurePeriodSnapshot(periodKey);
+
+            return appData.periodSnapshots[periodKey].categories;
+
+        }
+
+
+
+        function findCategoryAnywhere(catId, periodKey = uiState.activePeriodKey) {
+
+            const periodCats = getCategoriesForPeriod(periodKey);
+
+            const foundInPeriod = periodCats.find(c => c.id === catId);
+
+            if (foundInPeriod) return foundInPeriod;
+
+            const foundInGlobal = appData.categories.find(c => c.id === catId);
+
+            if (foundInGlobal) return foundInGlobal;
+
+            if (appData.archivedCategories && appData.archivedCategories[catId]) {
+
+                return appData.archivedCategories[catId];
+
+            }
+
+            return { id: catId, name: 'Архивная категория', icon: 'ph-tag', color: '#94a3b8' };
+
+        }
+
+
+
+        function formatMoney(num) {
+
+            const val = Number(num) || 0;
+
+            const parts = Math.abs(val).toFixed(2).split('.');
+
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+            const sign = val < 0 ? '-' : '';
+
+            return `${sign}${parts[0]},${parts[1]} ${appData.settings.currency}`;
+
+        }
+
+
+
+        function loadDatabase() {
+
+            try {
+
+                const raw = localStorage.getItem(STORAGE_KEY);
+
+                if (raw) {
+
+                    const parsed = JSON.parse(raw);
+
+                    appData = { ...appData, ...parsed };
+
+                } else {
+
+                    appData.transactions = getInitialDemoTransactions();
+
+                    saveDatabase();
+
+                }
+
+            } catch (e) {
+
+                appData.transactions = getInitialDemoTransactions();
+
+            }
+
+
+
+            const todayKey = getPeriodKeyForDate(new Date());
+
+            uiState.activePeriodKey = todayKey;
+
+            ensurePeriodSnapshot(todayKey);
+
+            applyThemeAndBlur();
+
+        }
+
+
+
+        function saveDatabase() {
+
+            try {
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+
+            } catch (e) {}
+
+        }
+
+
+
+        function recordPaymentDateContext(chosenDateISO) {
+
+            uiState.lastPaymentDateISO = chosenDateISO;
+
+            uiState.lastPaymentTimestamp = Date.now();
+
+            uiState.inactivitySecondsLeft = 300;
+
+            updateMemoryBannerUI();
+
+        }
+
+
+
+        function resetToTodayContext(showNotification = true) {
+
+            const todayISO = formatDateISO(new Date());
+
+            const todayPeriod = getPeriodKeyForDate(todayISO);
+
+            uiState.lastPaymentDateISO = null;
+
+            uiState.lastPaymentTimestamp = null;
+
+            uiState.inactivitySecondsLeft = 300;
+
+            uiState.activePeriodKey = todayPeriod;
+
+            ensurePeriodSnapshot(todayPeriod);
+
+            renderAll();
+
+            updateMemoryBannerUI();
+
+            if (showNotification) {
+
+                showToast('Переключено на сегодняшнюю дату и текущий месяц');
+
+            }
+
+        }
+
+
+
+        function simulateFiveMinTimeout() {
+
+            resetToTodayContext(false);
+
+            showToast('5 минут бездействия истекли: дата сброшена на сегодня!');
+
+        }
+
+
+
+        function getSmartDefaultDateForNewTx() {
+
+            if (uiState.lastPaymentDateISO && uiState.lastPaymentTimestamp) {
+
+                const elapsedSec = (Date.now() - uiState.lastPaymentTimestamp) / 1000;
+
+                if (elapsedSec < 300) {
+
+                    return uiState.lastPaymentDateISO;
+
+                }
+
+            }
+
+            const todayISO = formatDateISO(new Date());
+
+            const todayPeriod = getPeriodKeyForDate(todayISO);
+
+            if (uiState.activePeriodKey !== todayPeriod) {
+
+                const bounds = getPeriodBounds(uiState.activePeriodKey);
+
+                return bounds.startISO;
+
+            }
+
+            return todayISO;
+
+        }
+
+
+
+        function updateMemoryBannerUI() {
+
+            const memText = document.getElementById('memoryDateText');
+
+            const countdownEl = document.getElementById('inactivityCountdown');
+
+            const todayISO = formatDateISO(new Date());
+
+
+
+            if (uiState.lastPaymentDateISO && uiState.lastPaymentTimestamp) {
+
+                const mins = String(Math.floor(uiState.inactivitySecondsLeft / 60)).padStart(2, '0');
+
+                const secs = String(uiState.inactivitySecondsLeft % 60).padStart(2, '0');
+
+                countdownEl.textContent = `${mins}:${secs}`;
+
+                const isToday = uiState.lastPaymentDateISO === todayISO;
+
+                memText.innerHTML = isToday
+
+                    ? `Активна дата: <b>Сегодня (${uiState.lastPaymentDateISO})</b>`
+
+                    : `Память прошлого периода: <b>${uiState.lastPaymentDateISO}</b>`;
+
+            } else {
+
+                countdownEl.textContent = '05:00';
+
+                memText.innerHTML = `Авто-дата: <b>Сегодня (${todayISO})</b>`;
+
+            }
+
+        }
+
+
+
+        setInterval(() => {
+
+            if (uiState.lastPaymentTimestamp) {
+
+                const elapsed = Math.floor((Date.now() - uiState.lastPaymentTimestamp) / 1000);
+
+                const remaining = Math.max(0, 300 - elapsed);
+
+                uiState.inactivitySecondsLeft = remaining;
+
+                updateMemoryBannerUI();
+
+
+
+                if (remaining === 0) {
+
+                    resetToTodayContext(false);
+
+                    showToast('5 мин. без новых платежей — возврат на сегодняшнюю дату');
+
+                }
+
+            }
+
+        }, 1000);
+
+
+
+        function getTransactionsForPeriod(periodKey) {
+
+            const bounds = getPeriodBounds(periodKey);
+
+            return appData.transactions.filter(t => t.date >= bounds.startISO && t.date <= bounds.endISO);
+
+        }
+
+
+
+        function renderAll() {
+
+            ensurePeriodSnapshot(uiState.activePeriodKey);
+
+            const periodLimit = appData.periodSnapshots[uiState.activePeriodKey].limit;
+
+            const periodTxs = getTransactionsForPeriod(uiState.activePeriodKey);
+
+
+
+            let totalExpenses = 0;
+
+            let totalIncome = 0;
+
+            const expensesByCat = {};
+
+
+
+            periodTxs.forEach(tx => {
+
+                if (tx.type === 'expense') {
+
+                    totalExpenses += Number(tx.amount);
+
+                    expensesByCat[tx.categoryId] = (expensesByCat[tx.categoryId] || 0) + Number(tx.amount);
+
+                } else {
+
+                    totalIncome += Number(tx.amount);
+
+                }
+
+            });
+
+
+
+            const balance = periodLimit + totalIncome - totalExpenses;
+
+
+
+            document.getElementById('currencyBadge').textContent = appData.settings.currency;
+
+            document.getElementById('currentPeriodLabel').textContent = formatPeriodHeaderLabel(uiState.activePeriodKey);
+
+            
+
+            const prevKey = shiftPeriodKey(uiState.activePeriodKey, -1);
+
+            const nextKey = shiftPeriodKey(uiState.activePeriodKey, 1);
+
+            const prevBounds = getPeriodBounds(prevKey);
+
+            const nextBounds = getPeriodBounds(nextKey);
+
+            const shortM = ['янв.', 'фев.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сен.', 'окт.', 'ноя.', 'дек.'];
+
+            document.getElementById('prevPeriodLabel').textContent = `- ${prevBounds.endDate.getDate()} ${shortM[prevBounds.endDate.getMonth()]}`;
+
+            document.getElementById('nextPeriodLabel').textContent = `${nextBounds.startDate.getDate()} ${shortM[nextBounds.startDate.getMonth()]} -`;
+
+
+
+            document.getElementById('centerLimitValue').innerHTML = `${formatMoney(periodLimit)} <i class="ph ph-pencil-simple text-[10px] opacity-60"></i>`;
+
+            document.getElementById('centerExpenseValue').textContent = formatMoney(totalExpenses);
+
+
+
+            const incomeBadge = document.getElementById('centerIncomeBadge');
+
+            if (totalIncome > 0) {
+
+                incomeBadge.classList.remove('hidden');
+
+                incomeBadge.textContent = `+${formatMoney(totalIncome)} доп.`;
+
+            } else {
+
+                incomeBadge.classList.add('hidden');
+
+            }
+
+
+
+            const balanceCapsule = document.getElementById('balanceCapsule');
+
+            const balanceAmountText = document.getElementById('balanceAmountText');
+
+            balanceAmountText.textContent = formatMoney(balance);
+
+
+
+            if (balance < 0) {
+
+                balanceCapsule.style.background = 'rgba(244, 63, 94, 0.25)';
+
+                balanceCapsule.style.borderColor = 'rgba(251, 113, 133, 0.5)';
+
+            } else {
+
+                balanceCapsule.style.background = 'rgba(16, 185, 129, 0.22)';
+
+                balanceCapsule.style.borderColor = 'rgba(52, 211, 153, 0.5)';
+
+            }
+
+
+
+            renderWheelAndPerimeterIcons(expensesByCat, totalExpenses);
+
+            renderAccordionList(periodTxs, expensesByCat, totalExpenses);
+
+            updateMemoryBannerUI();
+
+        }
+
+
+
+        function polarToCartesian(cx, cy, radius, angleInDegrees) {
+
+            const angleInRadians = (angleInDegrees * Math.PI) / 180.0;
+
+            return {
+
+                x: cx + (radius * Math.cos(angleInRadians)),
+
+                y: cy + (radius * Math.sin(angleInRadians))
+
+            };
+
+        }
+
+
+
+        function createSvgArcPath(cx, cy, radius, startAngle, endAngle) {
+
+            if (endAngle - startAngle >= 359.9) {
+
+                endAngle = startAngle + 359.9;
+
+            }
+
+            const start = polarToCartesian(cx, cy, radius, endAngle);
+
+            const end = polarToCartesian(cx, cy, radius, startAngle);
+
+            const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
+
+            return [
+
+                'M', start.x, start.y,
+
+                'A', radius, radius, 0, largeArcFlag, 0, end.x, end.y
+
+            ].join(' ');
+
+        }
+
+
+
+        function renderWheelAndPerimeterIcons(expensesByCat, totalExpenses) {
+
+            const arcsGroup = document.getElementById('donutArcsGroup');
+
+            const linesGroup = document.getElementById('connectorLinesGroup');
+
+            const iconsContainer = document.getElementById('perimeterIconsContainer');
+
+
+
+            arcsGroup.innerHTML = '';
+
+            linesGroup.innerHTML = '';
+
+            iconsContainer.innerHTML = '';
+
+
+
+            const cx = 200, cy = 200, r = 86;
+
+            const cats = getCategoriesForPeriod(uiState.activePeriodKey);
+
+            const count = cats.length;
+
+
+
+            const sectorData = {};
+
+            if (totalExpenses > 0) {
+
+                let rawStart = -90;
+
+                cats.forEach((cat) => {
+
+                    const amount = expensesByCat[cat.id] || 0;
+
+                    if (amount > 0) {
+
+                        const sweepDeg = (amount / totalExpenses) * 360;
+
+                        sectorData[cat.id] = {
+
+                            startAngle: rawStart,
+
+                            endAngle: rawStart + sweepDeg,
+
+                            midAngle: rawStart + sweepDeg / 2,
+
+                            sweepDeg
+
+                        };
+
+                        rawStart += sweepDeg;
+
+                    }
+
+                });
+
+
+
+                let weightedDeltaSum = 0;
+
+                let totalWeight = 0;
+
+                cats.forEach((cat, idx) => {
+
+                    const amount = expensesByCat[cat.id] || 0;
+
+                    if (amount > 0) {
+
+                        const iconAngle = -90 + (idx * (360 / count));
+
+                        const s = sectorData[cat.id];
+
+                        let diff = iconAngle - s.midAngle;
+
+                        while (diff > 180) diff -= 360;
+
+                        while (diff < -180) diff += 360;
+
+                        weightedDeltaSum += diff * amount;
+
+                        totalWeight += amount;
+
+                    }
+
+                });
+
+                const optimalRotationOffset = totalWeight > 0 ? (weightedDeltaSum / totalWeight) : 0;
+
+
+
+                cats.forEach(cat => {
+
+                    const s = sectorData[cat.id];
+
+                    if (s) {
+
+                        s.startAngle += optimalRotationOffset;
+
+                        s.endAngle += optimalRotationOffset;
+
+                        s.midAngle += optimalRotationOffset;
+
+
+
+                        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+                        const gap = Object.keys(sectorData).length > 1 ? 0.6 : 0;
+
+                        const d = createSvgArcPath(cx, cy, r, s.startAngle + gap, s.endAngle - gap);
+
+                        path.setAttribute('d', d);
+
+                        path.setAttribute('fill', 'none');
+
+                        path.setAttribute('stroke', cat.color);
+
+                        path.setAttribute('stroke-width', '34');
+
+                        path.style.cursor = 'pointer';
+
+                        path.style.transition = 'opacity 0.25s ease';
+
+                        path.onclick = () => openTransactionModal('expense', cat.id);
+
+                        arcsGroup.appendChild(path);
+
+                    }
+
+                });
+
+            }
+
+
+
+            const iconOrbitRadius = 158;
+
+            cats.forEach((cat, idx) => {
+
+                const iconAngleDeg = -90 + (idx * (360 / count));
+
+                const iconPos = polarToCartesian(cx, cy, iconOrbitRadius, iconAngleDeg);
+
+
+
+                const amount = expensesByCat[cat.id] || 0;
+
+                const percent = totalExpenses > 0 ? Math.round((amount / totalExpenses) * 100) : 0;
+
+
+
+                if (amount > 0 && sectorData[cat.id]) {
+
+                    const s = sectorData[cat.id];
+
+                    let clampedTargetAngle = s.midAngle;
+
+                    let normIconAngle = iconAngleDeg;
+
+                    while (normIconAngle - s.midAngle > 180) normIconAngle -= 360;
+
+                    while (normIconAngle - s.midAngle < -180) normIconAngle += 360;
+
+
+
+                    const margin = Math.min(4, s.sweepDeg * 0.25);
+
+                    if (normIconAngle >= s.startAngle + margin && normIconAngle <= s.endAngle - margin) {
+
+                        clampedTargetAngle = normIconAngle;
+
+                    } else {
+
+                        clampedTargetAngle = s.midAngle;
+
+                    }
+
+
+
+                    const startRayPoint = polarToCartesian(cx, cy, 127, iconAngleDeg);
+
+                    const endRayPoint = polarToCartesian(cx, cy, 103, clampedTargetAngle);
+
+
+
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+
+                    line.setAttribute('x1', startRayPoint.x);
+
+                    line.setAttribute('y1', startRayPoint.y);
+
+                    line.setAttribute('x2', endRayPoint.x);
+
+                    line.setAttribute('y2', endRayPoint.y);
+
+                    line.setAttribute('stroke', cat.color);
+
+                    line.setAttribute('stroke-width', '1.75');
+
+                    line.setAttribute('stroke-linecap', 'round');
+
+                    line.setAttribute('stroke-opacity', '0.85');
+
+                    linesGroup.appendChild(line);
+
+                }
+
+
+
+                const btn = document.createElement('button');
+
+                btn.className = 'cat-node pointer-events-auto absolute flex flex-col items-center justify-center group';
+
+                btn.style.left = `${(iconPos.x / 400) * 100}%`;
+
+                btn.style.top = `${(iconPos.y / 400) * 100}%`;
+
+                btn.style.transform = 'translate(-50%, -50%)';
+
+                btn.title = `${cat.name}: нажмите, чтобы внести расход`;
+
+                btn.onclick = () => openTransactionModal('expense', cat.id);
+
+
+
+                const activeRingStyle = amount > 0
+
+                    ? `border-color: ${cat.color}; box-shadow: 0 4px 16px ${cat.color}38;`
+
+                    : '';
+
+
+
+                btn.innerHTML = `
+
+                    <div class="w-11 h-11 rounded-2xl glass-panel flex items-center justify-center text-xl transition-transform" style="${activeRingStyle}">
+
+                        <i class="ph ${cat.icon}" style="color: ${cat.color};"></i>
+
+                    </div>
+
+                    <span class="text-[10px] font-semibold mt-0.5 leading-none tracking-tight opacity-90 max-w-[68px] truncate">${escapeHtml(cat.name)}</span>
+
+                    <span class="text-[11px] font-bold leading-none mt-0.5" style="color: ${amount > 0 ? cat.color : 'var(--text-muted)'};">
+
+                        ${amount > 0 ? percent + '%' : ''}
+
+                    </span>
+
+                `;
+
+                iconsContainer.appendChild(btn);
+
+            });
+
+        }
+
+
+
+        function renderAccordionList(periodTxs, expensesByCat, totalExpenses) {
+
+            const container = document.getElementById('accordionCategoriesList');
+
+            container.innerHTML = '';
+
+
+
+            const periodCats = [...getCategoriesForPeriod(uiState.activePeriodKey)];
+
+            Object.keys(expensesByCat).forEach(catId => {
+
+                if (!periodCats.some(c => c.id === catId)) {
+
+                    periodCats.push(findCategoryAnywhere(catId, uiState.activePeriodKey));
+
+                }
+
+            });
+
+
+
+            const sortedCats = periodCats.sort((a, b) => (expensesByCat[b.id] || 0) - (expensesByCat[a.id] || 0));
+
+
+
+            sortedCats.forEach(cat => {
+
+                const catTxs = periodTxs
+
+                    .filter(t => t.categoryId === cat.id && t.type === 'expense')
+
+                    .sort((a, b) => b.date.localeCompare(a.date));
+
+
+
+                const totalCatAmount = expensesByCat[cat.id] || 0;
+
+                const isExpanded = !!uiState.expandedCategoryIds[cat.id];
+
+
+
+                const card = document.createElement('div');
+
+                card.className = 'glass-panel rounded-2xl overflow-hidden transition-all';
+
+
+
+                const headerHtml = `
+
+                    <div onclick="toggleCategoryAccordion('${cat.id}')" class="p-3 flex items-center justify-between cursor-pointer hover:bg-white/5">
+
+                        <div class="flex items-center gap-3">
+
+                            <i class="ph ${isExpanded ? 'ph-caret-up' : 'ph-caret-down'} opacity-60 text-sm"></i>
+
+                            <div class="w-9 h-9 rounded-xl glass-panel flex items-center justify-center text-lg" style="border-color: ${cat.color}66;">
+
+                                <i class="ph ${cat.icon}" style="color: ${cat.color};"></i>
+
+                            </div>
+
+                            <div class="flex items-center gap-2">
+
+                                <span class="font-semibold text-sm">${cat.name}</span>
+
+                                <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/25 text-emerald-300 border border-emerald-400/30">
+
+                                    ${catTxs.length}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="flex items-center gap-2">
+
+                            <span class="font-bold text-sm ${totalCatAmount > 0 ? 'text-rose-400' : 'opacity-50'}">${formatMoney(totalCatAmount)}</span>
+
+                            <button onclick="event.stopPropagation(); openTransactionModal('expense', '${cat.id}')" class="w-7 h-7 rounded-lg glass-btn flex items-center justify-center text-xs text-emerald-400" title="Быстро добавить в ${cat.name}">
+
+                                <i class="ph-bold ph-plus"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+
+                let bodyHtml = '';
+
+                if (isExpanded) {
+
+                    if (catTxs.length === 0) {
+
+                        bodyHtml = `<div class="px-4 py-2.5 text-xs opacity-50 border-t border-white/10">Нет операций в этом периоде</div>`;
+
+                    } else {
+
+                        const rows = catTxs.map(tx => {
+
+                            const shortDate = formatShortRussianDate(tx.date);
+
+                            return `
+
+                                <div class="px-4 py-2.5 border-t border-white/10 flex items-center justify-between gap-2 hover:bg-white/5 text-xs">
+
+                                    <div class="flex items-center gap-2.5 overflow-hidden">
+
+                                        <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: ${cat.color}; box-shadow: 0 0 8px ${cat.color};"></span>
+
+                                        <span class="font-bold whitespace-nowrap">${formatMoney(tx.amount)}</span>
+
+                                        <span class="opacity-80 truncate">${escapeHtml(tx.note || 'Без заметки')}</span>
+
+                                    </div>
+
+                                    <div class="flex items-center gap-2 shrink-0">
+
+                                        <span class="opacity-60 text-[11px] whitespace-nowrap">${shortDate}</span>
+
+                                        <button onclick="deleteTransaction('${tx.id}')" class="text-rose-400 opacity-70 hover:opacity-100 p-1" title="Удалить запись">
+
+                                            <i class="ph ph-trash"></i>
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            `;
+
+                        }).join('');
+
+                        bodyHtml = `<div class="bg-black/15">${rows}</div>`;
+
+                    }
+
+                }
+
+
+
+                card.innerHTML = headerHtml + bodyHtml;
+
+                container.appendChild(card);
+
+            });
+
+        }
+
+
+
+        function toggleCategoryAccordion(catId) {
+
+            uiState.expandedCategoryIds[catId] = !uiState.expandedCategoryIds[catId];
+
+            renderAll();
+
+        }
+
+
+
+        function formatShortRussianDate(isoDate) {
+
+            const d = new Date(isoDate + 'T12:00:00');
+
+            const m = ['янв.', 'февр.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сент.', 'окт.', 'нояб.', 'дек.'];
+
+            return `${d.getDate()} ${m[d.getMonth()]}`;
+
+        }
+
+
+
+        function formatFullRussianDate(isoDate) {
+
+            const d = new Date(isoDate + 'T12:00:00');
+
+            const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+
+            const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+
+            return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+
+        }
+
+
+
+        function toggleMainView() {
+
+            const wheelView = document.getElementById('wheelView');
+
+            const listView = document.getElementById('listView');
+
+            const icon = document.querySelector('#viewToggleBtn i');
+
+
+
+            if (uiState.currentView === 'wheel') {
+
+                uiState.currentView = 'list';
+
+                wheelView.classList.add('hidden');
+
+                listView.classList.remove('hidden');
+
+                listView.classList.add('flex');
+
+                icon.className = 'ph ph-chart-donut';
+
+            } else {
+
+                uiState.currentView = 'wheel';
+
+                listView.classList.add('hidden');
+
+                listView.classList.remove('flex');
+
+                wheelView.classList.remove('hidden');
+
+                icon.className = 'ph ph-list-dashes';
+
+            }
+
+        }
+
+
+
+        function shiftPeriod(delta) {
+
+            uiState.activePeriodKey = shiftPeriodKey(uiState.activePeriodKey, delta);
+
+            ensurePeriodSnapshot(uiState.activePeriodKey);
+
+            renderAll();
+
+        }
+
+
+
+        function openTransactionModal(type = 'expense', categoryId = null) {
+
+            const activeCats = getCategoriesForPeriod(uiState.activePeriodKey);
+
+            uiState.modalTxType = type;
+
+            uiState.modalCategoryId = categoryId || (activeCats[0] ? activeCats[0].id : DEFAULT_CATEGORIES[0].id);
+
+            uiState.calcCurrentVal = '0';
+
+            uiState.calcPrevVal = null;
+
+            uiState.calcOperator = null;
+
+            uiState.calcFreshInput = true;
+
+
+
+            const smartDateISO = getSmartDefaultDateForNewTx();
+
+            const dateInput = document.getElementById('txDateInput');
+
+            dateInput.value = smartDateISO;
+
+            document.getElementById('txFormattedDateLabel').textContent = formatFullRussianDate(smartDateISO);
+
+
+
+            document.getElementById('txNoteInput').value = '';
+
+            document.getElementById('txCurrencyLabel').textContent = appData.settings.currency;
+
+
+
+            renderModalCategoryPills();
+
+            updateModalHeaderAndButton();
+
+            updateCalcDisplayUI();
+
+
+
+            document.getElementById('txModal').classList.remove('hidden');
+
+        }
+
+
+
+        function closeTxModal() {
+
+            document.getElementById('txModal').classList.add('hidden');
+
+        }
+
+
+
+        function onTxDateManualChange() {
+
+            const val = document.getElementById('txDateInput').value;
+
+            if (val) {
+
+                document.getElementById('txFormattedDateLabel').textContent = formatFullRussianDate(val);
+
+                renderModalCategoryPills();
+
+                updateModalHeaderAndButton();
+
+            }
+
+        }
+
+
+
+        function toggleTxTypeInModal() {
+
+            uiState.modalTxType = uiState.modalTxType === 'expense' ? 'income' : 'expense';
+
+            updateModalHeaderAndButton();
+
+        }
+
+
+
+        function renderModalCategoryPills() {
+
+            const pillsContainer = document.getElementById('txCategoryPills');
+
+            pillsContainer.innerHTML = '';
+
+
+
+            const chosenDateISO = document.getElementById('txDateInput').value || formatDateISO(new Date());
+
+            const targetPeriodKey = getPeriodKeyForDate(chosenDateISO);
+
+            const periodCats = getCategoriesForPeriod(targetPeriodKey);
+
+
+
+            if (!periodCats.some(c => c.id === uiState.modalCategoryId) && periodCats.length > 0) {
+
+                uiState.modalCategoryId = periodCats[0].id;
+
+            }
+
+
+
+            periodCats.forEach(cat => {
+
+                const isSelected = cat.id === uiState.modalCategoryId;
+
+                const pill = document.createElement('button');
+
+                pill.className = `px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 shrink-0 transition-all ${
+
+                    isSelected ? 'bg-white/25 border border-white/50 shadow-sm scale-105' : 'glass-btn opacity-70'
+
+                }`;
+
+                pill.onclick = () => {
+
+                    uiState.modalCategoryId = cat.id;
+
+                    renderModalCategoryPills();
+
+                    updateModalHeaderAndButton();
+
+                };
+
+                pill.innerHTML = `<i class="ph ${cat.icon}" style="color: ${cat.color}"></i><span>${escapeHtml(cat.name)}</span>`;
+
+                pillsContainer.appendChild(pill);
+
+            });
+
+        }
+
+
+
+        function updateModalHeaderAndButton() {
+
+            const chosenDateISO = document.getElementById('txDateInput').value || formatDateISO(new Date());
+
+            const targetPeriodKey = getPeriodKeyForDate(chosenDateISO);
+
+            const periodCats = getCategoriesForPeriod(targetPeriodKey);
+
+            const cat = periodCats.find(c => c.id === uiState.modalCategoryId) || periodCats[0] || DEFAULT_CATEGORIES[0];
+
+            const isExpense = uiState.modalTxType === 'expense';
+
+
+
+            document.getElementById('txModalTitle').textContent = isExpense ? 'Новый расход' : 'Пополнение / Доход';
+
+            document.getElementById('txTypeSwitchLabel').textContent = isExpense ? 'Расход' : 'Доход';
+
+
+
+            const catBar = document.getElementById('txCategorySelectorBar');
+
+            catBar.style.display = isExpense ? 'block' : 'none';
+
+
+
+            const iconBox = document.getElementById('txSelectedCatIconBox');
+
+            iconBox.innerHTML = `<i class="ph ${isExpense ? cat.icon : 'ph-trend-up'}" style="color: ${isExpense ? cat.color : '#10b981'}"></i>`;
+
+
+
+            const submitBtnIcon = document.getElementById('submitBtnIcon');
+
+            const submitBtnText = document.getElementById('submitBtnText');
+
+            submitBtnIcon.className = `ph ${isExpense ? cat.icon : 'ph-plus-circle'} text-lg`;
+
+            submitBtnText.textContent = isExpense ? `ДОБАВИТЬ '${cat.name.toUpperCase()}'` : 'ДОБАВИТЬ ДОХОД';
+
+        }
+
+
+
+        function calcInput(digit) {
+
+            if (uiState.calcFreshInput) {
+
+                uiState.calcCurrentVal = digit === '.' ? '0.' : digit;
+
+                uiState.calcFreshInput = false;
+
+            } else {
+
+                if (digit === '.' && uiState.calcCurrentVal.includes('.')) return;
+
+                if (uiState.calcCurrentVal === '0' && digit !== '.') {
+
+                    uiState.calcCurrentVal = digit;
+
+                } else if (uiState.calcCurrentVal.length < 10) {
+
+                    uiState.calcCurrentVal += digit;
+
+                }
+
+            }
+
+            updateCalcDisplayUI();
+
+        }
+
+
+
+        function calcBackspace() {
+
+            if (uiState.calcCurrentVal.length > 1) {
+
+                uiState.calcCurrentVal = uiState.calcCurrentVal.slice(0, -1);
+
+            } else {
+
+                uiState.calcCurrentVal = '0';
+
+                uiState.calcFreshInput = true;
+
+            }
+
+            updateCalcDisplayUI();
+
+        }
+
+
+
+        function calcOperator(op) {
+
+            if (uiState.calcOperator && !uiState.calcFreshInput) {
+
+                calcEvaluate();
+
+            }
+
+            uiState.calcPrevVal = parseFloat(uiState.calcCurrentVal) || 0;
+
+            uiState.calcOperator = op;
+
+            uiState.calcFreshInput = true;
+
+            updateCalcDisplayUI();
+
+        }
+
+
+
+        function calcEvaluate() {
+
+            if (!uiState.calcOperator || uiState.calcPrevVal === null) return;
+
+            const current = parseFloat(uiState.calcCurrentVal) || 0;
+
+            let result = 0;
+
+            switch (uiState.calcOperator) {
+
+                case '+': result = uiState.calcPrevVal + current; break;
+
+                case '-': result = uiState.calcPrevVal - current; break;
+
+                case '*': result = uiState.calcPrevVal * current; break;
+
+                case '/': result = current !== 0 ? uiState.calcPrevVal / current : 0; break;
+
+            }
+
+            uiState.calcCurrentVal = String(Math.round(result * 100) / 100);
+
+            uiState.calcPrevVal = null;
+
+            uiState.calcOperator = null;
+
+            uiState.calcFreshInput = true;
+
+            updateCalcDisplayUI();
+
+        }
+
+
+
+        function updateCalcDisplayUI() {
+
+            const mainDisp = document.getElementById('calcMainDisplay');
+
+            const exprDisp = document.getElementById('calcExpressionPreview');
+
+            mainDisp.textContent = uiState.calcCurrentVal;
+
+
+
+            if (uiState.calcOperator && uiState.calcPrevVal !== null) {
+
+                const sym = { '+': '+', '-': '−', '*': '×', '/': '÷' }[uiState.calcOperator];
+
+                exprDisp.textContent = `${uiState.calcPrevVal} ${sym}`;
+
+            } else {
+
+                exprDisp.textContent = '';
+
+            }
+
+        }
+
+
+
+        function saveTransaction() {
+
+            if (uiState.calcOperator && !uiState.calcFreshInput) {
+
+                calcEvaluate();
+
+            }
+
+            const amount = parseFloat(uiState.calcCurrentVal);
+
+            if (!amount || amount <= 0) {
+
+                showToast('Введите сумму больше нуля');
+
+                return;
+
+            }
+
+
+
+            const chosenDateISO = document.getElementById('txDateInput').value || formatDateISO(new Date());
+
+            const note = document.getElementById('txNoteInput').value.trim();
+
+
+
+            const newTx = {
+
+                id: 'tx_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+
+                type: uiState.modalTxType,
+
+                categoryId: uiState.modalTxType === 'expense' ? uiState.modalCategoryId : 'income',
+
+                amount: amount,
+
+                note: note,
+
+                date: chosenDateISO
+
+            };
+
+
+
+            appData.transactions.push(newTx);
+
+            saveDatabase();
+
+
+
+            recordPaymentDateContext(chosenDateISO);
+
+
+
+            const targetPeriodKey = getPeriodKeyForDate(chosenDateISO);
+
+            uiState.activePeriodKey = targetPeriodKey;
+
+            ensurePeriodSnapshot(targetPeriodKey);
+
+
+
+            closeTxModal();
+
+            renderAll();
+
+            showToast(`Записано: ${formatMoney(amount)} (${formatShortRussianDate(chosenDateISO)})`);
+
+        }
+
+
+
+        function deleteTransaction(txId) {
+
+            appData.transactions = appData.transactions.filter(t => t.id !== txId);
+
+            saveDatabase();
+
+            renderAll();
+
+            showToast('Запись удалена');
+
+        }
+
+
+
+        function openLimitModal() {
+
+            ensurePeriodSnapshot(uiState.activePeriodKey);
+
+            const currentLimit = appData.periodSnapshots[uiState.activePeriodKey].limit;
+
+            document.getElementById('limitModalPeriodName').textContent = formatPeriodHeaderLabel(uiState.activePeriodKey);
+
+            document.getElementById('periodLimitInput').value = currentLimit;
+
+            document.getElementById('alsoUpdateDefaultLimitCheckbox').checked = false;
+
+            document.getElementById('limitModal').classList.remove('hidden');
+
+        }
+
+
+
+        function closeLimitModal() {
+
+            document.getElementById('limitModal').classList.add('hidden');
+
+        }
+
+
+
+        function savePeriodLimit() {
+
+            const val = parseFloat(document.getElementById('periodLimitInput').value);
+
+            if (isNaN(val) || val < 0) {
+
+                showToast('Укажите корректную сумму лимита');
+
+                return;
+
+            }
+
+
+
+            ensurePeriodSnapshot(uiState.activePeriodKey);
+
+            appData.periodSnapshots[uiState.activePeriodKey].limit = val;
+
+            appData.periodSnapshots[uiState.activePeriodKey].lockedAt = new Date().toISOString();
+
+
+
+            if (document.getElementById('alsoUpdateDefaultLimitCheckbox').checked) {
+
+                appData.settings.defaultMonthlyLimit = val;
+
+                document.getElementById('defaultMonthlyLimitInput').value = val;
+
+            }
+
+
+
+            saveDatabase();
+
+            closeLimitModal();
+
+            renderAll();
+
+            showToast(`Лимит на ${formatPeriodHeaderLabel(uiState.activePeriodKey)} установлен: ${formatMoney(val)}`);
+
+        }
+
+
+
+        function openReceiptModal() {
+
+            setReceiptPreset('current');
+
+            document.getElementById('receiptModal').classList.remove('hidden');
+
+        }
+
+
+
+        function closeReceiptModal() {
+
+            document.getElementById('receiptModal').classList.add('hidden');
+
+        }
+
+
+
+        function setReceiptPreset(mode) {
+
+            const startInput = document.getElementById('receiptStartDate');
+
+            const endInput = document.getElementById('receiptEndDate');
+
+
+
+            if (mode === 'current') {
+
+                const bounds = getPeriodBounds(uiState.activePeriodKey);
+
+                startInput.value = bounds.startISO;
+
+                endInput.value = bounds.endISO;
+
+            } else if (mode === 'prev') {
+
+                const prevKey = shiftPeriodKey(uiState.activePeriodKey, -1);
+
+                const bounds = getPeriodBounds(prevKey);
+
+                startInput.value = bounds.startISO;
+
+                endInput.value = bounds.endISO;
+
+            } else if (mode === 'all') {
+
+                if (appData.transactions.length > 0) {
+
+                    const dates = appData.transactions.map(t => t.date).sort();
+
+                    startInput.value = dates[0];
+
+                    endInput.value = dates[dates.length - 1];
+
+                } else {
+
+                    const today = formatDateISO(new Date());
+
+                    startInput.value = today;
+
+                    endInput.value = today;
+
+                }
+
+            }
+
+            generateReceiptText();
+
+        }
+
+
+
+        function generateReceiptText() {
+
+            const startISO = document.getElementById('receiptStartDate').value;
+
+            const endISO = document.getElementById('receiptEndDate').value;
+
+
+
+            const filtered = appData.transactions
+
+                .filter(t => t.date >= startISO && t.date <= endISO)
+
+                .sort((a, b) => a.date.localeCompare(b.date));
+
+
+
+            const periodLimit = ensurePeriodSnapshot(uiState.activePeriodKey);
+
+            let totalExp = 0;
+
+            let totalInc = 0;
+
+            const byCat = {};
+
+
+
+            filtered.forEach(t => {
+
+                if (t.type === 'expense') {
+
+                    totalExp += Number(t.amount);
+
+                    byCat[t.categoryId] = (byCat[t.categoryId] || 0) + Number(t.amount);
+
+                } else {
+
+                    totalInc += Number(t.amount);
+
+                }
+
+            });
+
+
+
+            const lineEq = '==========================================';
+
+            const lineDash = '------------------------------------------';
+
+            let txt = '';
+
+            txt += `${lineEq}\n`;
+
+            txt += `       ФИНАНСОВАЯ ВЫПИСКА (ЧЕК)           \n`;
+
+            txt += `              FINGLASS PRO                \n`;
+
+            txt += `${lineEq}\n`;
+
+            txt += `Период выписки: ${startISO} — ${endISO}\n`;
+
+            txt += `Дата формирования: ${new Date().toLocaleString('ru-RU')}\n`;
+
+            txt += `Базовый лимит периода: ${formatMoney(periodLimit)}\n`;
+
+            if (totalInc > 0) {
+
+                txt += `Доп. поступления:      +${formatMoney(totalInc)}\n`;
+
+            }
+
+            txt += `${lineDash}\n`;
+
+            txt += `СВОДКА ПО КАТЕГОРИЯМ:\n`;
+
+
+
+            Object.keys(byCat).forEach(catId => {
+
+                const amt = byCat[catId] || 0;
+
+                if (amt > 0) {
+
+                    const catObj = findCategoryAnywhere(catId, uiState.activePeriodKey);
+
+                    const pct = totalExp > 0 ? Math.round((amt / totalExp) * 100) : 0;
+
+                    const namePad = (catObj.name + ` (${pct}%)`).padEnd(22, '.');
+
+                    txt += `${namePad} ${formatMoney(amt)}\n`;
+
+                }
+
+            });
+
+
+
+            txt += `${lineDash}\n`;
+
+            txt += `ДЕТАЛИЗАЦИЯ ВСЕХ ОПЕРАЦИЙ (${filtered.length}):\n`;
+
+            if (filtered.length === 0) {
+
+                txt += `  (Операций за выбранный период нет)\n`;
+
+            } else {
+
+                filtered.forEach((tx, idx) => {
+
+                    const catObj = findCategoryAnywhere(tx.categoryId, uiState.activePeriodKey);
+
+                    const catName = tx.type === 'income' ? 'ДОХОД' : (catObj ? catObj.name : 'Прочее');
+
+                    const sign = tx.type === 'income' ? '+' : '-';
+
+                    txt += `${String(idx + 1).padStart(2, '0')}. [${tx.date}] ${catName}\n`;
+
+                    txt += `    Сумма: ${sign}${formatMoney(tx.amount)}\n`;
+
+                    if (tx.note) {
+
+                        txt += `    Прим.: ${tx.note}\n`;
+
+                    }
+
+                });
+
+            }
+
+
+
+            const finalBalance = periodLimit + totalInc - totalExp;
+
+            txt += `${lineEq}\n`;
+
+            txt += `ИТОГО РАСХОДОВ:      -${formatMoney(totalExp)}\n`;
+
+            txt += `ОСТАТОК (БАЛАНС):     ${formatMoney(finalBalance)}\n`;
+
+            txt += `${lineEq}\n`;
+
+            txt += `         СПАСИБО ЗА КОНТРОЛЬ БЮДЖЕТА!     \n`;
+
+
+
+            document.getElementById('receiptPreviewBox').textContent = txt;
+
+            return txt;
+
+        }
+
+
+
+        async function saveReceiptWithFilePicker() {
+
+            const textContent = generateReceiptText();
+
+            const startISO = document.getElementById('receiptStartDate').value;
+
+            const endISO = document.getElementById('receiptEndDate').value;
+
+            const fileName = `FinGlass_Check_${startISO}_${endISO}.txt`;
+
+
+
+            if (window.Capacitor && window.Capacitor.Plugins) {
+
+                try {
+
+                    const { Filesystem, Share } = window.Capacitor.Plugins;
+
+                    if (Filesystem && Share) {
+
+                        const writeRes = await Filesystem.writeFile({
+
+                            path: fileName,
+
+                            data: btoa(unescape(encodeURIComponent(textContent))),
+
+                            directory: 'CACHE'
+
+                        });
+
+                        await Share.share({
+
+                            title: fileName,
+
+                            text: 'Выберите папку в "Файлы Vivo" для сохранения чека .TXT',
+
+                            url: writeRes.uri,
+
+                            dialogTitle: 'Сохранить чек .TXT в папку'
+
+                        });
+
+                        showToast('Выберите папку для сохранения чека .TXT');
+
+                        return;
+
+                    }
+
+                } catch (capErr) {}
+
+            }
+
+
+
+            if ('showSaveFilePicker' in window) {
+
+                try {
+
+                    const handle = await window.showSaveFilePicker({
+
+                        suggestedName: fileName,
+
+                        types: [{
+
+                            description: 'Текстовый чек (.txt)',
+
+                            accept: { 'text/plain': ['.txt'] }
+
+                        }]
+
+                    });
+
+                    const writable = await handle.createWritable();
+
+                    await writable.write(textContent);
+
+                    await writable.close();
+
+                    showToast('Чек успешно сохранен в выбранную папку!');
+
+                    return;
+
+                } catch (err) {
+
+                    if (err.name === 'AbortError') return;
+
+                }
+
+            }
+
+
+
+            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+
+            a.href = url;
+
+            a.download = fileName;
+
+            document.body.appendChild(a);
+
+            a.click();
+
+            document.body.removeChild(a);
+
+            URL.revokeObjectURL(url);
+
+            showToast('Файл чека .TXT сохранен в память устройства');
+
+        }
+
+
+
+        async function shareReceiptSystem() {
+
+            const textContent = generateReceiptText();
+
+            const startISO = document.getElementById('receiptStartDate').value;
+
+            const endISO = document.getElementById('receiptEndDate').value;
+
+            const fileName = `FinGlass_Check_${startISO}_${endISO}.txt`;
+
+
+
+            if (navigator.share) {
+
+                try {
+
+                    const file = new File([textContent], fileName, { type: 'text/plain' });
+
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+
+                        await navigator.share({
+
+                            title: 'Финансовая выписка FinGlass Pro',
+
+                            text: 'Выписка платежей за период',
+
+                            files: [file]
+
+                        });
+
+                        showToast('Выписка передана в системное меню');
+
+                        return;
+
+                    }
+
+                    await navigator.share({
+
+                        title: 'Финансовая выписка FinGlass Pro',
+
+                        text: textContent
+
+                    });
+
+                    return;
+
+                } catch (e) {
+
+                    if (e.name === 'AbortError') return;
+
+                }
+
+            }
+
+            saveReceiptWithFilePicker();
+
+        }
+
+
+
+        function copyReceiptToClipboard() {
+
+            const textContent = generateReceiptText();
+
+            const ta = document.createElement('textarea');
+
+            ta.value = textContent;
+
+            document.body.appendChild(ta);
+
+            ta.select();
+
+            document.execCommand('copy');
+
+            document.body.removeChild(ta);
+
+            showToast('Текст чека скопирован в буфер обмена');
+
+        }
+
+
+
+        function openSettingsModal() {
+
+            document.getElementById('startDaySelect').value = String(appData.settings.startDayOfMonth || 10);
+
+            document.getElementById('currencySelect').value = appData.settings.currency || '₽';
+
+            document.getElementById('defaultMonthlyLimitInput').value = appData.settings.defaultMonthlyLimit || 70000;
+
+            document.getElementById('settingsModal').classList.remove('hidden');
+
+        }
+
+
+
+        function closeSettingsModal() {
+
+            document.getElementById('settingsModal').classList.add('hidden');
+
+        }
+
+
+
+        function setAppTheme(themeName) {
+
+            appData.settings.theme = themeName;
+
+            saveDatabase();
+
+            applyThemeAndBlur();
+
+            showToast('Тема оформления применена');
+
+        }
+
+
+
+        function changeBlurStrength(val) {
+
+            appData.settings.blurPx = Number(val);
+
+            document.getElementById('blurValLabel').textContent = `${val}px`;
+
+            document.documentElement.style.setProperty('--glass-blur', `${val}px`);
+
+            saveDatabase();
+
+        }
+
+
+
+        function applyThemeAndBlur() {
+
+            const t = appData.settings.theme || 'emerald';
+
+            if (t === 'emerald') {
+
+                document.body.removeAttribute('data-theme');
+
+            } else {
+
+                document.body.setAttribute('data-theme', t);
+
+            }
+
+            const blur = appData.settings.blurPx || 22;
+
+            document.documentElement.style.setProperty('--glass-blur', `${blur}px`);
+
+            const blurLabel = document.getElementById('blurValLabel');
+
+            if (blurLabel) blurLabel.textContent = `${blur}px`;
+
+        }
+
+
+
+        function updateStartDayOfMonth(dayVal) {
+
+            appData.settings.startDayOfMonth = Number(dayVal) || 1;
+
+            uiState.activePeriodKey = getPeriodKeyForDate(new Date());
+
+            ensurePeriodSnapshot(uiState.activePeriodKey);
+
+            saveDatabase();
+
+            renderAll();
+
+            showToast(`Начало расчетного месяца: ${dayVal} число`);
+
+        }
+
+
+
+        function updateCurrency(curr) {
+
+            appData.settings.currency = curr;
+
+            saveDatabase();
+
+            renderAll();
+
+            showToast(`Валюта изменена на ${curr}`);
+
+        }
+
+
+
+        function updateDefaultBaseLimit(val) {
+
+            const num = parseFloat(val);
+
+            if (!isNaN(num) && num >= 0) {
+
+                appData.settings.defaultMonthlyLimit = num;
+
+                saveDatabase();
+
+                showToast('Базовый лимит для будущих месяцев сохранен');
+
+            }
+
+        }
+
+
+
+        function openCategoryEditorModal() {
+
+            closeSettingsModal();
+
+            ensurePeriodSnapshot(uiState.activePeriodKey);
+
+            resetCategoryForm();
+
+            document.getElementById('catEditorPeriodSubtitle').textContent = `Период: ${formatPeriodHeaderLabel(uiState.activePeriodKey)}`;
+
+            renderIconPickerGrid();
+
+            renderExistingCategoriesManageList();
+
+            document.getElementById('catEditorModal').classList.remove('hidden');
+
+        }
+
+
+
+        function closeCategoryEditorModal() {
+
+            document.getElementById('catEditorModal').classList.add('hidden');
+
+        }
+
+
+
+        function resetCategoryForm() {
+
+            uiState.editingCatId = null;
+
+            uiState.selectedNewCatIcon = 'ph-coffee';
+
+            document.getElementById('newCatNameInput').value = '';
+
+            document.getElementById('newCatColorInput').value = '#10b981';
+
+            document.getElementById('catFormTitle').textContent = 'Новая категория';
+
+            document.getElementById('saveCatSubmitBtn').textContent = '+ Добавить категорию в этот и след. месяцы';
+
+            document.getElementById('cancelEditCatBtn').classList.add('hidden');
+
+            renderIconPickerGrid();
+
+        }
+
+
+
+        function startEditCategory(catId) {
+
+            const activeCats = getCategoriesForPeriod(uiState.activePeriodKey);
+
+            const cat = activeCats.find(c => c.id === catId);
+
+            if (!cat) return;
+
+            uiState.editingCatId = cat.id;
+
+            uiState.selectedNewCatIcon = cat.icon;
+
+            document.getElementById('newCatNameInput').value = cat.name;
+
+            document.getElementById('newCatColorInput').value = cat.color;
+
+            document.getElementById('catFormTitle').textContent = `Редактировать «${cat.name}»`;
+
+            document.getElementById('saveCatSubmitBtn').textContent = 'Сохранить изменения категории';
+
+            document.getElementById('cancelEditCatBtn').classList.remove('hidden');
+
+            renderIconPickerGrid();
+
+        }
+
+
+
+        function renderIconPickerGrid() {
+
+            const grid = document.getElementById('iconPickerGrid');
+
+            grid.innerHTML = '';
+
+            AVAILABLE_ICONS.forEach(iconClass => {
+
+                const isSel = uiState.selectedNewCatIcon === iconClass;
+
+                const btn = document.createElement('button');
+
+                btn.className = `h-9 rounded-xl flex items-center justify-center text-lg transition-all ${
+
+                    isSel ? 'bg-emerald-500 text-white scale-105 shadow-md' : 'glass-btn opacity-75 hover:opacity-100'
+
+                }`;
+
+                btn.onclick = () => {
+
+                    uiState.selectedNewCatIcon = iconClass;
+
+                    renderIconPickerGrid();
+
+                };
+
+                btn.innerHTML = `<i class="ph ${iconClass}"></i>`;
+
+                grid.appendChild(btn);
+
+            });
+
+        }
+
+
+
+        function renderExistingCategoriesManageList() {
+
+            const list = document.getElementById('existingCatsManageList');
+
+            list.innerHTML = '';
+
+            const activeCats = getCategoriesForPeriod(uiState.activePeriodKey);
+
+            document.getElementById('activeCatsCountBadge').textContent = activeCats.length;
+
+
+
+            activeCats.forEach(cat => {
+
+                const row = document.createElement('div');
+
+                row.className = 'glass-panel px-3 py-2 rounded-xl flex items-center justify-between text-xs';
+
+                row.innerHTML = `
+
+                    <div class="flex items-center gap-2.5">
+
+                        <div class="w-8 h-8 rounded-lg glass-panel flex items-center justify-center text-base" style="color: ${cat.color}; border-color: ${cat.color}55;">
+
+                            <i class="ph ${cat.icon}"></i>
+
+                        </div>
+
+                        <span class="font-semibold">${escapeHtml(cat.name)}</span>
+
+                    </div>
+
+                    <div class="flex items-center gap-1.5">
+
+                        <button onclick="startEditCategory('${cat.id}')" class="glass-btn px-2 py-1 rounded-lg text-sky-300 text-[11px]" title="Изменить иконку, цвет или название">
+
+                            <i class="ph ph-pencil-simple"></i>
+
+                        </button>
+
+                        <button onclick="deleteCategory('${cat.id}')" class="glass-btn px-2 py-1 rounded-lg text-rose-400 text-[11px]" title="Удалить из этого и будущих месяцев (в прошлых месяцах сохранится)">
+
+                            <i class="ph ph-trash"></i>
+
+                        </button>
+
+                    </div>
+
+                `;
+
+                list.appendChild(row);
+
+            });
+
+        }
+
+
+
+        function saveCustomCategory() {
+
+            const name = document.getElementById('newCatNameInput').value.trim();
+
+            const color = document.getElementById('newCatColorInput').value;
+
+            if (!name) {
+
+                showToast('Введите название категории');
+
+                return;
+
+            }
+
+
+
+            ensurePeriodSnapshot(uiState.activePeriodKey);
+
+
+
+            if (uiState.editingCatId) {
+
+                const catId = uiState.editingCatId;
+
+                Object.keys(appData.periodSnapshots).forEach(pKey => {
+
+                    if (pKey >= uiState.activePeriodKey && Array.isArray(appData.periodSnapshots[pKey].categories)) {
+
+                        appData.periodSnapshots[pKey].categories = appData.periodSnapshots[pKey].categories.map(c =>
+
+                            c.id === catId ? { ...c, name, color, icon: uiState.selectedNewCatIcon } : c
+
+                        );
+
+                    }
+
+                });
+
+                appData.categories = appData.categories.map(c =>
+
+                    c.id === catId ? { ...c, name, color, icon: uiState.selectedNewCatIcon } : c
+
+                );
+
+                if (!appData.archivedCategories) appData.archivedCategories = {};
+
+                appData.archivedCategories[catId] = { id: catId, name, color, icon: uiState.selectedNewCatIcon };
+
+
+
+                resetCategoryForm();
+
+                saveDatabase();
+
+                renderExistingCategoriesManageList();
+
+                renderAll();
+
+                showToast(`Категория «${name}» обновлена`);
+
+                return;
+
+            }
+
+
+
+            const newCatObj = {
+
+                id: 'cat_' + Date.now(),
+
+                name: name,
+
+                icon: uiState.selectedNewCatIcon,
+
+                color: color
+
+            };
+
+
+
+            if (!appData.archivedCategories) appData.archivedCategories = {};
+
+            appData.archivedCategories[newCatObj.id] = { ...newCatObj };
+
+
+
+            Object.keys(appData.periodSnapshots).forEach(pKey => {
+
+                if (pKey >= uiState.activePeriodKey) {
+
+                    if (!Array.isArray(appData.periodSnapshots[pKey].categories)) {
+
+                        appData.periodSnapshots[pKey].categories = cloneCategoriesList(appData.categories);
+
+                    }
+
+                    appData.periodSnapshots[pKey].categories.push({ ...newCatObj });
+
+                }
+
+            });
+
+
+
+            appData.categories.push({ ...newCatObj });
+
+
+
+            resetCategoryForm();
+
+            saveDatabase();
+
+            renderExistingCategoriesManageList();
+
+            renderAll();
+
+            showToast(`Категория «${name}» добавлена в текущий и следующие месяцы!`);
+
+        }
+
+
+
+        function deleteCategory(catId) {
+
+            const activeCats = getCategoriesForPeriod(uiState.activePeriodKey);
+
+            if (activeCats.length <= 3) {
+
+                showToast('Оставьте минимум 3 категории для круговой диаграммы');
+
+                return;
+
+            }
+
+
+
+            const targetCat = activeCats.find(c => c.id === catId);
+
+            if (targetCat) {
+
+                if (!appData.archivedCategories) appData.archivedCategories = {};
+
+                appData.archivedCategories[catId] = { ...targetCat };
+
+            }
+
+
+
+            const prevPeriodKey = shiftPeriodKey(uiState.activePeriodKey, -1);
+
+            ensurePeriodSnapshot(prevPeriodKey);
+
+
+
+            Object.keys(appData.periodSnapshots).forEach(pKey => {
+
+                if (pKey >= uiState.activePeriodKey && Array.isArray(appData.periodSnapshots[pKey].categories)) {
+
+                    appData.periodSnapshots[pKey].categories = appData.periodSnapshots[pKey].categories.filter(c => c.id !== catId);
+
+                }
+
+            });
+
+
+
+            appData.categories = appData.categories.filter(c => c.id !== catId);
+
+
+
+            saveDatabase();
+
+            renderExistingCategoriesManageList();
+
+            renderAll();
+
+            showToast('Удалено из этого и след. месяцев (в прошлых месяцах сохранено!)');
+
+        }
+
+
+
+        function exportFullDatabaseJson() {
+
+            const jsonStr = JSON.stringify(appData, null, 2);
+
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+
+            a.href = url;
+
+            a.download = `FinGlass_Backup_${formatDateISO(new Date())}.json`;
+
+            document.body.appendChild(a);
+
+            a.click();
+
+            document.body.removeChild(a);
+
+            URL.revokeObjectURL(url);
+
+            showToast('Полная база платежей сохранена в JSON');
+
+        }
+
+
+
+        function importFullDatabaseJson(event) {
+
+            const file = event.target.files[0];
+
+            if (!file) return;
+
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+
+                try {
+
+                    const imported = JSON.parse(e.target.result);
+
+                    if (imported && Array.isArray(imported.transactions)) {
+
+                        appData = imported;
+
+                        saveDatabase();
+
+                        renderAll();
+
+                        closeSettingsModal();
+
+                        showToast('База платежей успешно восстановлена!');
+
+                    }
+
+                } catch (err) {
+
+                    showToast('Ошибка формата файла базы данных');
+
+                }
+
+            };
+
+            reader.readAsText(file);
+
+        }
+
+
+
+        function loadDemoScreenshotsData() {
+
+            appData.transactions = getInitialDemoTransactions();
+
+            saveDatabase();
+
+            renderAll();
+
+            closeSettingsModal();
+
+            showToast('Демо-данные загружены');
+
+        }
+
+
+
+        function clearAllTransactionsConfirm() {
+
+            appData.transactions = [];
+
+            saveDatabase();
+
+            renderAll();
+
+            closeSettingsModal();
+
+            showToast('Все платежи очищены, можно вести учет с нуля');
+
+        }
+
+
+
+        function openSearchModal() {
+
+            document.getElementById('searchQueryInput').value = '';
+
+            performSearch();
+
+            document.getElementById('searchModal').classList.remove('hidden');
+
+        }
+
+
+
+        function closeSearchModal() {
+
+            document.getElementById('searchModal').classList.add('hidden');
+
+        }
+
+
+
+        function performSearch() {
+
+            const q = document.getElementById('searchQueryInput').value.trim().toLowerCase();
+
+            const container = document.getElementById('searchResultsContainer');
+
+            container.innerHTML = '';
+
+
+
+            const results = appData.transactions
+
+                .filter(t => {
+
+                    const cat = appData.categories.find(c => c.id === t.categoryId);
+
+                    const catName = cat ? cat.name.toLowerCase() : '';
+
+                    const note = (t.note || '').toLowerCase();
+
+                    const amt = String(t.amount);
+
+                    return !q || catName.includes(q) || note.includes(q) || amt.includes(q) || t.date.includes(q);
+
+                })
+
+                .sort((a, b) => b.date.localeCompare(a.date));
+
+
+
+            if (results.length === 0) {
+
+                container.innerHTML = `<div class="text-center py-6 text-xs opacity-50">Ничего не найдено</div>`;
+
+                return;
+
+            }
+
+
+
+            results.forEach(tx => {
+
+                const cat = tx.type === 'income'
+
+                    ? { name: 'Доход', icon: 'ph-plus', color: '#10b981' }
+
+                    : findCategoryAnywhere(tx.categoryId, getPeriodKeyForDate(tx.date));
+
+                const item = document.createElement('div');
+
+                item.className = 'glass-panel p-2.5 rounded-xl flex items-center justify-between text-xs';
+
+                item.innerHTML = `
+
+                    <div class="flex items-center gap-2.5 overflow-hidden">
+
+                        <div class="w-8 h-8 rounded-lg glass-panel flex items-center justify-center shrink-0" style="color: ${cat.color}">
+
+                            <i class="ph ${cat.icon}"></i>
+
+                        </div>
+
+                        <div class="truncate">
+
+                            <div class="font-bold">${escapeHtml(tx.note || cat.name)}</div>
+
+                            <div class="text-[10px] opacity-60">${cat.name} • ${tx.date}</div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="font-bold whitespace-nowrap ml-2 ${tx.type === 'income' ? 'text-emerald-400' : 'text-rose-400'}">
+
+                        ${tx.type === 'income' ? '+' : '-'}${formatMoney(tx.amount)}
+
+                    </div>
+
+                `;
+
+                container.appendChild(item);
+
+            });
+
+        }
+
+
+
+        function escapeHtml(str) {
+
+            return String(str)
+
+                .replace(/&/g, '&amp;')
+
+                .replace(/</g, '&lt;')
+
+                .replace(/>/g, '&gt;')
+
+                .replace(/"/g, '&quot;');
+
+        }
+
+
+
+        let toastTimer = null;
+
+        function showToast(msg) {
+
+            const box = document.getElementById('toastBox');
+
+            document.getElementById('toastMessage').textContent = msg;
+
+            box.classList.remove('opacity-0', '-translate-y-3');
+
+            box.classList.add('opacity-100', 'translate-y-0');
+
+            if (toastTimer) clearTimeout(toastTimer);
+
+            toastTimer = setTimeout(() => {
+
+                box.classList.remove('opacity-100', 'translate-y-0');
+
+                box.classList.add('opacity-0', '-translate-y-3');
+
+            }, 2800);
+
+        }
+
+
+
+        window.onload = function () {
+
+            loadDatabase();
+
+            renderAll();
+
+        };
+
+    </script>
+
+</body>
+
+</html>
