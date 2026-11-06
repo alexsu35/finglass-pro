@@ -16,13 +16,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
-      - name: Setup Java JDK 17
+      - name: Setup Java JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
@@ -31,14 +31,20 @@ jobs:
         run: |
           mkdir -p www
           cp index.html www/index.html
-          npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/filesystem @capacitor/share
+          cat << 'EOF' > package.json
+          {
+            "name": "finglass-pro",
+            "version": "1.0.0",
+            "description": "FinGlass Pro App",
+            "private": true
+          }
+          EOF
+          npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6 @capacitor/filesystem@6 @capacitor/share@6
           npx cap init "FinGlass Pro" "com.finglass.pro" --web-dir www
           npx cap add android
 
-      - name: Inject Native File Bridge & Permissions
+      - name: Inject Permissions & Sync
         run: |
-          # Разрешения на запись файлов для Android
           sed -i 's/<application/<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" \/><uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" \/><application/g' android/app/src/main/AndroidManifest.xml
           npx cap sync android
 
@@ -46,9 +52,9 @@ jobs:
         working-directory: ./android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon
 
-      - name: Rename and Upload APK Artifact
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: FinGlass-Pro-APK
