@@ -35,7 +35,7 @@ jobs:
           npx cap add android
           npx cap sync android
 
-      - name: Inject Pure Android Folder Picker (No Extra Deps)
+      - name: Inject 100% Reliable Native Folder Picker
         run: |
           sed -i 's/<application/<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" \/><uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" \/><application/g' android/app/src/main/AndroidManifest.xml
 
@@ -50,6 +50,8 @@ jobs:
           import android.os.Bundle;
           import android.provider.DocumentsContract;
           import android.webkit.JavascriptInterface;
+          import android.webkit.JsPromptResult;
+          import android.webkit.WebChromeClient;
           import android.webkit.WebView;
           import com.getcapacitor.BridgeActivity;
           import java.io.OutputStream;
@@ -61,6 +63,16 @@ jobs:
               @Override
               public void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
+                  setupBridge();
+              }
+
+              @Override
+              public void onResume() {
+                  super.onResume();
+                  setupBridge();
+              }
+
+              private void setupBridge() {
                   try {
                       if (this.bridge != null && this.bridge.getWebView() != null) {
                           WebView webView = this.bridge.getWebView();
@@ -72,29 +84,83 @@ jobs:
                   }
               }
 
+              public void openSystemFolderPicker() {
+                  runOnUiThread(new Runnable() {
+                      @Override
+                      public void run() {
+                          try {
+                              Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                              intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                                              Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
+                                              Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
+                                              Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
+                              startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY);
+                          } catch (Exception e) {
+                              e.printStackTrace();
+                          }
+                      }
+                  });
+              }
+
+              public boolean writeToPickedFolder(String fileName, String content, String mimeType) {
+                  try {
+                      SharedPreferences prefs = getSharedPreferences("FinGlassPrefs", MODE_PRIVATE);
+                      String uriStr = prefs.getString("tree_uri", null);
+                      if (uriStr == null) return false;
+
+                      Uri treeUri = Uri.parse(uriStr);
+                      String treeDocId = DocumentsContract.getTreeDocumentId(treeUri);
+                      Uri parentDocUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, treeDocId);
+
+                      Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, treeDocId);
+                      Cursor c = null;
+                      try {
+                          c = getContentResolver().query(
+                              childrenUri,
+                              new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME},
+                              null, null, null
+                          );
+                          if (c != null) {
+                              while (c.moveToNext()) {
+                                  String docId = c.getString(0);
+                                  String name = c.getString(1);
+                                  if (fileName.equals(name)) {
+                                      Uri existingUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, docId);
+                                      DocumentsContract.deleteDocument(getContentResolver(), existingUri);
+                                  }
+                              }
+                          }
+                      } catch (Exception ignored) {
+                      } finally {
+                          if (c != null) c.close();
+                      }
+
+                      String safeMime = (mimeType != null && !mimeType.isEmpty()) ? mimeType : "text/plain";
+                      Uri newFileUri = DocumentsContract.createDocument(getContentResolver(), parentDocUri, safeMime, fileName);
+                      if (newFileUri == null) return false;
+
+                      OutputStream out = getContentResolver().openOutputStream(newFileUri, "wt");
+                      if (out != null) {
+                          out.write(content.getBytes(StandardCharsets.UTF_8));
+                          out.flush();
+                          out.close();
+                          return true;
+                      }
+                  } catch (Exception e) {
+                      e.printStackTrace();
+                  }
+                  return false;
+              }
+
               public class AndroidFolderBridge {
-                  private Activity activity;
-                  public AndroidFolderBridge(Activity activity) {
+                  private MainActivity activity;
+                  public AndroidFolderBridge(MainActivity activity) {
                       this.activity = activity;
                   }
 
                   @JavascriptInterface
                   public void pickFolder() {
-                      activity.runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              try {
-                                  Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-                                  intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
-                                                  Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
-                                                  Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION |
-                                                  Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
-                                  activity.startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY);
-                              } catch (Exception e) {
-                                  e.printStackTrace();
-                              }
-                          }
-                      });
+                      activity.openSystemFolderPicker();
                   }
 
                   @JavascriptInterface
@@ -106,53 +172,7 @@ jobs:
 
                   @JavascriptInterface
                   public boolean saveFileToPickedFolder(String fileName, String content, String mimeType) {
-                      try {
-                          SharedPreferences prefs = activity.getSharedPreferences("FinGlassPrefs", MODE_PRIVATE);
-                          String uriStr = prefs.getString("tree_uri", null);
-                          if (uriStr == null) return false;
-
-                          Uri treeUri = Uri.parse(uriStr);
-                          String treeDocId = DocumentsContract.getTreeDocumentId(treeUri);
-                          Uri parentDocUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, treeDocId);
-
-                          Uri childrenUri = DocumentsContract.buildChildDocumentsUriUsingTree(treeUri, treeDocId);
-                          Cursor c = null;
-                          try {
-                              c = activity.getContentResolver().query(
-                                  childrenUri,
-                                  new String[]{DocumentsContract.Document.COLUMN_DOCUMENT_ID, DocumentsContract.Document.COLUMN_DISPLAY_NAME},
-                                  null, null, null
-                              );
-                              if (c != null) {
-                                  while (c.moveToNext()) {
-                                      String docId = c.getString(0);
-                                      String name = c.getString(1);
-                                      if (fileName.equals(name)) {
-                                          Uri existingUri = DocumentsContract.buildDocumentUriUsingTree(treeUri, docId);
-                                          DocumentsContract.deleteDocument(activity.getContentResolver(), existingUri);
-                                      }
-                                  }
-                              }
-                          } catch (Exception ignored) {
-                          } finally {
-                              if (c != null) c.close();
-                          }
-
-                          String safeMime = (mimeType != null && !mimeType.isEmpty()) ? mimeType : "text/plain";
-                          Uri newFileUri = DocumentsContract.createDocument(activity.getContentResolver(), parentDocUri, safeMime, fileName);
-                          if (newFileUri == null) return false;
-
-                          OutputStream out = activity.getContentResolver().openOutputStream(newFileUri, "wt");
-                          if (out != null) {
-                              out.write(content.getBytes(StandardCharsets.UTF_8));
-                              out.flush();
-                              out.close();
-                              return true;
-                          }
-                      } catch (Exception e) {
-                          e.printStackTrace();
-                      }
-                      return false;
+                      return activity.writeToPickedFolder(fileName, content, mimeType);
                   }
               }
 
@@ -196,6 +216,13 @@ jobs:
               }
           }
           EOF
+
+      - name: Patch index.html button handler if needed
+        run: |
+          # Гарантируем, что любая кнопка выбора папки в index.html вызывает AndroidFolderBridge.pickFolder()
+          sed -i 's/function openFolderPickerModal()/function openFolderPickerModal() { if (window.AndroidFolderBridge \&\& window.AndroidFolderBridge.pickFolder) { window.AndroidFolderBridge.pickFolder(); return; } } function _oldOpenFolderPickerModal()/g' www/index.html
+          sed -i 's/async function pickCustomDirectory()/async function pickCustomDirectory() { if (window.AndroidFolderBridge \&\& window.AndroidFolderBridge.pickFolder) { window.AndroidFolderBridge.pickFolder(); return; } } async function _oldPickCustomDirectory()/g' www/index.html
+          sed -i 's/async function triggerSystemFolderPicker()/async function triggerSystemFolderPicker() { if (window.AndroidFolderBridge \&\& window.AndroidFolderBridge.pickFolder) { window.AndroidFolderBridge.pickFolder(); return; } } async function _oldTriggerSystemFolderPicker()/g' www/index.html
 
       - name: Build Debug APK
         working-directory: ./android
