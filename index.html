@@ -14,7 +14,7 @@
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
 
@@ -36,7 +36,7 @@
 
             --glass-bg: rgba(255, 255, 255, 0.08);
 
-            --glass-bg-strong: rgba(20, 32, 30, 0.78);
+            --glass-bg-strong: rgba(18, 30, 28, 0.85);
 
             --glass-border: rgba(255, 255, 255, 0.16);
 
@@ -66,7 +66,7 @@
 
             --glass-bg: rgba(255, 255, 255, 0.07);
 
-            --glass-bg-strong: rgba(15, 18, 28, 0.82);
+            --glass-bg-strong: rgba(15, 18, 28, 0.88);
 
             --glass-border: rgba(255, 255, 255, 0.14);
 
@@ -90,7 +90,7 @@
 
             --glass-bg: rgba(255, 255, 255, 0.08);
 
-            --glass-bg-strong: rgba(23, 18, 48, 0.82);
+            --glass-bg-strong: rgba(23, 18, 48, 0.88);
 
             --glass-border: rgba(255, 255, 255, 0.18);
 
@@ -114,7 +114,7 @@
 
             --glass-bg: rgba(255, 255, 255, 0.65);
 
-            --glass-bg-strong: rgba(255, 255, 255, 0.88);
+            --glass-bg-strong: rgba(255, 255, 255, 0.92);
 
             --glass-border: rgba(255, 255, 255, 0.85);
 
@@ -184,7 +184,7 @@
 
             border: 1px solid var(--glass-border);
 
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
 
         }
 
@@ -210,7 +210,7 @@
 
         .glass-btn:active {
 
-            transform: scale(0.94);
+            transform: scale(0.93);
 
         }
 
@@ -242,15 +242,21 @@
 
 
 
+        /* Плавная адаптивная анимация перемещения иконок категорий по орбите */
+
         .cat-node {
 
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+            transition: left 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+
+                        top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+
+                        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 
         }
 
         .cat-node:hover {
 
-            transform: translate(-50%, -50%) scale(1.1);
+            transform: translate(-50%, -50%) scale(1.12);
 
             z-index: 30;
 
@@ -258,7 +264,7 @@
 
         .cat-node:active {
 
-            transform: translate(-50%, -50%) scale(0.93);
+            transform: translate(-50%, -50%) scale(0.92);
 
         }
 
@@ -326,6 +332,8 @@
 
 
 
+    <!-- Фоновые сферы Apple Glassmorphism -->
+
     <div class="orb w-80 h-80 top-[-5%] left-[-10%]" style="background: var(--orb-1);"></div>
 
     <div class="orb w-96 h-96 bottom-[5%] right-[-10%]" style="background: var(--orb-2); animation-delay: -5s;"></div>
@@ -334,35 +342,53 @@
 
 
 
+    <!-- Главный мобильный контейнер -->
+
     <div id="appRoot" class="relative z-10 w-full max-w-[440px] min-h-screen md:min-h-[880px] md:h-[92vh] md:rounded-[44px] glass-panel flex flex-col justify-between overflow-hidden shadow-2xl">
 
         
 
-        <header class="px-4 pt-3 pb-2.5 glass-panel rounded-b-3xl z-30 border-t-0 border-x-0">
+        <!-- ВЕРХНЯЯ ПАНЕЛЬ (ШАПКА) -->
+
+        <header class="px-3.5 pt-3 pb-2.5 glass-panel rounded-b-3xl z-30 border-t-0 border-x-0">
 
             <div class="flex items-center justify-between gap-1">
 
-                <button onclick="toggleMainView()" id="viewToggleBtn" class="glass-btn w-10 h-10 rounded-2xl flex items-center justify-center text-lg" title="Переключить вид (Диаграмма / Список)">
+                <!-- Левые кнопки: Список и Аналитика -->
 
-                    <i class="ph ph-list-dashes"></i>
+                <div class="flex items-center gap-1.5">
 
-                </button>
+                    <button onclick="toggleMainView()" id="viewToggleBtn" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base" title="Переключить вид (Диаграмма / Список)">
+
+                        <i class="ph ph-list-dashes"></i>
+
+                    </button>
+
+                    <button onclick="openAnalyticsModal()" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base text-purple-300 border-purple-400/30" title="Аналитика за месяц, за год и повторяющиеся траты">
+
+                        <i class="ph-fill ph-chart-bar"></i>
+
+                    </button>
+
+                </div>
 
 
+
+                <!-- Логотип и быстрый клик по зарплатному циклу -->
 
                 <div class="flex flex-col items-center cursor-pointer" onclick="openLimitModal()">
 
-                    <div class="flex items-center gap-1.5">
+                    <div class="flex items-center gap-1">
 
-                        <span class="font-bold text-base tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-teal-200 to-cyan-300" style="color: var(--text-main);">FinGlass</span>
+                        <span class="font-extrabold text-sm tracking-tight" style="color: var(--text-main);">FinGlass</span>
 
-                        <span class="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Pro</span>
+                        <span class="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">Pro</span>
 
                     </div>
 
-                    <span id="subHeaderStatus" class="text-[11px] opacity-70 flex items-center gap-1">
+                    <span id="subHeaderStatus" class="text-[10px] opacity-65 flex items-center gap-1">
 
-                        <span>Все счета</span>
+                        <span id="salaryCycleSubBadge">Цикл с 10 числа</span>
 
                         <span>•</span>
 
@@ -374,13 +400,13 @@
 
 
 
-                <div class="flex items-center gap-1.5">
+                <!-- Правые кнопки: Категории, Поиск, Чек .TXT, Настройки -->
 
-                    <button onclick="openCategoryEditorModal()" class="glass-btn px-2.5 h-9 rounded-2xl flex items-center gap-1 text-xs font-semibold text-emerald-300 border-emerald-400/30" title="Добавить или изменить категории этого месяца">
+                <div class="flex items-center gap-1">
 
-                        <i class="ph-bold ph-plus text-sm"></i>
+                    <button onclick="openCategoryEditorModal()" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base text-emerald-300 border-emerald-400/30" title="Добавить или изменить категории">
 
-                        <span class="hidden sm:inline">Категория</span>
+                        <i class="ph-bold ph-squares-four"></i>
 
                     </button>
 
@@ -390,13 +416,13 @@
 
                     </button>
 
-                    <button onclick="openReceiptModal()" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base text-emerald-400" title="Сформировать выписку-чек (.txt)">
+                    <button onclick="openReceiptModal()" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base text-emerald-400" title="Выписка-чек (.txt)">
 
                         <i class="ph ph-receipt"></i>
 
                     </button>
 
-                    <button onclick="openSettingsModal()" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base" title="Настройки и кастомизация">
+                    <button onclick="openSettingsModal()" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base" title="Настройки и автосохранение">
 
                         <i class="ph ph-sliders-horizontal"></i>
 
@@ -408,37 +434,45 @@
 
 
 
-            <div class="mt-2.5 flex items-center justify-between px-1">
+            <!-- КРУПНЫЙ И НАГЛЯДНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ТЕКУЩЕГО МЕСЯЦА (ТОЛЬКО СТРЕЛКИ ПО БОКАМ) -->
 
-                <button onclick="shiftPeriod(-1)" class="glass-btn px-2.5 py-1 rounded-xl flex items-center gap-1 text-xs opacity-75 hover:opacity-100">
+            <div class="mt-2.5 flex items-center justify-between gap-2 px-0.5">
 
-                    <i class="ph ph-caret-left"></i>
+                <button onclick="shiftPeriod(-1)" class="glass-btn w-11 h-12 rounded-2xl flex items-center justify-center text-xl opacity-85 hover:opacity-100 active:scale-90 shrink-0" title="Предыдущий месяц">
 
-                    <span id="prevPeriodLabel">Пред.</span>
+                    <i class="ph-bold ph-caret-left"></i>
 
                 </button>
 
 
 
-                <div class="flex flex-col items-center">
+                <button onclick="resetToTodayContext()" class="flex-1 py-1.5 px-3 rounded-2xl glass-panel border border-emerald-400/30 flex flex-col items-center justify-center shadow-md active:scale-98 transition-all" title="Нажмите, чтобы быстро вернуться в сегодняшний месяц">
 
-                    <button onclick="resetToTodayContext()" class="px-3 py-1 rounded-xl glass-btn flex items-center gap-1.5 text-xs font-semibold tracking-wide shadow-sm">
+                    <div class="flex items-center gap-1.5">
 
-                        <i class="ph ph-calendar-blank text-emerald-400"></i>
+                        <i class="ph-fill ph-calendar-check text-emerald-400 text-base"></i>
 
-                        <span id="currentPeriodLabel">10 окт. - 9 нояб.</span>
+                        <span id="currentPeriodMainTitle" class="text-base sm:text-lg font-black uppercase tracking-wide text-white leading-tight">
 
-                    </button>
+                            НОЯБРЬ 2026
 
-                </div>
+                        </span>
+
+                    </div>
+
+                    <span id="currentPeriodSubRange" class="text-[11px] font-semibold text-emerald-300/90 tracking-tight leading-none mt-0.5">
+
+                        Зарплатный месяц: 10 окт. — 9 нояб.
+
+                    </span>
+
+                </button>
 
 
 
-                <button onclick="shiftPeriod(1)" class="glass-btn px-2.5 py-1 rounded-xl flex items-center gap-1 text-xs opacity-75 hover:opacity-100">
+                <button onclick="shiftPeriod(1)" class="glass-btn w-11 h-12 rounded-2xl flex items-center justify-center text-xl opacity-85 hover:opacity-100 active:scale-90 shrink-0" title="Следующий месяц">
 
-                    <span id="nextPeriodLabel">След.</span>
-
-                    <i class="ph ph-caret-right"></i>
+                    <i class="ph-bold ph-caret-right"></i>
 
                 </button>
 
@@ -446,23 +480,25 @@
 
 
 
-            <div id="contextMemoryBanner" class="mt-2 px-3 py-1.5 rounded-xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-between text-[11px] transition-all duration-300">
+            <!-- ИНДИКАТОР УМНОЙ ПАМЯТИ ДАТЫ И ТАЙМЕРА 5 МИНУТ -->
 
-                <div class="flex items-center gap-1.5">
+            <div id="contextMemoryBanner" class="mt-2 px-3 py-1 rounded-xl bg-amber-500/15 border border-amber-400/30 flex items-center justify-between text-[11px] transition-all duration-300">
+
+                <div class="flex items-center gap-1.5 truncate">
 
                     <i class="ph-fill ph-clock-countdown text-amber-400 text-sm animate-pulse"></i>
 
-                    <span id="memoryDateText">Память даты: <b>Сегодня</b></span>
+                    <span id="memoryDateText" class="truncate">Память даты: <b>Сегодня</b></span>
 
                 </div>
 
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 shrink-0">
 
                     <span id="inactivityCountdown" class="font-mono font-semibold text-amber-300">05:00</span>
 
-                    <button onclick="simulateFiveMinTimeout()" class="px-1.5 py-0.5 rounded bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-300/30 text-[10px]" title="Мгновенно протестировать истечение 5 минут бездействия">
+                    <button onclick="simulateFiveMinTimeout()" class="px-1.5 py-0.5 rounded bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-300/30 text-[10px]" title="Проверить возврат на сегодняшнюю дату через 5 минут">
 
-                        Тест 5м
+                        Сброс
 
                     </button>
 
@@ -474,13 +510,23 @@
 
 
 
+        <!-- ОСНОВНАЯ РАБОЧАЯ ОБЛАСТЬ -->
+
         <main class="flex-1 relative flex flex-col justify-center overflow-hidden">
 
             
 
-            <section id="wheelView" class="w-full h-full flex flex-col items-center justify-center relative px-2 py-1">
+            <!-- ЭКРАН 1: КРУГОВАЯ ДИАГРАММА + АДАПТИВНЫЕ ИКОНКИ И ГИБКИЕ ИДЕАЛЬНО ПРИМЫКАЮЩИЕ ЛУЧИ -->
 
-                <div id="wheelStage" class="relative w-full max-w-[395px] aspect-square flex items-center justify-center mx-auto">
+            <section id="wheelView" class="w-full h-full flex flex-col items-center justify-center relative px-1 py-1">
+
+                
+
+                <div id="wheelStage" class="relative w-full max-w-[400px] aspect-square flex items-center justify-center mx-auto">
+
+                    
+
+                    <!-- SVG для гибких лучей и кольцевой диаграммы -->
 
                     <svg id="donutSvg" viewBox="0 0 400 400" class="w-full h-full overflow-visible">
 
@@ -494,25 +540,35 @@
 
                         </defs>
 
-                        <g id="connectorLinesGroup"></g>
+                        <!-- Фоновое стеклянное кольцо -->
 
-                        <circle cx="200" cy="200" r="88" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="34"></circle>
+                        <circle cx="200" cy="200" r="84" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="32"></circle>
+
+                        <!-- Сектора категорий -->
 
                         <g id="donutArcsGroup" filter="url(#glowFilter)"></g>
 
-                        <circle cx="200" cy="200" r="71" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"></circle>
+                        <!-- Тонкие стеклянные грани кольца -->
 
-                        <circle cx="200" cy="200" r="105" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"></circle>
+                        <circle cx="200" cy="200" r="68" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"></circle>
+
+                        <circle cx="200" cy="200" r="100" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="1"></circle>
+
+                        <!-- Группа гибких лучей с точным примыканием (рисуется поверх граней кольца) -->
+
+                        <g id="connectorLinesGroup"></g>
 
                     </svg>
 
 
 
-                    <div onclick="openLimitModal()" class="absolute w-[136px] h-[136px] rounded-full glass-panel flex flex-col items-center justify-center text-center p-2 cursor-pointer hover:scale-105 transition-transform shadow-inner z-20" title="Нажмите, чтобы изменить лимит только для этого месяца">
+                    <!-- Центральный стеклянный круг с Лимитом (Зарплатой) и Расходами месяца -->
+
+                    <div onclick="openLimitModal()" class="absolute w-[130px] h-[130px] rounded-full glass-panel flex flex-col items-center justify-center text-center p-2 cursor-pointer hover:scale-105 transition-transform shadow-inner z-20" title="Нажмите, чтобы изменить зарплатный лимит для этого месяца">
 
                         <span class="text-[9px] uppercase tracking-wider opacity-60 font-medium">Лимит месяца</span>
 
-                        <div id="centerLimitValue" class="text-sm font-bold text-sky-400 tracking-tight mt-0.5 flex items-center gap-0.5">
+                        <div id="centerLimitValue" class="text-xs sm:text-sm font-bold text-sky-400 tracking-tight mt-0.5 flex items-center gap-0.5">
 
                             70 000,00 ₽
 
@@ -524,7 +580,7 @@
 
                         <span class="text-[9px] uppercase tracking-wider opacity-60 font-medium">Потрачено</span>
 
-                        <div id="centerExpenseValue" class="text-sm font-bold text-rose-400 tracking-tight mt-0.5">
+                        <div id="centerExpenseValue" class="text-xs sm:text-sm font-bold text-rose-400 tracking-tight mt-0.5">
 
                             93 837,00 ₽
 
@@ -540,13 +596,19 @@
 
 
 
+                    <!-- Контейнер для адаптивных иконок категорий -->
+
                     <div id="perimeterIconsContainer" class="absolute inset-0 pointer-events-none"></div>
 
                 </div>
 
+
+
             </section>
 
 
+
+            <!-- ЭКРАН 2: ДЕТАЛИЗИРОВАННЫЙ СПИСОК КАТЕГОРИЙ И ОПЕРАЦИЙ -->
 
             <section id="listView" class="hidden w-full h-full flex-col px-4 py-2 overflow-y-auto space-y-2.5 max-h-[540px]">
 
@@ -572,7 +634,11 @@
 
 
 
-        <footer class="px-4 pt-1 pb-4 z-30 flex flex-col gap-3">
+        <!-- НИЖНЯЯ ПАНЕЛЬ: КАПСУЛА БАЛАНСА И КРУПНЫЕ КНОПКИ «-» И «+» -->
+
+        <footer class="px-4 pt-1 pb-4 z-30 flex flex-col gap-2.5">
+
+            
 
             <div class="flex items-center justify-between gap-2.5">
 
@@ -584,7 +650,9 @@
 
 
 
-                <button id="balanceCapsule" onclick="toggleMainView()" class="flex-1 py-2.5 px-4 rounded-2xl glass-panel border transition-all duration-300 flex flex-col items-center justify-center shadow-lg active:scale-98">
+                <!-- Капсула Баланса -->
+
+                <button id="balanceCapsule" onclick="toggleMainView()" class="flex-1 py-2 px-4 rounded-2xl glass-panel border transition-all duration-300 flex flex-col items-center justify-center shadow-lg active:scale-98">
 
                     <div class="flex items-center gap-1.5">
 
@@ -594,15 +662,15 @@
 
                     </div>
 
-                    <span id="balanceSubText" class="text-[10px] opacity-65">Нажмите для раскрытия списка трат</span>
+                    <span id="balanceSubText" class="text-[10px] opacity-65">Нажмите для списка покупок</span>
 
                 </button>
 
 
 
-                <button onclick="openLimitModal()" class="glass-btn w-11 h-11 rounded-2xl flex items-center justify-center text-xl opacity-80 hover:opacity-100" title="Изменить стартовый лимит этого месяца">
+                <button onclick="openAnalyticsModal()" class="glass-btn w-11 h-11 rounded-2xl flex items-center justify-center text-xl text-purple-300 opacity-90 hover:opacity-100" title="Аналитика и графики">
 
-                    <i class="ph ph-sliders"></i>
+                    <i class="ph-fill ph-chart-pie-slice"></i>
 
                 </button>
 
@@ -610,7 +678,9 @@
 
 
 
-            <div class="flex items-center justify-around px-4 pt-0.5">
+            <!-- Две крупные стеклянные круглые кнопки: Расход (—) и Доход (+) -->
+
+            <div class="flex items-center justify-around px-2 pt-0.5">
 
                 <button onclick="openTransactionModal('expense', null)" class="group relative w-20 h-20 rounded-full glass-panel border-2 border-rose-400/60 flex items-center justify-center shadow-[0_0_30px_rgba(244,63,94,0.28)] active:scale-90 transition-all">
 
@@ -624,17 +694,17 @@
 
 
 
-                <div class="flex flex-col items-center text-center gap-1.5 max-w-[140px]">
+                <div class="flex flex-col items-center text-center gap-1.5 max-w-[145px]">
 
                     <button onclick="openCategoryEditorModal()" class="glass-btn px-3 py-1.5 rounded-xl text-[11px] font-semibold text-emerald-300 border border-emerald-400/30 flex items-center gap-1 shadow-sm">
 
-                        <i class="ph-bold ph-squares-four"></i>
+                        <i class="ph-bold ph-plus-circle"></i>
 
-                        <span>+ Категория</span>
+                        <span>Категория</span>
 
                     </button>
 
-                    <span class="text-[10px] opacity-55 leading-tight">Нажмите на иконку вокруг круга для ввода</span>
+                    <span class="text-[10px] opacity-55 leading-tight">Нажмите на любую иконку для ввода</span>
 
                 </div>
 
@@ -652,13 +722,23 @@
 
             </div>
 
+
+
         </footer>
 
 
 
+        <!-- ================================================================= -->
+
+        <!-- МОДАЛЬНОЕ ОКНО 1: НОВЫЙ РАСХОД / ДОХОД (КАЛЬКУЛЯТОР + УМНАЯ ДАТА) -->
+
+        <!-- ================================================================= -->
+
         <div id="txModal" class="hidden fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm p-0 md:p-4">
 
-            <div class="w-full max-w-[440px] glass-modal rounded-t-[36px] md:rounded-[36px] p-4 flex flex-col justify-between animate-fade-in border-t border-white/25 max-h-[96vh] overflow-y-auto">
+            <div class="w-full max-w-[440px] glass-modal rounded-t-[36px] md:rounded-[36px] p-4 flex flex-col justify-between border-t border-white/25 max-h-[96vh] overflow-y-auto">
+
+                
 
                 <div class="flex items-center justify-between pb-2 border-b border-white/10">
 
@@ -670,7 +750,7 @@
 
                     <h3 id="txModalTitle" class="font-bold text-base">Новый расход</h3>
 
-                    <button onclick="toggleTxTypeInModal()" class="glass-btn px-2.5 py-1.5 rounded-xl flex items-center gap-1 text-xs" title="Переключить Расход/Доход">
+                    <button onclick="toggleTxTypeInModal()" class="glass-btn px-2.5 py-1.5 rounded-xl flex items-center gap-1 text-xs">
 
                         <i class="ph ph-arrows-left-right"></i>
 
@@ -682,29 +762,85 @@
 
 
 
-                <div class="my-2.5 flex items-center justify-between gap-2 glass-panel px-3 py-2 rounded-2xl">
+                <!-- Выбор даты с умной памятью и быстрыми кнопками переключения месяца -->
 
-                    <div class="flex items-center gap-2">
+                <div class="my-2 flex flex-col gap-1.5 glass-panel px-3 py-2.5 rounded-2xl border border-emerald-400/25">
 
-                        <i class="ph ph-calendar text-emerald-400 text-lg"></i>
+                    <div class="flex items-center justify-between gap-2">
 
-                        <div class="flex flex-col">
+                        <button type="button" onclick="openCustomCalendarModal()" class="flex items-center gap-2 text-left flex-1 group">
 
-                            <span class="text-[10px] opacity-65">Дата операции (умная память)</span>
+                            <div class="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center text-emerald-300 text-lg shrink-0 group-active:scale-95 transition-transform">
 
-                            <span id="txFormattedDateLabel" class="text-xs font-semibold">Вторник, 3 ноября</span>
+                                <i class="ph-fill ph-calendar-blank"></i>
 
-                        </div>
+                            </div>
+
+                            <div class="flex flex-col">
+
+                                <span class="text-[10px] text-emerald-300 font-medium flex items-center gap-1">
+
+                                    <span>Нажмите для выбора любой даты</span>
+
+                                    <i class="ph-bold ph-caret-down text-[10px]"></i>
+
+                                </span>
+
+                                <span id="txFormattedDateLabel" class="text-xs sm:text-sm font-bold tracking-tight">Вторник, 3 ноября</span>
+
+                            </div>
+
+                        </button>
+
+                        <input type="date" id="txDateInput" onchange="onTxDateManualChange()" class="bg-white/10 border border-white/20 rounded-xl px-2 py-1.5 text-xs font-semibold text-white focus:outline-none cursor-pointer">
 
                     </div>
 
-                    <input type="date" id="txDateInput" onchange="onTxDateManualChange()" class="bg-white/10 border border-white/20 rounded-xl px-2.5 py-1 text-xs font-medium text-white focus:outline-none">
+
+
+                    <!-- Быстрые кнопки переключения месяца и дня прямо в окне платежа -->
+
+                    <div class="grid grid-cols-5 gap-1 pt-1 border-t border-white/10 text-[10px] font-semibold">
+
+                        <button type="button" onclick="shiftTxModalDate(0, -1)" class="glass-btn py-1.5 px-1 rounded-lg text-amber-300 flex items-center justify-center gap-0.5 active:scale-95" title="На 1 месяц назад">
+
+                            <i class="ph-bold ph-caret-double-left"></i> Мес
+
+                        </button>
+
+                        <button type="button" onclick="shiftTxModalDate(-1, 0)" class="glass-btn py-1.5 px-1 rounded-lg flex items-center justify-center gap-0.5 active:scale-95">
+
+                            <i class="ph-bold ph-caret-left"></i> 1 дн
+
+                        </button>
+
+                        <button type="button" onclick="setTxModalDateToday()" class="glass-btn py-1.5 px-1 rounded-lg text-emerald-300 flex items-center justify-center active:scale-95">
+
+                            Сегодня
+
+                        </button>
+
+                        <button type="button" onclick="shiftTxModalDate(1, 0)" class="glass-btn py-1.5 px-1 rounded-lg flex items-center justify-center gap-0.5 active:scale-95">
+
+                            1 дн <i class="ph-bold ph-caret-right"></i>
+
+                        </button>
+
+                        <button type="button" onclick="shiftTxModalDate(0, 1)" class="glass-btn py-1.5 px-1 rounded-lg text-sky-300 flex items-center justify-center gap-0.5 active:scale-95" title="На 1 месяц вперед">
+
+                            Мес <i class="ph-bold ph-caret-double-right"></i>
+
+                        </button>
+
+                    </div>
 
                 </div>
 
 
 
-                <div id="txCategorySelectorBar" class="mb-2.5">
+                <!-- Полоса категорий -->
+
+                <div id="txCategorySelectorBar" class="mb-2">
 
                     <div class="text-[10px] opacity-65 mb-1 px-1">Категория:</div>
 
@@ -714,7 +850,9 @@
 
 
 
-                <div id="txDisplayBox" class="rounded-2xl p-3.5 mb-2.5 flex items-center justify-between border border-white/25 shadow-inner transition-colors" style="background: rgba(16, 185, 129, 0.18);">
+                <!-- Дисплей суммы -->
+
+                <div id="txDisplayBox" class="rounded-2xl p-3 mb-2 flex items-center justify-between border border-white/25 shadow-inner transition-colors" style="background: rgba(16, 185, 129, 0.18);">
 
                     <div class="flex items-center gap-2">
 
@@ -750,7 +888,9 @@
 
 
 
-                <div class="mb-3 relative">
+                <!-- Поле заметки -->
+
+                <div class="mb-2.5 relative">
 
                     <i class="ph ph-pencil-line absolute left-3.5 top-1/2 -translate-y-1/2 opacity-60 text-base"></i>
 
@@ -760,45 +900,47 @@
 
 
 
+                <!-- Калькулятор -->
+
                 <div class="grid grid-cols-4 gap-2 mb-3">
 
-                    <button onclick="calcInput('1')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">1</button>
+                    <button onclick="calcInput('1')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">1</button>
 
-                    <button onclick="calcInput('2')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">2</button>
+                    <button onclick="calcInput('2')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">2</button>
 
-                    <button onclick="calcInput('3')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">3</button>
+                    <button onclick="calcInput('3')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">3</button>
 
-                    <button onclick="calcOperator('+')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-emerald-400">+</button>
-
-
-
-                    <button onclick="calcInput('4')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">4</button>
-
-                    <button onclick="calcInput('5')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">5</button>
-
-                    <button onclick="calcInput('6')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">6</button>
-
-                    <button onclick="calcOperator('-')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-emerald-400">−</button>
+                    <button onclick="calcOperator('+')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-bold text-emerald-400">+</button>
 
 
 
-                    <button onclick="calcInput('7')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">7</button>
+                    <button onclick="calcInput('4')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">4</button>
 
-                    <button onclick="calcInput('8')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">8</button>
+                    <button onclick="calcInput('5')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">5</button>
 
-                    <button onclick="calcInput('9')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">9</button>
+                    <button onclick="calcInput('6')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">6</button>
 
-                    <button onclick="calcOperator('*')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-emerald-400">×</button>
+                    <button onclick="calcOperator('-')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-bold text-emerald-400">−</button>
 
 
 
-                    <button onclick="calcInput('.')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold">.</button>
+                    <button onclick="calcInput('7')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">7</button>
 
-                    <button onclick="calcInput('0')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-semibold">0</button>
+                    <button onclick="calcInput('8')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">8</button>
 
-                    <button onclick="calcEvaluate()" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-amber-300">=</button>
+                    <button onclick="calcInput('9')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">9</button>
 
-                    <button onclick="calcOperator('/')" class="calc-key glass-btn py-3 rounded-2xl text-lg font-bold text-emerald-400">÷</button>
+                    <button onclick="calcOperator('*')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-bold text-emerald-400">×</button>
+
+
+
+                    <button onclick="calcInput('.')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-bold">.</button>
+
+                    <button onclick="calcInput('0')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-semibold">0</button>
+
+                    <button onclick="calcEvaluate()" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-bold text-amber-300">=</button>
+
+                    <button onclick="calcOperator('/')" class="calc-key glass-btn py-2.5 rounded-2xl text-lg font-bold text-emerald-400">÷</button>
 
                 </div>
 
@@ -818,9 +960,15 @@
 
 
 
+        <!-- ================================================================= -->
+
+        <!-- МОДАЛЬНОЕ ОКНО 2: ЛИМИТ (ЗАРПЛАТА) И ДАТА НАЧАЛА ЗАРПЛАТНОГО МЕСЯЦА -->
+
+        <!-- ================================================================= -->
+
         <div id="limitModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
 
-            <div class="w-full max-w-[390px] glass-modal rounded-[32px] p-5 flex flex-col gap-3.5 border border-white/25">
+            <div class="w-full max-w-[395px] glass-modal rounded-[32px] p-5 flex flex-col gap-3.5 border border-white/25">
 
                 <div class="flex items-center justify-between">
 
@@ -828,7 +976,7 @@
 
                         <i class="ph ph-wallet text-sky-400 text-xl"></i>
 
-                        <span>Лимит на месяц</span>
+                        <span>Зарплатный лимит и цикл</span>
 
                     </h3>
 
@@ -844,11 +992,11 @@
 
                 <div class="p-3 rounded-2xl bg-sky-500/10 border border-sky-400/25 text-xs leading-relaxed opacity-90">
 
-                    Вы настраиваете стартовый бюджет (зарплату) для периода <b id="limitModalPeriodName" class="text-sky-300"></b>.
+                    Вы настраиваете бюджет (зарплату) для периода <b id="limitModalPeriodName" class="text-sky-300"></b>.
 
                     <div class="mt-1 text-[11px] opacity-75">
 
-                        <i class="ph ph-shield-check text-emerald-400"></i> Изменение этой суммы <b>не изменит</b> лимиты и диаграммы в предыдущих или других месяцах!
+                        <i class="ph ph-shield-check text-emerald-400"></i> Изменение суммы в этом месяце <b>не изменит</b> лимиты и диаграммы в прошлых месяцах!
 
                     </div>
 
@@ -858,9 +1006,25 @@
 
                 <div>
 
-                    <label class="text-xs opacity-70 block mb-1">Сумма лимита на этот период:</label>
+                    <label class="text-xs opacity-70 block mb-1">Сумма зарплаты / лимита на этот период:</label>
 
                     <input type="number" id="periodLimitInput" class="w-full glass-panel px-4 py-3 rounded-2xl text-xl font-bold font-mono focus:outline-none focus:border-sky-400" placeholder="70000" style="color: var(--text-main);">
+
+                </div>
+
+
+
+                <div class="glass-panel p-3 rounded-2xl flex items-center justify-between gap-2">
+
+                    <div>
+
+                        <div class="text-xs font-semibold text-emerald-300">День получения зарплаты</div>
+
+                        <div class="text-[10px] opacity-65">Напр. 10 число (с 10 нояб. по 9 дек.)</div>
+
+                    </div>
+
+                    <input type="number" id="quickSalaryDayInput" min="1" max="28" class="w-16 glass-panel px-2.5 py-1.5 rounded-xl text-sm font-bold font-mono text-center focus:outline-none" value="10">
 
                 </div>
 
@@ -870,7 +1034,7 @@
 
                     <input type="checkbox" id="alsoUpdateDefaultLimitCheckbox" class="w-4 h-4 rounded accent-emerald-500">
 
-                    <label for="alsoUpdateDefaultLimitCheckbox" class="opacity-80">Сделать суммой по умолчанию для <b>будущих</b> новых месяцев</label>
+                    <label for="alsoUpdateDefaultLimitCheckbox" class="opacity-80">Сделать суммой по умолчанию для <b>будущих</b> месяцев</label>
 
                 </div>
 
@@ -880,7 +1044,7 @@
 
                     <button onclick="closeLimitModal()" class="flex-1 py-2.5 rounded-xl glass-btn text-xs font-semibold">Отмена</button>
 
-                    <button onclick="savePeriodLimit()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-emerald-500 text-white text-xs font-bold shadow-lg">Сохранить лимит</button>
+                    <button onclick="savePeriodLimit()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 to-emerald-500 text-white text-xs font-bold shadow-lg">Сохранить</button>
 
                 </div>
 
@@ -889,6 +1053,12 @@
         </div>
 
 
+
+        <!-- ================================================================= -->
+
+        <!-- МОДАЛЬНОЕ ОКНО 3: ВЫПИСКА ПЛАТЕЖЕЙ В ВИДЕ ЧЕКА (.TXT)             -->
+
+        <!-- ================================================================= -->
 
         <div id="receiptModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-3">
 
@@ -916,9 +1086,9 @@
 
                 <div class="flex gap-1.5 overflow-x-auto pb-1">
 
-                    <button onclick="setReceiptPreset('current')" class="glass-btn px-2.5 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap">Текущий период</button>
+                    <button onclick="setReceiptPreset('current')" class="glass-btn px-2.5 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap">Текущий цикл</button>
 
-                    <button onclick="setReceiptPreset('prev')" class="glass-btn px-2.5 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap">Прошлый период</button>
+                    <button onclick="setReceiptPreset('prev')" class="glass-btn px-2.5 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap">Прошлый цикл</button>
 
                     <button onclick="setReceiptPreset('all')" class="glass-btn px-2.5 py-1 rounded-xl text-[11px] font-medium whitespace-nowrap">За всё время</button>
 
@@ -948,7 +1118,7 @@
 
 
 
-                <div class="flex-1 overflow-y-auto glass-panel rounded-2xl p-3 bg-black/30 border border-white/10 max-h-[320px]">
+                <div class="flex-1 overflow-y-auto glass-panel rounded-2xl p-3 bg-black/30 border border-white/10 max-h-[300px]">
 
                     <div id="receiptPreviewBox" class="receipt-preview text-[11px] text-emerald-200"></div>
 
@@ -980,7 +1150,7 @@
 
                             <i class="ph ph-copy text-sky-400"></i>
 
-                            <span>Копировать текст</span>
+                            <span>Копировать</span>
 
                         </button>
 
@@ -994,9 +1164,15 @@
 
 
 
+        <!-- ================================================================= -->
+
+        <!-- МОДАЛЬНОЕ ОКНО 4: НАСТРОЙКИ + АВТОСОХРАНЕНИЕ ЧЕКОВ И БАЗЫ           -->
+
+        <!-- ================================================================= -->
+
         <div id="settingsModal" class="hidden fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
 
-            <div class="w-full max-w-[380px] h-full glass-modal p-5 flex flex-col justify-between overflow-y-auto border-l border-white/25">
+            <div class="w-full max-w-[395px] h-full glass-modal p-5 flex flex-col justify-between overflow-y-auto border-l border-white/25">
 
                 <div class="space-y-4">
 
@@ -1014,7 +1190,7 @@
 
                                 <h3 class="font-bold text-base">Настройки</h3>
 
-                                <p class="text-[11px] opacity-65">Кастомизация и параметры</p>
+                                <p class="text-[11px] opacity-65">Автосохранение, цикл и кастомизация</p>
 
                             </div>
 
@@ -1029,6 +1205,142 @@
                     </div>
 
 
+
+                    <!-- НОВЫЙ БЛОК: АВТОМАТИЧЕСКОЕ СОХРАНЕНИЕ ЧЕКОВ В КОНЦЕ МЕСЯЦА И БАЗЫ КАЖДУЮ НЕДЕЛЮ -->
+
+                    <div class="glass-panel p-3.5 rounded-2xl space-y-3 border border-emerald-400/35">
+
+                        <div class="text-xs font-bold uppercase tracking-wider text-emerald-300 flex items-center justify-between">
+
+                            <span class="flex items-center gap-1.5">
+
+                                <i class="ph-fill ph-folder-Simple-star text-base"></i> Автосохранение в папку
+
+                            </span>
+
+                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/30">Активно</span>
+
+                        </div>
+
+
+
+                        <!-- Переключатели автосохранения -->
+
+                        <div class="space-y-2 text-xs">
+
+                            <label class="flex items-center justify-between gap-2 cursor-pointer">
+
+                                <div>
+
+                                    <div class="font-semibold">Авто-чек по окончании месяца</div>
+
+                                    <div class="text-[10px] opacity-65">Полный .TXT чек с именем периода</div>
+
+                                </div>
+
+                                <input type="checkbox" id="autoMonthlyReceiptToggle" onchange="saveAutoSaveSettings()" class="w-4 h-4 accent-emerald-500" checked>
+
+                            </label>
+
+
+
+                            <label class="flex items-center justify-between gap-2 cursor-pointer">
+
+                                <div>
+
+                                    <div class="font-semibold">Авто-бэкап базы каждую неделю</div>
+
+                                    <div class="text-[10px] opacity-65">Раз в 7 дней с перезаписью старого файла</div>
+
+                                </div>
+
+                                <input type="checkbox" id="autoWeeklyBackupToggle" onchange="saveAutoSaveSettings()" class="w-4 h-4 accent-emerald-500" checked>
+
+                            </label>
+
+                        </div>
+
+
+
+                        <!-- Выбор места хранения на смартфоне -->
+
+                        <div class="pt-1 border-t border-white/10 space-y-2">
+
+                            <div class="text-[11px] font-semibold opacity-85">Место хранения папки на смартфоне:</div>
+
+                            <select id="autoSaveStorageRootSelect" onchange="saveAutoSaveSettings()" class="w-full glass-panel px-3 py-2 rounded-xl text-xs font-bold bg-black/40 focus:outline-none">
+
+                                <option value="DOCUMENTS">Внутренняя память → Документы (Documents)</option>
+
+                                <option value="DOWNLOADS">Внутренняя память → Загрузки (Download)</option>
+
+                                <option value="EXTERNAL">Папка приложения в памяти Vivo</option>
+
+                            </select>
+
+
+
+                            <div class="flex items-center gap-2">
+
+                                <div class="flex-1">
+
+                                    <span class="text-[10px] opacity-65 block mb-0.5">Имя вашей папки для автосохранения:</span>
+
+                                    <input type="text" id="autoSaveFolderNameInput" onchange="saveAutoSaveSettings()" class="w-full glass-panel px-3 py-1.5 rounded-xl text-xs font-mono font-bold focus:outline-none" value="FinGlass_AutoSave" style="color: var(--text-main);">
+
+                                </div>
+
+                                <button type="button" onclick="pickSystemDirectoryForAutoSave()" class="glass-btn px-2.5 py-2 rounded-xl text-[11px] font-semibold text-emerald-300 border-emerald-400/30 shrink-0 mt-3.5 flex items-center gap-1" title="Выбрать папку через системный проводник">
+
+                                    <i class="ph-bold ph-folder-open"></i> Обзор
+
+                                </button>
+
+                            </div>
+
+
+
+                            <div id="autoSavePathPreview" class="text-[10px] font-mono text-emerald-300/90 bg-black/30 px-2.5 py-1.5 rounded-lg truncate">
+
+                                Путь: Documents/FinGlass_AutoSave/
+
+                            </div>
+
+
+
+                            <!-- Статус последнего автосохранения и кнопка мгновенной проверки -->
+
+                            <div id="autoSaveStatusText" class="text-[10px] opacity-75 leading-snug">
+
+                                Статус: Ожидание окончания периода / проверка...
+
+                            </div>
+
+
+
+                            <div class="grid grid-cols-2 gap-1.5 pt-1">
+
+                                <button type="button" onclick="triggerManualTestMonthlyAutoReceipt()" class="glass-btn py-2 px-2 rounded-xl text-[10px] font-semibold text-emerald-300 flex items-center justify-center gap-1">
+
+                                    <i class="ph-bold ph-receipt"></i> Тест авто-чека
+
+                                </button>
+
+                                <button type="button" onclick="triggerManualTestWeeklyBackup()" class="glass-btn py-2 px-2 rounded-xl text-[10px] font-semibold text-sky-300 flex items-center justify-center gap-1">
+
+                                    <i class="ph-bold ph-arrows-clockwise"></i> Обновить базу
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Тема оформления Apple Glassmorphism -->
 
                     <div class="glass-panel p-3.5 rounded-2xl space-y-2.5">
 
@@ -1086,41 +1398,29 @@
 
 
 
+                    <!-- Зарплатный расчетный месяц (с любого числа, например с 10 по 9) -->
+
                     <div class="glass-panel p-3.5 rounded-2xl space-y-3">
 
                         <div class="text-xs font-semibold uppercase tracking-wider opacity-75 flex items-center gap-1.5">
 
-                            <i class="ph ph-calendar-check text-sky-400"></i> Расчетный период и валюта
+                            <i class="ph ph-calendar-check text-sky-400"></i> Зарплатный цикл и валюта
 
                         </div>
 
 
 
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-between gap-2">
 
                             <div>
 
-                                <div class="text-xs font-medium">Начало месяца (число)</div>
+                                <div class="text-xs font-medium">День начала месяца (1–28)</div>
 
-                                <div class="text-[10px] opacity-60">Напр. 10 (10 окт. - 9 нояб.) или 1</div>
+                                <div class="text-[10px] opacity-60">Напр. 10 = с 10 нояб. по 9 дек.</div>
 
                             </div>
 
-                            <select id="startDaySelect" onchange="updateStartDayOfMonth(this.value)" class="glass-panel px-3 py-1.5 rounded-xl text-xs font-bold bg-black/30 focus:outline-none">
-
-                                <option value="1">1 число</option>
-
-                                <option value="5">5 число</option>
-
-                                <option value="10">10 число</option>
-
-                                <option value="15">15 число</option>
-
-                                <option value="20">20 число</option>
-
-                                <option value="25">25 число</option>
-
-                            </select>
+                            <input type="number" id="startDaySelect" min="1" max="28" onchange="updateStartDayOfMonth(this.value)" class="glass-panel w-20 px-3 py-1.5 rounded-xl text-xs font-bold font-mono text-center focus:outline-none" value="10">
 
                         </div>
 
@@ -1164,31 +1464,13 @@
 
 
 
-                    <div class="glass-panel p-3.5 rounded-2xl space-y-2">
-
-                        <div class="flex items-center justify-between">
-
-                            <span class="text-xs font-semibold uppercase tracking-wider opacity-75">Категории и иконки</span>
-
-                            <button onclick="openCategoryEditorModal()" class="px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-semibold">
-
-                                Изменить / +
-
-                            </button>
-
-                        </div>
-
-                        <p class="text-[11px] opacity-65">Настройте названия, цвета и выбирайте из 28+ иконок для круговой диаграммы.</p>
-
-                    </div>
-
-
+                    <!-- Управление базой всех платежей -->
 
                     <div class="glass-panel p-3.5 rounded-2xl space-y-2.5">
 
                         <div class="text-xs font-semibold uppercase tracking-wider opacity-75 flex items-center gap-1.5">
 
-                            <i class="ph ph-database text-amber-400"></i> База всех платежей
+                            <i class="ph ph-database text-amber-400"></i> Ручное управление базой
 
                         </div>
 
@@ -1196,13 +1478,13 @@
 
                             <button onclick="exportFullDatabaseJson()" class="glass-btn py-2 px-2.5 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5">
 
-                                <i class="ph ph-download-simple text-emerald-400"></i> Бэкап базы
+                                <i class="ph ph-download-simple text-emerald-400"></i> Экспорт JSON
 
                             </button>
 
                             <label class="glass-btn py-2 px-2.5 rounded-xl text-xs font-medium flex items-center justify-center gap-1.5 cursor-pointer">
 
-                                <i class="ph ph-upload-simple text-sky-400"></i> Импорт базы
+                                <i class="ph ph-upload-simple text-sky-400"></i> Импорт JSON
 
                                 <input type="file" accept=".json" onchange="importFullDatabaseJson(event)" class="hidden">
 
@@ -1214,7 +1496,7 @@
 
                             <button onclick="loadDemoScreenshotsData()" class="flex-1 glass-btn py-2 rounded-xl text-[11px] opacity-85 hover:opacity-100">
 
-                                Загрузить демо-данные
+                                Демо-данные
 
                             </button>
 
@@ -1234,7 +1516,7 @@
 
                 <div class="pt-4 text-center text-[11px] opacity-50">
 
-                    FinGlass Pro v2.4 • Оптимизировано для Vivo X200 Ultra
+                    FinGlass Pro v3.5 • AutoSave & Vivo X200 Ultra Edition
 
                 </div>
 
@@ -1243,6 +1525,12 @@
         </div>
 
 
+
+        <!-- ================================================================= -->
+
+        <!-- МОДАЛЬНОЕ ОКНО 5: РЕДАКТОР КАТЕГОРИЙ И ВЫБОР ИКОНОК                -->
+
+        <!-- ================================================================= -->
 
         <div id="catEditorModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-sm p-3">
 
@@ -1270,7 +1558,7 @@
 
                 <div class="px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-400/25 text-[11px] leading-snug opacity-90">
 
-                    <i class="ph-fill ph-shield-check text-emerald-400"></i> Все категории автоматически переносятся в следующие месяцы. Удаление категории убирает её <b>только из текущего и будущих месяцев</b> — в прошлых месяцах она полностью сохраняется!
+                    <i class="ph-fill ph-shield-check text-emerald-400"></i> Категории автоматически переносятся в следующие месяцы. Удаление убирает категорию <b>только из текущего и будущих месяцев</b> — в прошлых месяцах она остаётся!
 
                 </div>
 
@@ -1288,13 +1576,13 @@
 
                     <div class="flex gap-2">
 
-                        <input type="text" id="newCatNameInput" placeholder="Название (напр. Кафе, Авто)" class="flex-1 glass-panel px-3 py-2 rounded-xl text-xs focus:outline-none" style="color: var(--text-main);">
+                        <input type="text" id="newCatNameInput" placeholder="Название (напр. Кафе, Аптека)" class="flex-1 glass-panel px-3 py-2 rounded-xl text-xs focus:outline-none" style="color: var(--text-main);">
 
-                        <input type="color" id="newCatColorInput" value="#10b981" class="w-10 h-9 rounded-xl bg-transparent border-0 cursor-pointer" title="Цвет сектора и иконки">
+                        <input type="color" id="newCatColorInput" value="#10b981" class="w-10 h-9 rounded-xl bg-transparent border-0 cursor-pointer">
 
                     </div>
 
-                    <div class="text-[10px] opacity-65">Выберите векторную иконку (28 вариантов):</div>
+                    <div class="text-[10px] opacity-65">Выберите иконку (28 вариантов):</div>
 
                     <div id="iconPickerGrid" class="grid grid-cols-7 gap-1.5 max-h-28 overflow-y-auto p-1"></div>
 
@@ -1322,6 +1610,12 @@
 
 
 
+        <!-- ================================================================= -->
+
+        <!-- МОДАЛЬНОЕ ОКНО 6: ПОИСК ПО ВСЕМ ПЛАТЕЖАМ                           -->
+
+        <!-- ================================================================= -->
+
         <div id="searchModal" class="hidden fixed inset-0 z-50 flex items-start justify-center bg-black/65 backdrop-blur-sm p-3 pt-10">
 
             <div class="w-full max-w-[420px] glass-modal rounded-[32px] p-4 flex flex-col gap-3 max-h-[82vh] overflow-hidden border border-white/25">
@@ -1348,6 +1642,170 @@
 
 
 
+        <!-- ================================================================= -->
+
+        <!-- МОДАЛЬНОЕ ОКНО 7: ВСТРОЕННЫЙ СТЕКЛЯННЫЙ КАЛЕНДАРЬ                  -->
+
+        <!-- ================================================================= -->
+
+        <div id="customCalendarModal" class="hidden fixed inset-0 z-[70] flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
+
+            <div class="w-full max-w-[360px] glass-modal rounded-[32px] p-4 flex flex-col gap-3 border border-white/25 shadow-2xl">
+
+                <div class="flex items-center justify-between pb-2 border-b border-white/10">
+
+                    <div class="flex items-center gap-2">
+
+                        <i class="ph-fill ph-calendar text-emerald-400 text-xl"></i>
+
+                        <h3 class="font-bold text-sm">Выбор даты платежа</h3>
+
+                    </div>
+
+                    <button type="button" onclick="closeCustomCalendarModal()" class="glass-btn w-8 h-8 rounded-xl flex items-center justify-center">
+
+                        <i class="ph ph-x"></i>
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="flex items-center justify-between gap-2 glass-panel p-2 rounded-2xl">
+
+                    <button type="button" onclick="changeCustomCalMonth(-1)" class="glass-btn w-9 h-9 rounded-xl flex items-center justify-center text-base active:scale-90">
+
+                        <i class="ph-bold ph-caret-left"></i>
+
+                    </button>
+
+                    <div class="flex flex-col items-center">
+
+                        <span id="customCalMonthYearLabel" class="font-bold text-sm text-emerald-300">Ноябрь 2026</span>
+
+                        <span class="text-[10px] opacity-60">Выберите любой месяц и день</span>
+
+                    </div>
+
+                    <button type="button" onclick="changeCustomCalMonth(1)" class="glass-btn w-9 h-9 rounded-xl flex items-center justify-center text-base active:scale-90">
+
+                        <i class="ph-bold ph-caret-right"></i>
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold opacity-60 px-1">
+
+                    <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span class="text-rose-300">Сб</span><span class="text-rose-300">Вс</span>
+
+                </div>
+
+
+
+                <div id="customCalDaysGrid" class="grid grid-cols-7 gap-1.5"></div>
+
+
+
+                <div class="flex gap-2 pt-1">
+
+                    <button type="button" onclick="selectCustomCalToday()" class="flex-1 py-2.5 rounded-xl glass-btn text-xs font-semibold text-emerald-300">
+
+                        Сегодня
+
+                    </button>
+
+                    <button type="button" onclick="closeCustomCalendarModal()" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-bold">
+
+                        Готово
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ================================================================= -->
+
+        <!-- МОДАЛЬНОЕ ОКНО 8: РАЗДЕЛ АНАЛИТИКИ (МЕСЯЦ / ГОД / ПОВТОРЯЮЩИЕСЯ)   -->
+
+        <!-- ================================================================= -->
+
+        <div id="analyticsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md p-2 sm:p-4">
+
+            <div class="w-full max-w-[435px] glass-modal rounded-[34px] p-4 flex flex-col gap-3 max-h-[94vh] overflow-hidden border border-white/25">
+
+                <div class="flex items-center justify-between pb-2 border-b border-white/10">
+
+                    <div class="flex items-center gap-2">
+
+                        <div class="w-9 h-9 rounded-xl bg-purple-500/20 border border-purple-400/40 flex items-center justify-center text-purple-300 text-lg">
+
+                            <i class="ph-fill ph-chart-bar"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3 class="font-bold text-base leading-tight">Аналитика расходов</h3>
+
+                            <p id="analyticsSubtitle" class="text-[10px] opacity-65">Графики, рекорды и повторяющиеся траты</p>
+
+                        </div>
+
+                    </div>
+
+                    <button onclick="closeAnalyticsModal()" class="glass-btn w-8 h-8 rounded-xl flex items-center justify-center">
+
+                        <i class="ph ph-x"></i>
+
+                    </button>
+
+                </div>
+
+
+
+                <div class="grid grid-cols-3 gap-1.5 glass-panel p-1 rounded-2xl text-xs font-bold">
+
+                    <button id="tabBtnMonth" onclick="switchAnalyticsTab('month')" class="py-2 rounded-xl bg-emerald-500/25 text-emerald-300 border border-emerald-400/30 transition-all">
+
+                        За месяц
+
+                    </button>
+
+                    <button id="tabBtnYear" onclick="switchAnalyticsTab('year')" class="py-2 rounded-xl opacity-70 hover:opacity-100 transition-all">
+
+                        За год
+
+                    </button>
+
+                    <button id="tabBtnRecurring" onclick="switchAnalyticsTab('recurring')" class="py-2 rounded-xl opacity-70 hover:opacity-100 transition-all">
+
+                        Повторы
+
+                    </button>
+
+                </div>
+
+
+
+                <div id="analyticsContentBox" class="flex-1 overflow-y-auto space-y-3 pr-0.5 pb-2"></div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ -->
+
         <div id="toastBox" class="pointer-events-none fixed top-5 left-1/2 -translate-x-1/2 z-[100] opacity-0 transition-all duration-300 transform -translate-y-3">
 
             <div class="glass-modal px-4 py-2.5 rounded-2xl border border-emerald-400/40 shadow-2xl flex items-center gap-2 text-xs font-semibold">
@@ -1368,7 +1826,13 @@
 
     <script>
 
-        const STORAGE_KEY = 'FINGLASS_PRO_DB_V3';
+        /********************************************************************
+
+         * АРХИТЕКТУРА ДАННЫХ И СОСТОЯНИЯ ПРИЛОЖЕНИЯ FINGLASS PRO V3.5
+
+         ********************************************************************/
+
+        const STORAGE_KEY = 'FINGLASS_PRO_DB_V4';
 
 
 
@@ -1424,21 +1888,23 @@
 
                 { id: 't3', type: 'expense', categoryId: 'cat_sport', amount: 54269, note: 'Авито коньки Hyperlite 8', date: formatDateISO(addDays(now, -2)) },
 
-                { id: 't4', type: 'expense', categoryId: 'cat_sport', amount: 500, note: 'Билеты на каток Я и Маня', date: formatDateISO(addDays(now, -4)) },
+                { id: 't4', type: 'expense', categoryId: 'cat_sport', amount: 500, note: 'Билеты на каток', date: formatDateISO(addDays(now, -4)) },
 
                 { id: 't5', type: 'expense', categoryId: 'cat_sport', amount: 3500, note: 'Тёме на секцию футбол', date: formatDateISO(addDays(now, -12)) },
 
-                { id: 't6', type: 'expense', categoryId: 'cat_hygiene', amount: 10417, note: 'Косметика и уход за месяц', date: formatDateISO(addDays(now, -5)) },
+                { id: 't6', type: 'expense', categoryId: 'cat_hygiene', amount: 10417, note: 'Косметика и уход', date: formatDateISO(addDays(now, -5)) },
 
                 { id: 't7', type: 'expense', categoryId: 'cat_clothes', amount: 6205, note: 'Куртка и термобелье', date: formatDateISO(addDays(now, -6)) },
 
                 { id: 't8', type: 'expense', categoryId: 'cat_home', amount: 5870, note: 'Коммунальные платежи ЖКХ', date: formatDateISO(addDays(now, -8)) },
 
-                { id: 't9', type: 'expense', categoryId: 'cat_food', amount: 5000, note: 'Супермаркет продукты на неделю', date: formatDateISO(addDays(now, -3)) },
+                { id: 't9', type: 'expense', categoryId: 'cat_food', amount: 5000, note: 'Продукты в супермаркете', date: formatDateISO(addDays(now, -3)) },
 
-                { id: 't10', type: 'expense', categoryId: 'cat_car', amount: 3372, note: 'За бензин АИ-95 полный бак', date: formatDateISO(addDays(now, -2)) },
+                { id: 't10', type: 'expense', categoryId: 'cat_car', amount: 1872, note: 'За бензин', date: formatDateISO(addDays(now, -2)) },
 
-                { id: 't11', type: 'expense', categoryId: 'cat_fun', amount: 1845, note: 'Кино и коктейли', date: formatDateISO(addDays(now, -7)) }
+                { id: 't11', type: 'expense', categoryId: 'cat_car', amount: 1500, note: 'За бензин', date: formatDateISO(addDays(now, -9)) },
+
+                { id: 't12', type: 'expense', categoryId: 'cat_fun', amount: 1845, note: 'Кино и коктейли', date: formatDateISO(addDays(now, -7)) }
 
             ];
 
@@ -1458,7 +1924,27 @@
 
                 theme: 'emerald',
 
-                blurPx: 22
+                blurPx: 22,
+
+                // Настройки автосохранения чеков в конце месяца и еженедельной базы
+
+                autoSave: {
+
+                    monthlyReceiptEnabled: true,
+
+                    weeklyBackupEnabled: true,
+
+                    storageRoot: 'DOCUMENTS', // DOCUMENTS | DOWNLOADS | EXTERNAL
+
+                    folderName: 'FinGlass_AutoSave',
+
+                    savedMonthlyReceipts: {}, // { '2026-09': '2026-10-10T08:00:00Z' }
+
+                    lastWeeklyBackupTimestamp: 0,
+
+                    lastWeeklyBackupDateStr: 'Ещё не выполнялось'
+
+                }
 
             },
 
@@ -1471,6 +1957,12 @@
             transactions: []
 
         };
+
+
+
+        // Дескриптор выбранной системной папки (если выбрана через File System Access API)
+
+        let customDirectoryHandle = null;
 
 
 
@@ -1502,11 +1994,25 @@
 
             selectedNewCatIcon: 'ph-car',
 
-            editingCatId: null
+            editingCatId: null,
+
+            calViewYear: new Date().getFullYear(),
+
+            calViewMonth: new Date().getMonth(),
+
+            analyticsTab: 'month',
+
+            analyticsYear: new Date().getFullYear()
 
         };
 
 
+
+        /********************************************************************
+
+         * ФУНКЦИИ ДАТ И ЗАРПЛАТНЫХ ПЕРИОДОВ (НАПРИМЕР С 10 НОЯБРЯ ПО 9 ДЕКАБРЯ)
+
+         ********************************************************************/
 
         function formatDateISO(d) {
 
@@ -1610,7 +2116,7 @@
 
 
 
-        function formatPeriodHeaderLabel(periodKey) {
+        function getPeriodDisplayTitles(periodKey) {
 
             const bounds = getPeriodBounds(periodKey);
 
@@ -1618,15 +2124,33 @@
 
             const monthsFull = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
-            
-
             const startDay = Number(appData.settings.startDayOfMonth) || 1;
+
+
+
+            const mainMonthName = monthsFull[bounds.startDate.getMonth()].toUpperCase();
+
+            const mainYear = bounds.startDate.getFullYear();
+
+
 
             if (startDay === 1) {
 
-                return `${monthsFull[bounds.startDate.getMonth()]} ${bounds.startDate.getFullYear()}`;
+                return {
+
+                    mainTitle: `${mainMonthName} ${mainYear}`,
+
+                    subRange: `1 ${monthsShort[bounds.startDate.getMonth()]} — ${bounds.endDate.getDate()} ${monthsShort[bounds.endDate.getMonth()]}`,
+
+                    combinedLabel: `${monthsFull[bounds.startDate.getMonth()]} ${mainYear}`,
+
+                    fileSafePeriodName: `${monthsFull[bounds.startDate.getMonth()]}_${mainYear}`
+
+                };
 
             }
+
+
 
             const sDay = bounds.startDate.getDate();
 
@@ -1636,7 +2160,29 @@
 
             const eMon = monthsShort[bounds.endDate.getMonth()];
 
-            return `${sDay} ${sMon} - ${eDay} ${eMon}`;
+            const eYear = bounds.endDate.getFullYear();
+
+
+
+            return {
+
+                mainTitle: `${mainMonthName} • ${sDay} ${sMon} – ${eDay} ${eMon}`,
+
+                subRange: `Зарплатный цикл (${mainYear} г.)`,
+
+                combinedLabel: `${sDay} ${sMon} - ${eDay} ${eMon}`,
+
+                fileSafePeriodName: `${sDay}_${sMon.replace('.','')}_-_${eDay}_${eMon.replace('.','')}_${eYear}`
+
+            };
+
+        }
+
+
+
+        function formatPeriodHeaderLabel(periodKey) {
+
+            return getPeriodDisplayTitles(periodKey).combinedLabel;
 
         }
 
@@ -1678,7 +2224,7 @@
 
                 for (let i = allKeys.length - 1; i >= 0; i--) {
 
-                    if (allKeys[i] < periodKey && Array.isArray(appData.periodSnapshots[allKeys[i]].categories)) {
+                    if (allKeys[i] < periodKey && Array.isArray(appData.periodSnapshots[allKeys[i]].categories) && appData.periodSnapshots[allKeys[i]].categories.length > 0) {
 
                         inheritedCats = cloneCategoriesList(appData.periodSnapshots[allKeys[i]].categories);
 
@@ -1690,7 +2236,23 @@
 
                 if (!inheritedCats) {
 
-                    inheritedCats = cloneCategoriesList(appData.categories);
+                    for (let i = 0; i < allKeys.length; i++) {
+
+                        if (Array.isArray(appData.periodSnapshots[allKeys[i]].categories) && appData.periodSnapshots[allKeys[i]].categories.length > 0) {
+
+                            inheritedCats = cloneCategoriesList(appData.periodSnapshots[allKeys[i]].categories);
+
+                            break;
+
+                        }
+
+                    }
+
+                }
+
+                if (!inheritedCats || inheritedCats.length === 0) {
+
+                    inheritedCats = cloneCategoriesList(appData.categories && appData.categories.length ? appData.categories : DEFAULT_CATEGORIES);
 
                 }
 
@@ -1708,9 +2270,9 @@
 
                 saveDatabase();
 
-            } else if (!Array.isArray(appData.periodSnapshots[periodKey].categories)) {
+            } else if (!Array.isArray(appData.periodSnapshots[periodKey].categories) || appData.periodSnapshots[periodKey].categories.length === 0) {
 
-                appData.periodSnapshots[periodKey].categories = cloneCategoriesList(appData.categories);
+                appData.periodSnapshots[periodKey].categories = cloneCategoriesList(appData.categories && appData.categories.length ? appData.categories : DEFAULT_CATEGORIES);
 
                 saveDatabase();
 
@@ -1750,7 +2312,7 @@
 
             }
 
-            return { id: catId, name: 'Архивная категория', icon: 'ph-tag', color: '#94a3b8' };
+            return { id: catId, name: 'Прочее', icon: 'ph-tag', color: '#94a3b8' };
 
         }
 
@@ -1772,17 +2334,45 @@
 
 
 
+        /********************************************************************
+
+         * ЗАГРУЗКА И СОХРАНЕНИЕ БАЗЫ + ИНИЦИАЛИЗАЦИЯ АВТОСОХРАНЕНИЯ
+
+         ********************************************************************/
+
         function loadDatabase() {
 
             try {
 
-                const raw = localStorage.getItem(STORAGE_KEY);
+                const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('FINGLASS_PRO_DB_V3');
 
                 if (raw) {
 
                     const parsed = JSON.parse(raw);
 
-                    appData = { ...appData, ...parsed };
+                    appData = {
+
+                        ...appData,
+
+                        ...parsed,
+
+                        settings: {
+
+                            ...appData.settings,
+
+                            ...(parsed.settings || {}),
+
+                            autoSave: {
+
+                                ...appData.settings.autoSave,
+
+                                ...((parsed.settings && parsed.settings.autoSave) || {})
+
+                            }
+
+                        }
+
+                    };
 
                 } else {
 
@@ -1818,11 +2408,567 @@
 
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
 
-            } catch (e) {}
+            } catch (e) {
+
+                console.error('Ошибка сохранения:', e);
+
+            }
 
         }
 
 
+
+        /********************************************************************
+
+         * СИСТЕМА АВТОСОХРАНЕНИЯ:
+
+         * 1) ПОЛНЫЙ ЧЕК (.TXT) ПО ОКОНЧАНИИ МЕСЯЦА С ИМЕНЕМ ПЕРИОДА В НАЗВАНИИ
+
+         * 2) ЕЖЕНЕДЕЛЬНЫЙ БЭКАП БАЗЫ С ПЕРЕЗАПИСЬЮ ПРЕДЫДУЩЕГО ФАЙЛА
+
+         ********************************************************************/
+
+        function buildFullPeriodReceiptText(periodKey) {
+
+            const bounds = getPeriodBounds(periodKey);
+
+            const titles = getPeriodDisplayTitles(periodKey);
+
+            const periodLimit = ensurePeriodSnapshot(periodKey);
+
+            const filtered = getTransactionsForPeriod(periodKey).sort((a, b) => a.date.localeCompare(b.date));
+
+
+
+            let totalExp = 0;
+
+            let totalInc = 0;
+
+            const byCat = {};
+
+
+
+            filtered.forEach(t => {
+
+                if (t.type === 'expense') {
+
+                    totalExp += Number(t.amount);
+
+                    byCat[t.categoryId] = (byCat[t.categoryId] || 0) + Number(t.amount);
+
+                } else {
+
+                    totalInc += Number(t.amount);
+
+                }
+
+            });
+
+
+
+            const lineEq = '==========================================';
+
+            const lineDash = '------------------------------------------';
+
+            let txt = `${lineEq}\n    ИТОГОВЫЙ ЧЕК ЗА ЗАВЕРШЕННЫЙ МЕСЯЦ\n              FINGLASS PRO\n${lineEq}\n`;
+
+            txt += `Наименование периода: ${titles.combinedLabel} (${bounds.startISO} — ${bounds.endISO})\n`;
+
+            txt += `Автосохранение:       ${new Date().toLocaleString('ru-RU')}\n`;
+
+            txt += `Лимит месяца:         ${formatMoney(periodLimit)}\n`;
+
+            if (totalInc > 0) txt += `Доп. доходы:          +${formatMoney(totalInc)}\n`;
+
+            txt += `${lineDash}\nРАСХОДЫ ПО КАТЕГОРИЯМ:\n`;
+
+
+
+            Object.keys(byCat).forEach(catId => {
+
+                const amt = byCat[catId] || 0;
+
+                if (amt > 0) {
+
+                    const catObj = findCategoryAnywhere(catId, periodKey);
+
+                    const pct = totalExp > 0 ? Math.round((amt / totalExp) * 100) : 0;
+
+                    const namePad = (catObj.name + ` (${pct}%)`).padEnd(22, '.');
+
+                    txt += `${namePad} ${formatMoney(amt)}\n`;
+
+                }
+
+            });
+
+
+
+            txt += `${lineDash}\nВСЕ ПОКУПКИ И ОПЕРАЦИИ (${filtered.length}):\n`;
+
+            if (filtered.length === 0) {
+
+                txt += `  (Операций за этот период нет)\n`;
+
+            } else {
+
+                filtered.forEach((tx, idx) => {
+
+                    const catObj = findCategoryAnywhere(tx.categoryId, periodKey);
+
+                    const catName = tx.type === 'income' ? 'ДОХОД' : (catObj ? catObj.name : 'Прочее');
+
+                    const sign = tx.type === 'income' ? '+' : '-';
+
+                    txt += `${String(idx + 1).padStart(2, '0')}. [${tx.date}] ${catName}: ${sign}${formatMoney(tx.amount)}${tx.note ? ' — ' + tx.note : ''}\n`;
+
+                });
+
+            }
+
+
+
+            const finalBalance = periodLimit + totalInc - totalExp;
+
+            txt += `${lineEq}\nИТОГО ПОТРАЧЕНО:      -${formatMoney(totalExp)}\nИТОГОВЫЙ ОСТАТОК:     ${formatMoney(finalBalance)}\n${lineEq}\n`;
+
+            return txt;
+
+        }
+
+
+
+        // Запись файла в выбранную папку смартфона (Capacitor Android Filesystem / System Directory Handle / Browser Download)
+
+        async function writeAutoSaveFileToDevice(fileName, contentString, overwrite = true, triggerBrowserFallback = false) {
+
+            const autoCfg = appData.settings.autoSave;
+
+            const folder = (autoCfg.folderName || 'FinGlass_AutoSave').replace(/[^a-zA-Z0-9а-яА-ЯёЁ_\-]/g, '_');
+
+            const relativePath = `${folder}/${fileName}`;
+
+
+
+            // 1. Если пользователь выбрал системную папку через проводник (File System Access API)
+
+            if (customDirectoryHandle) {
+
+                try {
+
+                    const fileHandle = await customDirectoryHandle.getFileHandle(fileName, { create: true });
+
+                    const writable = await fileHandle.createWritable();
+
+                    await writable.write(contentString);
+
+                    await writable.close();
+
+                    return { ok: true, path: `${customDirectoryHandle.name}/${fileName}`, method: 'PickedFolder' };
+
+                } catch (e) {
+
+                    console.warn('Picked folder write error:', e);
+
+                }
+
+            }
+
+
+
+            // 2. Если приложение запущено как APK на смартфоне Vivo X200 Ultra (Capacitor Filesystem)
+
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Filesystem) {
+
+                try {
+
+                    const { Filesystem } = window.Capacitor.Plugins;
+
+                    const dirEnum = autoCfg.storageRoot || 'DOCUMENTS';
+
+                    // Создаем папку, если её ещё нет
+
+                    try {
+
+                        await Filesystem.mkdir({
+
+                            path: folder,
+
+                            directory: dirEnum,
+
+                            recursive: true
+
+                        });
+
+                    } catch (mkdirErr) {}
+
+
+
+                    // Записываем файл (при overwrite = true файл перезаписывает предыдущий с тем же именем!)
+
+                    await Filesystem.writeFile({
+
+                        path: relativePath,
+
+                        data: btoa(unescape(encodeURIComponent(contentString))),
+
+                        directory: dirEnum,
+
+                        recursive: true
+
+                    });
+
+                    return { ok: true, path: `${dirEnum}/${relativePath}`, method: 'CapacitorNative' };
+
+                } catch (capErr) {
+
+                    console.warn('Capacitor native write fallback:', capErr);
+
+                }
+
+            }
+
+
+
+            // 3. Сохраняем актуальную копию во внутреннем хранилище приложения и при необходимости отдаем файл браузером
+
+            try {
+
+                localStorage.setItem(`AUTOSAVE_FILE_${fileName}`, contentString);
+
+            } catch (e) {}
+
+
+
+            if (triggerBrowserFallback) {
+
+                const blob = new Blob([contentString], { type: 'text/plain;charset=utf-8' });
+
+                const url = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+
+                a.href = url;
+
+                a.download = fileName;
+
+                document.body.appendChild(a);
+
+                a.click();
+
+                document.body.removeChild(a);
+
+                URL.revokeObjectURL(url);
+
+            }
+
+
+
+            return { ok: true, path: `${autoCfg.storageRoot}/${relativePath}`, method: 'LocalMirror' };
+
+        }
+
+
+
+        // Автоматическая проверка:
+
+        // А) Закончился ли какой-либо месяц -> сохраняем полный чек с именем периода
+
+        // Б) Прошла ли неделя (7 дней) -> сохраняем всю базу в файл FinGlass_AutoBackup_Weekly.json с перезаписью предыдущего
+
+        async function runAutomaticMaintenanceChecks(isManualCheck = false) {
+
+            const autoCfg = appData.settings.autoSave;
+
+            const todayISO = formatDateISO(new Date());
+
+            const currentPeriodKey = getPeriodKeyForDate(todayISO);
+
+
+
+            // 1. Проверяем все прошедшие периоды (ключ периода < currentPeriodKey), в которых были операции
+
+            if (autoCfg.monthlyReceiptEnabled) {
+
+                const periodsWithTxs = new Set();
+
+                appData.transactions.forEach(tx => {
+
+                    const pk = getPeriodKeyForDate(tx.date);
+
+                    if (pk < currentPeriodKey) {
+
+                        periodsWithTxs.add(pk);
+
+                    }
+
+                });
+
+
+
+                for (const pastPeriodKey of periodsWithTxs) {
+
+                    if (!autoCfg.savedMonthlyReceipts[pastPeriodKey]) {
+
+                        const titles = getPeriodDisplayTitles(pastPeriodKey);
+
+                        const receiptTxt = buildFullPeriodReceiptText(pastPeriodKey);
+
+                        const fileName = `Чек_${titles.fileSafePeriodName}.txt`;
+
+
+
+                        const res = await writeAutoSaveFileToDevice(fileName, receiptTxt, true, false);
+
+                        if (res.ok) {
+
+                            autoCfg.savedMonthlyReceipts[pastPeriodKey] = new Date().toISOString();
+
+                            saveDatabase();
+
+                            showToast(`Месяц завершен! Автосохранен чек: ${fileName}`);
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+
+            // 2. Проверяем еженедельное автосохранение всей базы (каждые 7 дней = 604800000 мс) с перезаписью файла
+
+            if (autoCfg.weeklyBackupEnabled) {
+
+                const nowMs = Date.now();
+
+                const sevenDaysMs = 7 * 24 * 60 * 60 * 1000;
+
+                const lastMs = Number(autoCfg.lastWeeklyBackupTimestamp) || 0;
+
+
+
+                if (nowMs - lastMs >= sevenDaysMs) {
+
+                    const fixedBackupFileName = 'FinGlass_AutoBackup_Weekly.json';
+
+                    const jsonPayload = JSON.stringify(appData, null, 2);
+
+                    const res = await writeAutoSaveFileToDevice(fixedBackupFileName, jsonPayload, true, false);
+
+                    if (res.ok) {
+
+                        autoCfg.lastWeeklyBackupTimestamp = nowMs;
+
+                        autoCfg.lastWeeklyBackupDateStr = new Date().toLocaleString('ru-RU');
+
+                        saveDatabase();
+
+                        if (lastMs > 0 || isManualCheck) {
+
+                            showToast(`Еженедельный авто-бэкап базы обновлен (${fixedBackupFileName})`);
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+
+            updateAutoSaveSettingsUI();
+
+        }
+
+
+
+        // Выбор системной папки через проводник смартфона/браузера
+
+        async function pickSystemDirectoryForAutoSave() {
+
+            if ('showDirectoryPicker' in window) {
+
+                try {
+
+                    const dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+
+                    customDirectoryHandle = dirHandle;
+
+                    appData.settings.autoSave.folderName = dirHandle.name;
+
+                    saveDatabase();
+
+                    updateAutoSaveSettingsUI();
+
+                    showToast(`Выбрана папка для автосохранения: ${dirHandle.name}`);
+
+                    return;
+
+                } catch (e) {
+
+                    if (e.name === 'AbortError') return;
+
+                }
+
+            }
+
+            // Если на Android WebView выбор директории идет через стандартные пути Documents/Download
+
+            const folderInput = document.getElementById('autoSaveFolderNameInput');
+
+            if (folderInput) folderInput.focus();
+
+            showToast('Укажите имя папки и выберите раздел памяти (Документы / Загрузки)');
+
+        }
+
+
+
+        function saveAutoSaveSettings() {
+
+            const autoCfg = appData.settings.autoSave;
+
+            autoCfg.monthlyReceiptEnabled = document.getElementById('autoMonthlyReceiptToggle').checked;
+
+            autoCfg.weeklyBackupEnabled = document.getElementById('autoWeeklyBackupToggle').checked;
+
+            autoCfg.storageRoot = document.getElementById('autoSaveStorageRootSelect').value;
+
+            const rawFolder = document.getElementById('autoSaveFolderNameInput').value.trim() || 'FinGlass_AutoSave';
+
+            autoCfg.folderName = rawFolder.replace(/[^a-zA-Z0-9а-яА-ЯёЁ_\-]/g, '_');
+
+            saveDatabase();
+
+            updateAutoSaveSettingsUI();
+
+            showToast('Настройки папки автосохранения сохранены');
+
+        }
+
+
+
+        function updateAutoSaveSettingsUI() {
+
+            const autoCfg = appData.settings.autoSave;
+
+            const mToggle = document.getElementById('autoMonthlyReceiptToggle');
+
+            const wToggle = document.getElementById('autoWeeklyBackupToggle');
+
+            const rootSel = document.getElementById('autoSaveStorageRootSelect');
+
+            const folderInp = document.getElementById('autoSaveFolderNameInput');
+
+            const pathPrev = document.getElementById('autoSavePathPreview');
+
+            const statusTxt = document.getElementById('autoSaveStatusText');
+
+
+
+            if (!mToggle) return;
+
+            mToggle.checked = !!autoCfg.monthlyReceiptEnabled;
+
+            wToggle.checked = !!autoCfg.weeklyBackupEnabled;
+
+            rootSel.value = autoCfg.storageRoot || 'DOCUMENTS';
+
+            folderInp.value = autoCfg.folderName || 'FinGlass_AutoSave';
+
+
+
+            const rootLabels = {
+
+                'DOCUMENTS': 'Documents',
+
+                'DOWNLOADS': 'Download',
+
+                'EXTERNAL': 'Android/data/com.finglass.pro/files'
+
+            };
+
+            const folderPath = customDirectoryHandle
+
+                ? `${customDirectoryHandle.name}/`
+
+                : `${rootLabels[autoCfg.storageRoot] || 'Documents'}/${autoCfg.folderName}/`;
+
+
+
+            pathPrev.textContent = `Папка: ${folderPath}`;
+
+
+
+            const savedReceiptsCount = Object.keys(autoCfg.savedMonthlyReceipts || {}).length;
+
+            statusTxt.innerHTML = `Еженедельная база (перезапись): <b>${autoCfg.lastWeeklyBackupDateStr || 'Сегодня'}</b><br>Автосохранено месячных чеков: <b>${savedReceiptsCount} шт.</b>`;
+
+        }
+
+
+
+        // Ручной тест автосохранения чека за текущий/прошлый месяц
+
+        async function triggerManualTestMonthlyAutoReceipt() {
+
+            const targetKey = uiState.activePeriodKey;
+
+            const titles = getPeriodDisplayTitles(targetKey);
+
+            const receiptTxt = buildFullPeriodReceiptText(targetKey);
+
+            const fileName = `Чек_${titles.fileSafePeriodName}.txt`;
+
+
+
+            const res = await writeAutoSaveFileToDevice(fileName, receiptTxt, true, true);
+
+            appData.settings.autoSave.savedMonthlyReceipts[targetKey] = new Date().toISOString();
+
+            saveDatabase();
+
+            updateAutoSaveSettingsUI();
+
+            showToast(`Чек сохранен в ${res.path}`);
+
+        }
+
+
+
+        // Ручное принудительное обновление еженедельного файла базы с перезаписью
+
+        async function triggerManualTestWeeklyBackup() {
+
+            const fixedBackupFileName = 'FinGlass_AutoBackup_Weekly.json';
+
+            const jsonPayload = JSON.stringify(appData, null, 2);
+
+            const res = await writeAutoSaveFileToDevice(fixedBackupFileName, jsonPayload, true, true);
+
+            appData.settings.autoSave.lastWeeklyBackupTimestamp = Date.now();
+
+            appData.settings.autoSave.lastWeeklyBackupDateStr = new Date().toLocaleString('ru-RU');
+
+            saveDatabase();
+
+            updateAutoSaveSettingsUI();
+
+            showToast(`База перезаписана: ${fixedBackupFileName}`);
+
+        }
+
+
+
+        /********************************************************************
+
+         * УМНАЯ ПАМЯТЬ ДАТЫ И АВТОСБРОС ЧЕРЕЗ 5 МИНУТ
+
+         ********************************************************************/
 
         function recordPaymentDateContext(chosenDateISO) {
 
@@ -1860,7 +3006,7 @@
 
             if (showNotification) {
 
-                showToast('Переключено на сегодняшнюю дату и текущий месяц');
+                showToast('Возврат на сегодняшнюю дату и текущий месяц');
 
             }
 
@@ -1872,7 +3018,7 @@
 
             resetToTodayContext(false);
 
-            showToast('5 минут бездействия истекли: дата сброшена на сегодня!');
+            showToast('Таймер 5 минут сброшен: активна сегодняшняя дата!');
 
         }
 
@@ -1932,9 +3078,9 @@
 
                 memText.innerHTML = isToday
 
-                    ? `Активна дата: <b>Сегодня (${uiState.lastPaymentDateISO})</b>`
+                    ? `Дата ввода: <b>Сегодня (${uiState.lastPaymentDateISO})</b>`
 
-                    : `Память прошлого периода: <b>${uiState.lastPaymentDateISO}</b>`;
+                    : `Память даты: <b>${uiState.lastPaymentDateISO}</b>`;
 
             } else {
 
@@ -1966,7 +3112,7 @@
 
                     resetToTodayContext(false);
 
-                    showToast('5 мин. без новых платежей — возврат на сегодняшнюю дату');
+                    showToast('5 мин. бездействия — возврат на сегодняшнюю дату');
 
                 }
 
@@ -1975,6 +3121,12 @@
         }, 1000);
 
 
+
+        /********************************************************************
+
+         * ОТРИСОВКА ГЛАВНОГО ЭКРАНА, АДАПТИВНЫХ ИКОНОК И ИДЕАЛЬНЫХ ГИБКИХ ЛУЧЕЙ
+
+         ********************************************************************/
 
         function getTransactionsForPeriod(periodKey) {
 
@@ -2026,25 +3178,17 @@
 
 
 
+            const titles = getPeriodDisplayTitles(uiState.activePeriodKey);
+
+            document.getElementById('currentPeriodMainTitle').textContent = titles.mainTitle;
+
+            document.getElementById('currentPeriodSubRange').textContent = titles.subRange;
+
             document.getElementById('currencyBadge').textContent = appData.settings.currency;
 
-            document.getElementById('currentPeriodLabel').textContent = formatPeriodHeaderLabel(uiState.activePeriodKey);
+            const sDay = Number(appData.settings.startDayOfMonth) || 1;
 
-            
-
-            const prevKey = shiftPeriodKey(uiState.activePeriodKey, -1);
-
-            const nextKey = shiftPeriodKey(uiState.activePeriodKey, 1);
-
-            const prevBounds = getPeriodBounds(prevKey);
-
-            const nextBounds = getPeriodBounds(nextKey);
-
-            const shortM = ['янв.', 'фев.', 'мар.', 'апр.', 'мая', 'июн.', 'июл.', 'авг.', 'сен.', 'окт.', 'ноя.', 'дек.'];
-
-            document.getElementById('prevPeriodLabel').textContent = `- ${prevBounds.endDate.getDate()} ${shortM[prevBounds.endDate.getMonth()]}`;
-
-            document.getElementById('nextPeriodLabel').textContent = `${nextBounds.startDate.getDate()} ${shortM[nextBounds.startDate.getMonth()]} -`;
+            document.getElementById('salaryCycleSubBadge').textContent = sDay === 1 ? 'Календарный месяц' : `Зарплата ${sDay}-го числа`;
 
 
 
@@ -2094,7 +3238,7 @@
 
 
 
-            renderWheelAndPerimeterIcons(expensesByCat, totalExpenses);
+            renderWheelAndAdaptiveIcons(expensesByCat, totalExpenses);
 
             renderAccordionList(periodTxs, expensesByCat, totalExpenses);
 
@@ -2134,19 +3278,49 @@
 
             const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
 
-            return [
-
-                'M', start.x, start.y,
-
-                'A', radius, radius, 0, largeArcFlag, 0, end.x, end.y
-
-            ].join(' ');
+            return ['M', start.x, start.y, 'A', radius, radius, 0, largeArcFlag, 0, end.x, end.y].join(' ');
 
         }
 
 
 
-        function renderWheelAndPerimeterIcons(expensesByCat, totalExpenses) {
+        function getRoundedBoxEdgePoint(boxCx, boxCy, halfSize, targetPoint) {
+
+            const dx = targetPoint.x - boxCx;
+
+            const dy = targetPoint.y - boxCy;
+
+            const len = Math.hypot(dx, dy);
+
+            if (len === 0) return { x: boxCx, y: boxCy };
+
+
+
+            const ux = dx / len;
+
+            const uy = dy / len;
+
+
+
+            const distToEdge = halfSize / Math.pow(Math.pow(Math.abs(ux), 4) + Math.pow(Math.abs(uy), 4), 0.25);
+
+            return {
+
+                x: boxCx + ux * distToEdge,
+
+                y: boxCy + uy * distToEdge,
+
+                nx: ux,
+
+                ny: uy
+
+            };
+
+        }
+
+
+
+        function renderWheelAndAdaptiveIcons(expensesByCat, totalExpenses) {
 
             const arcsGroup = document.getElementById('donutArcsGroup');
 
@@ -2164,21 +3338,35 @@
 
 
 
-            const cx = 200, cy = 200, r = 86;
+            const cx = 200, cy = 200;
+
+            const ringCenterR = 84;
+
+            const ringOuterR = 100;
+
+            const iconOrbitR = 158;
+
+            const iconBoxHalfSize = 22;
+
+
 
             const cats = getCategoriesForPeriod(uiState.activePeriodKey);
 
             const count = cats.length;
 
+            if (count === 0) return;
+
 
 
             const sectorData = {};
 
+            let currentAngle = -90;
+
+
+
             if (totalExpenses > 0) {
 
-                let rawStart = -90;
-
-                cats.forEach((cat) => {
+                cats.forEach(cat => {
 
                     const amount = expensesByCat[cat.id] || 0;
 
@@ -2188,17 +3376,17 @@
 
                         sectorData[cat.id] = {
 
-                            startAngle: rawStart,
+                            startAngle: currentAngle,
 
-                            endAngle: rawStart + sweepDeg,
+                            endAngle: currentAngle + sweepDeg,
 
-                            midAngle: rawStart + sweepDeg / 2,
+                            midAngle: currentAngle + sweepDeg / 2,
 
                             sweepDeg
 
                         };
 
-                        rawStart += sweepDeg;
+                        currentAngle += sweepDeg;
 
                     }
 
@@ -2206,37 +3394,7 @@
 
 
 
-                let weightedDeltaSum = 0;
-
-                let totalWeight = 0;
-
-                cats.forEach((cat, idx) => {
-
-                    const amount = expensesByCat[cat.id] || 0;
-
-                    if (amount > 0) {
-
-                        const iconAngle = -90 + (idx * (360 / count));
-
-                        const s = sectorData[cat.id];
-
-                        let diff = iconAngle - s.midAngle;
-
-                        while (diff > 180) diff -= 360;
-
-                        while (diff < -180) diff += 360;
-
-                        weightedDeltaSum += diff * amount;
-
-                        totalWeight += amount;
-
-                    }
-
-                });
-
-                const optimalRotationOffset = totalWeight > 0 ? (weightedDeltaSum / totalWeight) : 0;
-
-
+                const activeSectorCount = Object.keys(sectorData).length;
 
                 cats.forEach(cat => {
 
@@ -2244,19 +3402,11 @@
 
                     if (s) {
 
-                        s.startAngle += optimalRotationOffset;
+                        const gap = activeSectorCount > 1 ? 0.7 : 0;
 
-                        s.endAngle += optimalRotationOffset;
-
-                        s.midAngle += optimalRotationOffset;
-
-
+                        const d = createSvgArcPath(cx, cy, ringCenterR, s.startAngle + gap, s.endAngle - gap);
 
                         const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
-                        const gap = Object.keys(sectorData).length > 1 ? 0.6 : 0;
-
-                        const d = createSvgArcPath(cx, cy, r, s.startAngle + gap, s.endAngle - gap);
 
                         path.setAttribute('d', d);
 
@@ -2264,11 +3414,9 @@
 
                         path.setAttribute('stroke', cat.color);
 
-                        path.setAttribute('stroke-width', '34');
+                        path.setAttribute('stroke-width', '32');
 
                         path.style.cursor = 'pointer';
-
-                        path.style.transition = 'opacity 0.25s ease';
 
                         path.onclick = () => openTransactionModal('expense', cat.id);
 
@@ -2282,15 +3430,85 @@
 
 
 
-            const iconOrbitRadius = 158;
+            const nodes = cats.map((cat, idx) => {
 
-            cats.forEach((cat, idx) => {
+                const baseAngle = -90 + (idx * (360 / count));
 
-                const iconAngleDeg = -90 + (idx * (360 / count));
+                const s = sectorData[cat.id];
 
-                const iconPos = polarToCartesian(cx, cy, iconOrbitRadius, iconAngleDeg);
+                return {
+
+                    cat,
+
+                    idx,
+
+                    hasExpense: !!(s && expensesByCat[cat.id] > 0),
+
+                    targetAngle: s ? s.midAngle : baseAngle,
+
+                    angle: s ? s.midAngle : baseAngle
+
+                };
+
+            });
 
 
+
+            const minAngleDist = Math.min(34, 360 / count);
+
+            for (let iter = 0; iter < 35; iter++) {
+
+                for (let i = 0; i < count; i++) {
+
+                    for (let j = i + 1; j < count; j++) {
+
+                        let diff = nodes[j].angle - nodes[i].angle;
+
+                        while (diff > 180) diff -= 360;
+
+                        while (diff < -180) diff += 360;
+
+
+
+                        if (Math.abs(diff) < minAngleDist) {
+
+                            const push = (minAngleDist - Math.abs(diff)) * 0.5;
+
+                            const dir = diff >= 0 ? 1 : -1;
+
+                            const weightI = nodes[i].hasExpense ? 0.35 : 0.65;
+
+                            const weightJ = nodes[j].hasExpense ? 0.35 : 0.65;
+
+                            nodes[i].angle -= dir * push * weightI;
+
+                            nodes[j].angle += dir * push * weightJ;
+
+                        }
+
+                    }
+
+                }
+
+                nodes.forEach(n => {
+
+                    let pull = n.targetAngle - n.angle;
+
+                    while (pull > 180) pull -= 360;
+
+                    while (pull < -180) pull += 360;
+
+                    n.angle += pull * (n.hasExpense ? 0.28 : 0.08);
+
+                });
+
+            }
+
+
+
+            nodes.forEach(node => {
+
+                const { cat, angle } = node;
 
                 const amount = expensesByCat[cat.id] || 0;
 
@@ -2298,13 +3516,17 @@
 
 
 
+                const boxCenter = polarToCartesian(cx, cy, iconOrbitR, angle);
+
+
+
                 if (amount > 0 && sectorData[cat.id]) {
 
                     const s = sectorData[cat.id];
 
-                    let clampedTargetAngle = s.midAngle;
 
-                    let normIconAngle = iconAngleDeg;
+
+                    let normIconAngle = angle;
 
                     while (normIconAngle - s.midAngle > 180) normIconAngle -= 360;
 
@@ -2312,45 +3534,101 @@
 
 
 
-                    const margin = Math.min(4, s.sweepDeg * 0.25);
+                    const padDeg = Math.min(5, s.sweepDeg * 0.3);
 
-                    if (normIconAngle >= s.startAngle + margin && normIconAngle <= s.endAngle - margin) {
-
-                        clampedTargetAngle = normIconAngle;
-
-                    } else {
-
-                        clampedTargetAngle = s.midAngle;
-
-                    }
+                    const raySectorAngle = Math.max(s.startAngle + padDeg, Math.min(s.endAngle - padDeg, normIconAngle));
 
 
 
-                    const startRayPoint = polarToCartesian(cx, cy, 127, iconAngleDeg);
+                    const p0 = polarToCartesian(cx, cy, ringOuterR, raySectorAngle);
 
-                    const endRayPoint = polarToCartesian(cx, cy, 103, clampedTargetAngle);
+                    const p3 = getRoundedBoxEdgePoint(boxCenter.x, boxCenter.y, iconBoxHalfSize, p0);
 
 
 
-                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    const dist = Math.hypot(p3.x - p0.x, p3.y - p0.y);
 
-                    line.setAttribute('x1', startRayPoint.x);
+                    const flexTension = Math.max(10, dist * 0.42);
 
-                    line.setAttribute('y1', startRayPoint.y);
 
-                    line.setAttribute('x2', endRayPoint.x);
 
-                    line.setAttribute('y2', endRayPoint.y);
+                    const c1 = polarToCartesian(cx, cy, ringOuterR + flexTension, raySectorAngle);
 
-                    line.setAttribute('stroke', cat.color);
+                    const c2 = {
 
-                    line.setAttribute('stroke-width', '1.75');
+                        x: p3.x + p3.nx * flexTension,
 
-                    line.setAttribute('stroke-linecap', 'round');
+                        y: p3.y + p3.ny * flexTension
 
-                    line.setAttribute('stroke-opacity', '0.85');
+                    };
 
-                    linesGroup.appendChild(line);
+
+
+                    const dCurve = `M ${p0.x.toFixed(2)} ${p0.y.toFixed(2)} C ${c1.x.toFixed(2)} ${c1.y.toFixed(2)}, ${c2.x.toFixed(2)} ${c2.y.toFixed(2)}, ${p3.x.toFixed(2)} ${p3.y.toFixed(2)}`;
+
+
+
+                    const glowPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+                    glowPath.setAttribute('d', dCurve);
+
+                    glowPath.setAttribute('fill', 'none');
+
+                    glowPath.setAttribute('stroke', cat.color);
+
+                    glowPath.setAttribute('stroke-width', '4');
+
+                    glowPath.setAttribute('stroke-opacity', '0.22');
+
+                    glowPath.setAttribute('stroke-linecap', 'round');
+
+                    linesGroup.appendChild(glowPath);
+
+
+
+                    const mainPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+                    mainPath.setAttribute('d', dCurve);
+
+                    mainPath.setAttribute('fill', 'none');
+
+                    mainPath.setAttribute('stroke', cat.color);
+
+                    mainPath.setAttribute('stroke-width', '2');
+
+                    mainPath.setAttribute('stroke-opacity', '0.95');
+
+                    mainPath.setAttribute('stroke-linecap', 'round');
+
+                    linesGroup.appendChild(mainPath);
+
+
+
+                    const startCap = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+
+                    startCap.setAttribute('cx', p0.x);
+
+                    startCap.setAttribute('cy', p0.y);
+
+                    startCap.setAttribute('r', '2.8');
+
+                    startCap.setAttribute('fill', cat.color);
+
+                    linesGroup.appendChild(startCap);
+
+
+
+                    const endCap = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+
+                    endCap.setAttribute('cx', p3.x);
+
+                    endCap.setAttribute('cy', p3.y);
+
+                    endCap.setAttribute('r', '3.2');
+
+                    endCap.setAttribute('fill', cat.color);
+
+                    linesGroup.appendChild(endCap);
 
                 }
 
@@ -2358,15 +3636,13 @@
 
                 const btn = document.createElement('button');
 
-                btn.className = 'cat-node pointer-events-auto absolute flex flex-col items-center justify-center group';
+                btn.className = 'cat-node pointer-events-auto absolute w-11 h-11 flex items-center justify-center group';
 
-                btn.style.left = `${(iconPos.x / 400) * 100}%`;
+                btn.style.left = `${(boxCenter.x / 400) * 100}%`;
 
-                btn.style.top = `${(iconPos.y / 400) * 100}%`;
+                btn.style.top = `${(boxCenter.y / 400) * 100}%`;
 
                 btn.style.transform = 'translate(-50%, -50%)';
-
-                btn.title = `${cat.name}: нажмите, чтобы внести расход`;
 
                 btn.onclick = () => openTransactionModal('expense', cat.id);
 
@@ -2374,7 +3650,7 @@
 
                 const activeRingStyle = amount > 0
 
-                    ? `border-color: ${cat.color}; box-shadow: 0 4px 16px ${cat.color}38;`
+                    ? `border-color: ${cat.color}; box-shadow: 0 4px 18px ${cat.color}44;`
 
                     : '';
 
@@ -2382,19 +3658,19 @@
 
                 btn.innerHTML = `
 
-                    <div class="w-11 h-11 rounded-2xl glass-panel flex items-center justify-center text-xl transition-transform" style="${activeRingStyle}">
+                    <div class="w-11 h-11 rounded-2xl glass-panel flex items-center justify-center text-xl transition-transform shrink-0" style="${activeRingStyle}">
 
                         <i class="ph ${cat.icon}" style="color: ${cat.color};"></i>
 
                     </div>
 
-                    <span class="text-[10px] font-semibold mt-0.5 leading-none tracking-tight opacity-90 max-w-[68px] truncate">${escapeHtml(cat.name)}</span>
+                    <div class="absolute top-[46px] left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none whitespace-nowrap">
 
-                    <span class="text-[11px] font-bold leading-none mt-0.5" style="color: ${amount > 0 ? cat.color : 'var(--text-muted)'};">
+                        <span class="text-[10px] font-semibold leading-none tracking-tight opacity-90 px-1 py-0.5 rounded bg-black/25 backdrop-blur-xs">${escapeHtml(cat.name)}</span>
 
-                        ${amount > 0 ? percent + '%' : ''}
+                        ${amount > 0 ? `<span class="text-[11px] font-extrabold leading-none mt-0.5" style="color: ${cat.color};">${percent}%</span>` : ''}
 
-                    </span>
+                    </div>
 
                 `;
 
@@ -2470,7 +3746,7 @@
 
                             <div class="flex items-center gap-2">
 
-                                <span class="font-semibold text-sm">${cat.name}</span>
+                                <span class="font-semibold text-sm">${escapeHtml(cat.name)}</span>
 
                                 <span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/25 text-emerald-300 border border-emerald-400/30">
 
@@ -2486,7 +3762,7 @@
 
                             <span class="font-bold text-sm ${totalCatAmount > 0 ? 'text-rose-400' : 'opacity-50'}">${formatMoney(totalCatAmount)}</span>
 
-                            <button onclick="event.stopPropagation(); openTransactionModal('expense', '${cat.id}')" class="w-7 h-7 rounded-lg glass-btn flex items-center justify-center text-xs text-emerald-400" title="Быстро добавить в ${cat.name}">
+                            <button onclick="event.stopPropagation(); openTransactionModal('expense', '${cat.id}')" class="w-7 h-7 rounded-lg glass-btn flex items-center justify-center text-xs text-emerald-400">
 
                                 <i class="ph-bold ph-plus"></i>
 
@@ -2510,41 +3786,35 @@
 
                     } else {
 
-                        const rows = catTxs.map(tx => {
+                        const rows = catTxs.map(tx => `
 
-                            const shortDate = formatShortRussianDate(tx.date);
+                            <div class="px-4 py-2.5 border-t border-white/10 flex items-center justify-between gap-2 hover:bg-white/5 text-xs">
 
-                            return `
+                                <div class="flex items-center gap-2.5 overflow-hidden">
 
-                                <div class="px-4 py-2.5 border-t border-white/10 flex items-center justify-between gap-2 hover:bg-white/5 text-xs">
+                                    <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: ${cat.color}; box-shadow: 0 0 8px ${cat.color};"></span>
 
-                                    <div class="flex items-center gap-2.5 overflow-hidden">
+                                    <span class="font-bold whitespace-nowrap">${formatMoney(tx.amount)}</span>
 
-                                        <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background: ${cat.color}; box-shadow: 0 0 8px ${cat.color};"></span>
-
-                                        <span class="font-bold whitespace-nowrap">${formatMoney(tx.amount)}</span>
-
-                                        <span class="opacity-80 truncate">${escapeHtml(tx.note || 'Без заметки')}</span>
-
-                                    </div>
-
-                                    <div class="flex items-center gap-2 shrink-0">
-
-                                        <span class="opacity-60 text-[11px] whitespace-nowrap">${shortDate}</span>
-
-                                        <button onclick="deleteTransaction('${tx.id}')" class="text-rose-400 opacity-70 hover:opacity-100 p-1" title="Удалить запись">
-
-                                            <i class="ph ph-trash"></i>
-
-                                        </button>
-
-                                    </div>
+                                    <span class="opacity-80 truncate">${escapeHtml(tx.note || 'Без заметки')}</span>
 
                                 </div>
 
-                            `;
+                                <div class="flex items-center gap-2 shrink-0">
 
-                        }).join('');
+                                    <span class="opacity-60 text-[11px] whitespace-nowrap">${formatShortRussianDate(tx.date)}</span>
+
+                                    <button onclick="deleteTransaction('${tx.id}')" class="text-rose-400 opacity-70 hover:opacity-100 p-1">
+
+                                        <i class="ph ph-trash"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        `).join('');
 
                         bodyHtml = `<div class="bg-black/15">${rows}</div>`;
 
@@ -2646,15 +3916,583 @@
 
             ensurePeriodSnapshot(uiState.activePeriodKey);
 
+
+
+            const todayPeriod = getPeriodKeyForDate(new Date());
+
+            if (uiState.activePeriodKey === todayPeriod) {
+
+                uiState.lastPaymentDateISO = formatDateISO(new Date());
+
+            } else {
+
+                const bounds = getPeriodBounds(uiState.activePeriodKey);
+
+                uiState.lastPaymentDateISO = bounds.startISO;
+
+            }
+
+            uiState.lastPaymentTimestamp = Date.now();
+
+            uiState.inactivitySecondsLeft = 300;
+
             renderAll();
 
         }
 
 
 
+        /********************************************************************
+
+         * РАЗДЕЛ АНАЛИТИКИ: ЗА МЕСЯЦ, ЗА ГОД, ПОВТОРЯЮЩИЕСЯ РАСХОДЫ
+
+         ********************************************************************/
+
+        function openAnalyticsModal() {
+
+            const [yStr] = uiState.activePeriodKey.split('-');
+
+            uiState.analyticsYear = Number(yStr) || new Date().getFullYear();
+
+            document.getElementById('analyticsModal').classList.remove('hidden');
+
+            switchAnalyticsTab(uiState.analyticsTab || 'month');
+
+        }
+
+
+
+        function closeAnalyticsModal() {
+
+            document.getElementById('analyticsModal').classList.add('hidden');
+
+        }
+
+
+
+        function switchAnalyticsTab(tab) {
+
+            uiState.analyticsTab = tab;
+
+            const tabs = ['month', 'year', 'recurring'];
+
+            tabs.forEach(t => {
+
+                const btn = document.getElementById('tabBtn' + t.charAt(0).toUpperCase() + t.slice(1));
+
+                if (t === tab) {
+
+                    btn.className = 'py-2 rounded-xl bg-emerald-500/25 text-emerald-300 border border-emerald-400/30 transition-all';
+
+                } else {
+
+                    btn.className = 'py-2 rounded-xl opacity-70 hover:opacity-100 transition-all';
+
+                }
+
+            });
+
+
+
+            if (tab === 'month') renderAnalyticsMonth();
+
+            else if (tab === 'year') renderAnalyticsYear();
+
+            else renderAnalyticsRecurring();
+
+        }
+
+
+
+        function renderAnalyticsMonth() {
+
+            const box = document.getElementById('analyticsContentBox');
+
+            const periodTxs = getTransactionsForPeriod(uiState.activePeriodKey).filter(t => t.type === 'expense');
+
+            const titles = getPeriodDisplayTitles(uiState.activePeriodKey);
+
+
+
+            let total = 0;
+
+            const byCat = {};
+
+            periodTxs.forEach(t => {
+
+                total += Number(t.amount);
+
+                byCat[t.categoryId] = (byCat[t.categoryId] || 0) + Number(t.amount);
+
+            });
+
+
+
+            const sorted = Object.keys(byCat)
+
+                .map(id => ({ cat: findCategoryAnywhere(id, uiState.activePeriodKey), amount: byCat[id] }))
+
+                .filter(x => x.amount > 0)
+
+                .sort((a, b) => b.amount - a.amount);
+
+
+
+            if (sorted.length === 0) {
+
+                box.innerHTML = `<div class="glass-panel p-6 rounded-2xl text-center text-xs opacity-60">В периоде <b>${titles.mainTitle}</b> пока нет записанных расходов.</div>`;
+
+                return;
+
+            }
+
+
+
+            const maxItem = sorted[0];
+
+            const minItem = sorted[sorted.length - 1];
+
+
+
+            const barsHtml = sorted.map(item => {
+
+                const pct = Math.round((item.amount / total) * 100);
+
+                const widthPct = Math.max(6, Math.round((item.amount / maxItem.amount) * 100));
+
+                return `
+
+                    <div class="space-y-1">
+
+                        <div class="flex items-center justify-between text-xs">
+
+                            <div class="flex items-center gap-2">
+
+                                <i class="ph ${item.cat.icon} text-base" style="color: ${item.cat.color}"></i>
+
+                                <span class="font-semibold">${escapeHtml(item.cat.name)}</span>
+
+                                <span class="text-[10px] opacity-60">${pct}%</span>
+
+                            </div>
+
+                            <span class="font-bold">${formatMoney(item.amount)}</span>
+
+                        </div>
+
+                        <div class="w-full h-2.5 rounded-full bg-white/10 overflow-hidden">
+
+                            <div class="h-full rounded-full transition-all duration-500" style="width: ${widthPct}%; background: ${item.cat.color};"></div>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+            }).join('');
+
+
+
+            box.innerHTML = `
+
+                <div class="glass-panel p-3 rounded-2xl flex items-center justify-between">
+
+                    <div>
+
+                        <span class="text-[10px] uppercase opacity-60 block">Анализируемый период</span>
+
+                        <span class="font-extrabold text-sm text-emerald-300">${titles.mainTitle}</span>
+
+                    </div>
+
+                    <div class="text-right">
+
+                        <span class="text-[10px] uppercase opacity-60 block">Всего расходов</span>
+
+                        <span class="font-extrabold text-sm text-rose-400">${formatMoney(total)}</span>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="grid grid-cols-2 gap-2">
+
+                    <div class="glass-panel p-3 rounded-2xl border border-rose-400/30">
+
+                        <div class="text-[10px] uppercase text-rose-300 font-bold flex items-center gap-1">
+
+                            <i class="ph-bold ph-trend-up"></i> Больше всего
+
+                        </div>
+
+                        <div class="mt-1 flex items-center gap-1.5">
+
+                            <i class="ph ${maxItem.cat.icon} text-lg" style="color: ${maxItem.cat.color}"></i>
+
+                            <span class="font-bold text-xs truncate">${escapeHtml(maxItem.cat.name)}</span>
+
+                        </div>
+
+                        <div class="text-sm font-black text-rose-400 mt-0.5">${formatMoney(maxItem.amount)}</div>
+
+                    </div>
+
+
+
+                    <div class="glass-panel p-3 rounded-2xl border border-emerald-400/30">
+
+                        <div class="text-[10px] uppercase text-emerald-300 font-bold flex items-center gap-1">
+
+                            <i class="ph-bold ph-trend-down"></i> Меньше всего
+
+                        </div>
+
+                        <div class="mt-1 flex items-center gap-1.5">
+
+                            <i class="ph ${minItem.cat.icon} text-lg" style="color: ${minItem.cat.color}"></i>
+
+                            <span class="font-bold text-xs truncate">${escapeHtml(minItem.cat.name)}</span>
+
+                        </div>
+
+                        <div class="text-sm font-black text-emerald-300 mt-0.5">${formatMoney(minItem.amount)}</div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="glass-panel p-3.5 rounded-2xl space-y-3">
+
+                    <div class="text-xs font-bold uppercase tracking-wider opacity-75">Рейтинг расходов по категориям</div>
+
+                    ${barsHtml}
+
+                </div>
+
+            `;
+
+        }
+
+
+
+        function changeAnalyticsYear(delta) {
+
+            uiState.analyticsYear += delta;
+
+            renderAnalyticsYear();
+
+        }
+
+
+
+        function renderAnalyticsYear() {
+
+            const box = document.getElementById('analyticsContentBox');
+
+            const year = uiState.analyticsYear;
+
+            const shortM = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+
+
+
+            const monthlyTotals = [];
+
+            let yearTotal = 0;
+
+            let maxMonthVal = 0;
+
+            const yearByCat = {};
+
+
+
+            for (let m = 1; m <= 12; m++) {
+
+                const pKey = `${year}-${String(m).padStart(2, '0')}`;
+
+                const txs = getTransactionsForPeriod(pKey).filter(t => t.type === 'expense');
+
+                let sum = 0;
+
+                txs.forEach(t => {
+
+                    sum += Number(t.amount);
+
+                    yearByCat[t.categoryId] = (yearByCat[t.categoryId] || 0) + Number(t.amount);
+
+                });
+
+                monthlyTotals.push({ monthIndex: m - 1, label: shortM[m - 1], sum, pKey });
+
+                yearTotal += sum;
+
+                if (sum > maxMonthVal) maxMonthVal = sum;
+
+            }
+
+
+
+            const columnsHtml = monthlyTotals.map(m => {
+
+                const heightPct = maxMonthVal > 0 ? Math.max(6, Math.round((m.sum / maxMonthVal) * 100)) : 6;
+
+                const isActive = m.pKey === uiState.activePeriodKey;
+
+                return `
+
+                    <div onclick="uiState.activePeriodKey='${m.pKey}'; closeAnalyticsModal(); renderAll();" class="flex flex-col items-center justify-end h-32 gap-1 cursor-pointer group">
+
+                        <span class="text-[8px] font-mono opacity-0 group-hover:opacity-100 transition-opacity">${m.sum > 0 ? Math.round(m.sum / 1000) + 'к' : ''}</span>
+
+                        <div class="w-full max-w-[18px] bg-white/10 rounded-t-lg flex items-end overflow-hidden h-24">
+
+                            <div class="w-full rounded-t-lg transition-all duration-500 ${isActive ? 'bg-emerald-400' : m.sum > 0 ? 'bg-sky-400/80' : 'bg-white/10'}" style="height: ${m.sum > 0 ? heightPct : 4}%;"></div>
+
+                        </div>
+
+                        <span class="text-[9px] font-bold ${isActive ? 'text-emerald-300' : 'opacity-65'}">${m.label}</span>
+
+                    </div>
+
+                `;
+
+            }).join('');
+
+
+
+            const topYearCats = Object.keys(yearByCat)
+
+                .map(id => ({ cat: findCategoryAnywhere(id), amount: yearByCat[id] }))
+
+                .sort((a, b) => b.amount - a.amount)
+
+                .slice(0, 5);
+
+
+
+            const topYearHtml = topYearCats.length === 0
+
+                ? `<div class="text-xs opacity-50 text-center py-3">Нет трат за ${year} год</div>`
+
+                : topYearCats.map(item => `
+
+                    <div class="flex items-center justify-between text-xs py-1.5 border-b border-white/10 last:border-0">
+
+                        <div class="flex items-center gap-2">
+
+                            <i class="ph ${item.cat.icon} text-base" style="color: ${item.cat.color}"></i>
+
+                            <span class="font-semibold">${escapeHtml(item.cat.name)}</span>
+
+                        </div>
+
+                        <span class="font-bold text-rose-300">${formatMoney(item.amount)}</span>
+
+                    </div>
+
+                `).join('');
+
+
+
+            box.innerHTML = `
+
+                <div class="glass-panel p-2.5 rounded-2xl flex items-center justify-between">
+
+                    <button onclick="changeAnalyticsYear(-1)" class="glass-btn w-8 h-8 rounded-xl flex items-center justify-center"><i class="ph-bold ph-caret-left"></i></button>
+
+                    <div class="text-center">
+
+                        <div class="text-sm font-black text-emerald-300">${year} ГОД</div>
+
+                        <div class="text-[10px] opacity-65">Всего за год: <b>${formatMoney(yearTotal)}</b></div>
+
+                    </div>
+
+                    <button onclick="changeAnalyticsYear(1)" class="glass-btn w-8 h-8 rounded-xl flex items-center justify-center"><i class="ph-bold ph-caret-right"></i></button>
+
+                </div>
+
+
+
+                <div class="glass-panel p-3.5 rounded-2xl">
+
+                    <div class="text-[11px] font-bold uppercase tracking-wider opacity-75 mb-2">Динамика расходов по месяцам</div>
+
+                    <div class="grid grid-cols-12 gap-1 items-end pt-2">
+
+                        ${columnsHtml}
+
+                    </div>
+
+                    <div class="text-[10px] opacity-55 text-center mt-2">Нажмите на столбик месяца, чтобы перейти к его диаграмме</div>
+
+                </div>
+
+
+
+                <div class="glass-panel p-3.5 rounded-2xl space-y-1">
+
+                    <div class="text-[11px] font-bold uppercase tracking-wider opacity-75 mb-1">Топ-5 категорий за ${year} год</div>
+
+                    ${topYearHtml}
+
+                </div>
+
+            `;
+
+        }
+
+
+
+        function renderAnalyticsRecurring() {
+
+            const box = document.getElementById('analyticsContentBox');
+
+            const expenses = appData.transactions.filter(t => t.type === 'expense');
+
+
+
+            const groups = {};
+
+            expenses.forEach(tx => {
+
+                const cat = findCategoryAnywhere(tx.categoryId);
+
+                const cleanNote = (tx.note || '').trim().toLowerCase();
+
+                const key = cleanNote ? `note:${cleanNote}` : `cat:${tx.categoryId}:${tx.amount}`;
+
+                const title = tx.note ? tx.note.trim() : `${cat.name} (${formatMoney(tx.amount)})`;
+
+
+
+                if (!groups[key]) {
+
+                    groups[key] = { title, cat, count: 0, total: 0, dates: [] };
+
+                }
+
+                groups[key].count += 1;
+
+                groups[key].total += Number(tx.amount);
+
+                groups[key].dates.push(tx.date);
+
+            });
+
+
+
+            const recurringList = Object.values(groups)
+
+                .filter(g => g.count >= 2)
+
+                .sort((a, b) => b.count - a.count || b.total - a.total);
+
+
+
+            if (recurringList.length === 0) {
+
+                box.innerHTML = `
+
+                    <div class="glass-panel p-5 rounded-2xl text-center space-y-2">
+
+                        <i class="ph ph-repeat text-3xl text-emerald-400"></i>
+
+                        <div class="text-xs font-bold">Повторяющихся платежей пока не найдено</div>
+
+                        <p class="text-[11px] opacity-65">Когда вы запишете хотя бы 2 платежа с одинаковым комментарием (например, «За бензин» или «Коммуналка»), они автоматически появятся здесь.</p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            const itemsHtml = recurringList.map(item => `
+
+                <div class="glass-panel p-3 rounded-2xl flex items-center justify-between gap-2">
+
+                    <div class="flex items-center gap-2.5 overflow-hidden">
+
+                        <div class="w-9 h-9 rounded-xl glass-panel flex items-center justify-center shrink-0 text-lg" style="color: ${item.cat.color}">
+
+                            <i class="ph ${item.cat.icon}"></i>
+
+                        </div>
+
+                        <div class="truncate">
+
+                            <div class="text-xs font-bold truncate">${escapeHtml(item.title)}</div>
+
+                            <div class="text-[10px] opacity-65">${escapeHtml(item.cat.name)} • Повторов: <b class="text-emerald-300">${item.count} раз(а)</b></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="text-right shrink-0">
+
+                        <div class="text-xs font-extrabold text-rose-400">${formatMoney(item.total)}</div>
+
+                        <div class="text-[10px] opacity-60">~${formatMoney(item.total / item.count)} / раз</div>
+
+                    </div>
+
+                </div>
+
+            `).join('');
+
+
+
+            box.innerHTML = `
+
+                <div class="px-3 py-2 rounded-xl bg-purple-500/15 border border-purple-400/30 text-[11px] leading-snug">
+
+                    <i class="ph-fill ph-sparkle text-purple-300"></i> Здесь автоматически собираются регулярные покупки, подписки и частые траты за всё время.
+
+                </div>
+
+                <div class="space-y-2">${itemsHtml}</div>
+
+            `;
+
+        }
+
+
+
+        /********************************************************************
+
+         * КАЛЬКУЛЯТОР И ВВОД ОПЕРАЦИЙ В ЛЮБОЙ МЕСЯЦ
+
+         ********************************************************************/
+
         function openTransactionModal(type = 'expense', categoryId = null) {
 
-            const activeCats = getCategoriesForPeriod(uiState.activePeriodKey);
+            const smartDateISO = getSmartDefaultDateForNewTx();
+
+            const targetPeriodKey = getPeriodKeyForDate(smartDateISO);
+
+            ensurePeriodSnapshot(targetPeriodKey);
+
+
+
+            if (categoryId && type === 'expense') {
+
+                ensureCategoryExistsInPeriod(categoryId, targetPeriodKey);
+
+            }
+
+
+
+            const activeCats = getCategoriesForPeriod(targetPeriodKey);
 
             uiState.modalTxType = type;
 
@@ -2670,9 +4508,11 @@
 
 
 
-            const smartDateISO = getSmartDefaultDateForNewTx();
-
             const dateInput = document.getElementById('txDateInput');
+
+            dateInput.removeAttribute('min');
+
+            dateInput.removeAttribute('max');
 
             dateInput.value = smartDateISO;
 
@@ -2708,17 +4548,269 @@
 
 
 
+        function ensureCategoryExistsInPeriod(catId, periodKey) {
+
+            if (!catId || catId === 'income') return;
+
+            ensurePeriodSnapshot(periodKey);
+
+            const periodCats = appData.periodSnapshots[periodKey].categories;
+
+            if (!periodCats.some(c => c.id === catId)) {
+
+                const catObj = findCategoryAnywhere(catId, uiState.activePeriodKey);
+
+                if (catObj) {
+
+                    periodCats.push({ ...catObj });
+
+                    saveDatabase();
+
+                }
+
+            }
+
+        }
+
+
+
+        function applyTxModalDate(newDateISO, notify = false) {
+
+            if (!newDateISO) return;
+
+            const dateInput = document.getElementById('txDateInput');
+
+            dateInput.value = newDateISO;
+
+            document.getElementById('txFormattedDateLabel').textContent = formatFullRussianDate(newDateISO);
+
+
+
+            const targetPeriodKey = getPeriodKeyForDate(newDateISO);
+
+            ensurePeriodSnapshot(targetPeriodKey);
+
+            if (uiState.modalTxType === 'expense' && uiState.modalCategoryId) {
+
+                ensureCategoryExistsInPeriod(uiState.modalCategoryId, targetPeriodKey);
+
+            }
+
+
+
+            recordPaymentDateContext(newDateISO);
+
+            uiState.activePeriodKey = targetPeriodKey;
+
+
+
+            renderModalCategoryPills();
+
+            updateModalHeaderAndButton();
+
+            renderAll();
+
+
+
+            if (notify) {
+
+                showToast(`Дата: ${formatFullRussianDate(newDateISO)} (${formatPeriodHeaderLabel(targetPeriodKey)})`);
+
+            }
+
+        }
+
+
+
         function onTxDateManualChange() {
 
             const val = document.getElementById('txDateInput').value;
 
-            if (val) {
+            if (val) applyTxModalDate(val, true);
 
-                document.getElementById('txFormattedDateLabel').textContent = formatFullRussianDate(val);
+        }
 
-                renderModalCategoryPills();
 
-                updateModalHeaderAndButton();
+
+        function shiftTxModalDate(deltaDays, deltaMonths) {
+
+            const currentVal = document.getElementById('txDateInput').value || formatDateISO(new Date());
+
+            const d = new Date(currentVal + 'T12:00:00');
+
+            if (deltaMonths !== 0) {
+
+                const origDay = d.getDate();
+
+                d.setDate(1);
+
+                d.setMonth(d.getMonth() + deltaMonths);
+
+                const maxDayInTargetMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+
+                d.setDate(Math.min(origDay, maxDayInTargetMonth));
+
+            }
+
+            if (deltaDays !== 0) {
+
+                d.setDate(d.getDate() + deltaDays);
+
+            }
+
+            applyTxModalDate(formatDateISO(d), true);
+
+        }
+
+
+
+        function setTxModalDateToday() {
+
+            applyTxModalDate(formatDateISO(new Date()), true);
+
+        }
+
+
+
+        function openCustomCalendarModal() {
+
+            const currentVal = document.getElementById('txDateInput').value || formatDateISO(new Date());
+
+            const d = new Date(currentVal + 'T12:00:00');
+
+            uiState.calViewYear = d.getFullYear();
+
+            uiState.calViewMonth = d.getMonth();
+
+            renderCustomCalendarGrid();
+
+            document.getElementById('customCalendarModal').classList.remove('hidden');
+
+        }
+
+
+
+        function closeCustomCalendarModal() {
+
+            document.getElementById('customCalendarModal').classList.add('hidden');
+
+        }
+
+
+
+        function changeCustomCalMonth(delta) {
+
+            uiState.calViewMonth += delta;
+
+            if (uiState.calViewMonth < 0) {
+
+                uiState.calViewMonth = 11;
+
+                uiState.calViewYear -= 1;
+
+            } else if (uiState.calViewMonth > 11) {
+
+                uiState.calViewMonth = 0;
+
+                uiState.calViewYear += 1;
+
+            }
+
+            renderCustomCalendarGrid();
+
+        }
+
+
+
+        function selectCustomCalToday() {
+
+            applyTxModalDate(formatDateISO(new Date()), true);
+
+            closeCustomCalendarModal();
+
+        }
+
+
+
+        function renderCustomCalendarGrid() {
+
+            const monthsFull = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+
+            document.getElementById('customCalMonthYearLabel').textContent = `${monthsFull[uiState.calViewMonth]} ${uiState.calViewYear}`;
+
+
+
+            const grid = document.getElementById('customCalDaysGrid');
+
+            grid.innerHTML = '';
+
+
+
+            const firstDayOfMonth = new Date(uiState.calViewYear, uiState.calViewMonth, 1);
+
+            const daysInMonth = new Date(uiState.calViewYear, uiState.calViewMonth + 1, 0).getDate();
+
+            const startOffset = (firstDayOfMonth.getDay() + 6) % 7;
+
+
+
+            const selectedISO = document.getElementById('txDateInput').value || formatDateISO(new Date());
+
+            const todayISO = formatDateISO(new Date());
+
+
+
+            for (let i = 0; i < startOffset; i++) {
+
+                const empty = document.createElement('div');
+
+                empty.className = 'h-9';
+
+                grid.appendChild(empty);
+
+            }
+
+
+
+            for (let day = 1; day <= daysInMonth; day++) {
+
+                const iso = `${uiState.calViewYear}-${String(uiState.calViewMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+
+                const isSelected = iso === selectedISO;
+
+                const isToday = iso === todayISO;
+
+
+
+                const btn = document.createElement('button');
+
+                btn.type = 'button';
+
+                btn.className = `h-9 rounded-xl text-xs font-bold flex items-center justify-center transition-all active:scale-90 ${
+
+                    isSelected
+
+                        ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg scale-105'
+
+                        : isToday
+
+                        ? 'glass-panel border border-emerald-400 text-emerald-300'
+
+                        : 'glass-btn opacity-85 hover:opacity-100'
+
+                }`;
+
+                btn.textContent = day;
+
+                btn.onclick = () => {
+
+                    applyTxModalDate(iso, true);
+
+                    closeCustomCalendarModal();
+
+                };
+
+                grid.appendChild(btn);
 
             }
 
@@ -2942,13 +5034,9 @@
 
         function updateCalcDisplayUI() {
 
-            const mainDisp = document.getElementById('calcMainDisplay');
+            document.getElementById('calcMainDisplay').textContent = uiState.calcCurrentVal;
 
             const exprDisp = document.getElementById('calcExpressionPreview');
-
-            mainDisp.textContent = uiState.calcCurrentVal;
-
-
 
             if (uiState.calcOperator && uiState.calcPrevVal !== null) {
 
@@ -2986,9 +5074,21 @@
 
 
 
-            const chosenDateISO = document.getElementById('txDateInput').value || formatDateISO(new Date());
+            const chosenDateISO = document.getElementById('txDateInput').value || getSmartDefaultDateForNewTx();
 
             const note = document.getElementById('txNoteInput').value.trim();
+
+            const targetPeriodKey = getPeriodKeyForDate(chosenDateISO);
+
+
+
+            ensurePeriodSnapshot(targetPeriodKey);
+
+            if (uiState.modalTxType === 'expense') {
+
+                ensureCategoryExistsInPeriod(uiState.modalCategoryId, targetPeriodKey);
+
+            }
 
 
 
@@ -3018,13 +5118,7 @@
 
             recordPaymentDateContext(chosenDateISO);
 
-
-
-            const targetPeriodKey = getPeriodKeyForDate(chosenDateISO);
-
             uiState.activePeriodKey = targetPeriodKey;
-
-            ensurePeriodSnapshot(targetPeriodKey);
 
 
 
@@ -3032,7 +5126,9 @@
 
             renderAll();
 
-            showToast(`Записано: ${formatMoney(amount)} (${formatShortRussianDate(chosenDateISO)})`);
+            runAutomaticMaintenanceChecks(false);
+
+            showToast(`Записано в ${formatPeriodHeaderLabel(targetPeriodKey)}: ${formatMoney(amount)}`);
 
         }
 
@@ -3052,6 +5148,12 @@
 
 
 
+        /********************************************************************
+
+         * НЕЗАВИСИМЫЕ ЛИМИТЫ ПО МЕСЯЦАМ И ДЕНЬ НАЧАЛА ЗАРПЛАТНОГО ЦИКЛА
+
+         ********************************************************************/
+
         function openLimitModal() {
 
             ensurePeriodSnapshot(uiState.activePeriodKey);
@@ -3061,6 +5163,8 @@
             document.getElementById('limitModalPeriodName').textContent = formatPeriodHeaderLabel(uiState.activePeriodKey);
 
             document.getElementById('periodLimitInput').value = currentLimit;
+
+            document.getElementById('quickSalaryDayInput').value = appData.settings.startDayOfMonth || 10;
 
             document.getElementById('alsoUpdateDefaultLimitCheckbox').checked = false;
 
@@ -3092,6 +5196,12 @@
 
 
 
+            const newSalaryDay = Math.max(1, Math.min(28, Number(document.getElementById('quickSalaryDayInput').value) || 1));
+
+            appData.settings.startDayOfMonth = newSalaryDay;
+
+
+
             ensurePeriodSnapshot(uiState.activePeriodKey);
 
             appData.periodSnapshots[uiState.activePeriodKey].limit = val;
@@ -3116,11 +5226,17 @@
 
             renderAll();
 
-            showToast(`Лимит на ${formatPeriodHeaderLabel(uiState.activePeriodKey)} установлен: ${formatMoney(val)}`);
+            showToast(`Сохранено: ${formatPeriodHeaderLabel(uiState.activePeriodKey)} (${formatMoney(val)})`);
 
         }
 
 
+
+        /********************************************************************
+
+         * ВЫПИСКА В ВИДЕ ЧЕКА (.TXT)
+
+         ********************************************************************/
 
         function openReceiptModal() {
 
@@ -3242,15 +5358,7 @@
 
             const lineDash = '------------------------------------------';
 
-            let txt = '';
-
-            txt += `${lineEq}\n`;
-
-            txt += `       ФИНАНСОВАЯ ВЫПИСКА (ЧЕК)           \n`;
-
-            txt += `              FINGLASS PRO                \n`;
-
-            txt += `${lineEq}\n`;
+            let txt = `${lineEq}\n       ФИНАНСОВАЯ ВЫПИСКА (ЧЕК)\n              FINGLASS PRO\n${lineEq}\n`;
 
             txt += `Период выписки: ${startISO} — ${endISO}\n`;
 
@@ -3258,15 +5366,9 @@
 
             txt += `Базовый лимит периода: ${formatMoney(periodLimit)}\n`;
 
-            if (totalInc > 0) {
+            if (totalInc > 0) txt += `Доп. поступления:      +${formatMoney(totalInc)}\n`;
 
-                txt += `Доп. поступления:      +${formatMoney(totalInc)}\n`;
-
-            }
-
-            txt += `${lineDash}\n`;
-
-            txt += `СВОДКА ПО КАТЕГОРИЯМ:\n`;
+            txt += `${lineDash}\nСВОДКА ПО КАТЕГОРИЯМ:\n`;
 
 
 
@@ -3290,9 +5392,7 @@
 
 
 
-            txt += `${lineDash}\n`;
-
-            txt += `ДЕТАЛИЗАЦИЯ ВСЕХ ОПЕРАЦИЙ (${filtered.length}):\n`;
+            txt += `${lineDash}\nДЕТАЛИЗАЦИЯ ОПЕРАЦИЙ (${filtered.length}):\n`;
 
             if (filtered.length === 0) {
 
@@ -3308,15 +5408,7 @@
 
                     const sign = tx.type === 'income' ? '+' : '-';
 
-                    txt += `${String(idx + 1).padStart(2, '0')}. [${tx.date}] ${catName}\n`;
-
-                    txt += `    Сумма: ${sign}${formatMoney(tx.amount)}\n`;
-
-                    if (tx.note) {
-
-                        txt += `    Прим.: ${tx.note}\n`;
-
-                    }
+                    txt += `${String(idx + 1).padStart(2, '0')}. [${tx.date}] ${catName}: ${sign}${formatMoney(tx.amount)}${tx.note ? ' (' + tx.note + ')' : ''}\n`;
 
                 });
 
@@ -3326,15 +5418,7 @@
 
             const finalBalance = periodLimit + totalInc - totalExp;
 
-            txt += `${lineEq}\n`;
-
-            txt += `ИТОГО РАСХОДОВ:      -${formatMoney(totalExp)}\n`;
-
-            txt += `ОСТАТОК (БАЛАНС):     ${formatMoney(finalBalance)}\n`;
-
-            txt += `${lineEq}\n`;
-
-            txt += `         СПАСИБО ЗА КОНТРОЛЬ БЮДЖЕТА!     \n`;
+            txt += `${lineEq}\nИТОГО РАСХОДОВ:      -${formatMoney(totalExp)}\nОСТАТОК (БАЛАНС):     ${formatMoney(finalBalance)}\n${lineEq}\n`;
 
 
 
@@ -3388,13 +5472,11 @@
 
                         });
 
-                        showToast('Выберите папку для сохранения чека .TXT');
-
                         return;
 
                     }
 
-                } catch (capErr) {}
+                } catch (e) {}
 
             }
 
@@ -3408,13 +5490,7 @@
 
                         suggestedName: fileName,
 
-                        types: [{
-
-                            description: 'Текстовый чек (.txt)',
-
-                            accept: { 'text/plain': ['.txt'] }
-
-                        }]
+                        types: [{ description: 'Текстовый чек (.txt)', accept: { 'text/plain': ['.txt'] } }]
 
                     });
 
@@ -3456,7 +5532,7 @@
 
             URL.revokeObjectURL(url);
 
-            showToast('Файл чека .TXT сохранен в память устройства');
+            showToast('Файл чека .TXT сохранен');
 
         }
 
@@ -3482,29 +5558,13 @@
 
                     if (navigator.canShare && navigator.canShare({ files: [file] })) {
 
-                        await navigator.share({
-
-                            title: 'Финансовая выписка FinGlass Pro',
-
-                            text: 'Выписка платежей за период',
-
-                            files: [file]
-
-                        });
-
-                        showToast('Выписка передана в системное меню');
+                        await navigator.share({ title: fileName, files: [file] });
 
                         return;
 
                     }
 
-                    await navigator.share({
-
-                        title: 'Финансовая выписка FinGlass Pro',
-
-                        text: textContent
-
-                    });
+                    await navigator.share({ title: fileName, text: textContent });
 
                     return;
 
@@ -3538,11 +5598,17 @@
 
             document.body.removeChild(ta);
 
-            showToast('Текст чека скопирован в буфер обмена');
+            showToast('Текст чека скопирован');
 
         }
 
 
+
+        /********************************************************************
+
+         * НАСТРОЙКИ И РЕДАКТОР КАТЕГОРИЙ
+
+         ********************************************************************/
 
         function openSettingsModal() {
 
@@ -3551,6 +5617,8 @@
             document.getElementById('currencySelect').value = appData.settings.currency || '₽';
 
             document.getElementById('defaultMonthlyLimitInput').value = appData.settings.defaultMonthlyLimit || 70000;
+
+            updateAutoSaveSettingsUI();
 
             document.getElementById('settingsModal').classList.remove('hidden');
 
@@ -3598,15 +5666,9 @@
 
             const t = appData.settings.theme || 'emerald';
 
-            if (t === 'emerald') {
+            if (t === 'emerald') document.body.removeAttribute('data-theme');
 
-                document.body.removeAttribute('data-theme');
-
-            } else {
-
-                document.body.setAttribute('data-theme', t);
-
-            }
+            else document.body.setAttribute('data-theme', t);
 
             const blur = appData.settings.blurPx || 22;
 
@@ -3622,7 +5684,9 @@
 
         function updateStartDayOfMonth(dayVal) {
 
-            appData.settings.startDayOfMonth = Number(dayVal) || 1;
+            const d = Math.max(1, Math.min(28, Number(dayVal) || 1));
+
+            appData.settings.startDayOfMonth = d;
 
             uiState.activePeriodKey = getPeriodKeyForDate(new Date());
 
@@ -3632,7 +5696,7 @@
 
             renderAll();
 
-            showToast(`Начало расчетного месяца: ${dayVal} число`);
+            showToast(`Зарплатный месяц теперь начинается с ${d}-го числа`);
 
         }
 
@@ -3646,7 +5710,7 @@
 
             renderAll();
 
-            showToast(`Валюта изменена на ${curr}`);
+            showToast(`Валюта: ${curr}`);
 
         }
 
@@ -3662,7 +5726,7 @@
 
                 saveDatabase();
 
-                showToast('Базовый лимит для будущих месяцев сохранен');
+                showToast('Базовый лимит сохранен');
 
             }
 
@@ -3818,13 +5882,13 @@
 
                     <div class="flex items-center gap-1.5">
 
-                        <button onclick="startEditCategory('${cat.id}')" class="glass-btn px-2 py-1 rounded-lg text-sky-300 text-[11px]" title="Изменить иконку, цвет или название">
+                        <button onclick="startEditCategory('${cat.id}')" class="glass-btn px-2 py-1 rounded-lg text-sky-300 text-[11px]">
 
                             <i class="ph ph-pencil-simple"></i>
 
                         </button>
 
-                        <button onclick="deleteCategory('${cat.id}')" class="glass-btn px-2 py-1 rounded-lg text-rose-400 text-[11px]" title="Удалить из этого и будущих месяцев (в прошлых месяцах сохранится)">
+                        <button onclick="deleteCategory('${cat.id}')" class="glass-btn px-2 py-1 rounded-lg text-rose-400 text-[11px]">
 
                             <i class="ph ph-trash"></i>
 
@@ -3958,7 +6022,7 @@
 
             renderAll();
 
-            showToast(`Категория «${name}» добавлена в текущий и следующие месяцы!`);
+            showToast(`Категория «${name}» добавлена!`);
 
         }
 
@@ -3970,7 +6034,7 @@
 
             if (activeCats.length <= 3) {
 
-                showToast('Оставьте минимум 3 категории для круговой диаграммы');
+                showToast('Оставьте минимум 3 категории');
 
                 return;
 
@@ -4018,7 +6082,7 @@
 
             renderAll();
 
-            showToast('Удалено из этого и след. месяцев (в прошлых месяцах сохранено!)');
+            showToast('Удалено из этого и след. месяцев (в прошлых сохранено!)');
 
         }
 
@@ -4046,7 +6110,7 @@
 
             URL.revokeObjectURL(url);
 
-            showToast('Полная база платежей сохранена в JSON');
+            showToast('Бэкап сохранен');
 
         }
 
@@ -4076,13 +6140,13 @@
 
                         closeSettingsModal();
 
-                        showToast('База платежей успешно восстановлена!');
+                        showToast('База успешно восстановлена!');
 
                     }
 
                 } catch (err) {
 
-                    showToast('Ошибка формата файла базы данных');
+                    showToast('Ошибка файла базы');
 
                 }
 
@@ -4120,7 +6184,7 @@
 
             closeSettingsModal();
 
-            showToast('Все платежи очищены, можно вести учет с нуля');
+            showToast('Все платежи очищены');
 
         }
 
@@ -4160,7 +6224,7 @@
 
                 .filter(t => {
 
-                    const cat = appData.categories.find(c => c.id === t.categoryId);
+                    const cat = findCategoryAnywhere(t.categoryId);
 
                     const catName = cat ? cat.name.toLowerCase() : '';
 
@@ -4270,7 +6334,7 @@
 
                 box.classList.add('opacity-0', '-translate-y-3');
 
-            }, 2800);
+            }, 3000);
 
         }
 
@@ -4281,6 +6345,14 @@
             loadDatabase();
 
             renderAll();
+
+            // Запускаем фоновую проверку завершения месяца и еженедельного автосохранения базы
+
+            setTimeout(() => {
+
+                runAutomaticMaintenanceChecks(false);
+
+            }, 800);
 
         };
 
