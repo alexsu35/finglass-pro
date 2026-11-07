@@ -24,27 +24,42 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Prepare and Patch Web Assets BEFORE Sync
+      - name: Prepare Web Assets & Inject JS Hook Inside Body
         run: |
           mkdir -p www
           cp index.html www/index.html
 
-          cat << 'EOF' >> www/index.html
+          cat << 'EOF' > patch.js
           <script>
           (function() {
             window.triggerSystemFolderPicker = function() {
-              if (window.AndroidFolderBridge && typeof window.AndroidFolderBridge.pickFolder === 'function') {
-                window.AndroidFolderBridge.pickFolder();
-              } else {
-                alert('Мост проводника Android еще загружается. Попробуйте через секунду.');
-              }
+              try {
+                if (window.AndroidFolderBridge && typeof window.AndroidFolderBridge.pickFolder === 'function') {
+                  window.AndroidFolderBridge.pickFolder();
+                  return;
+                }
+              } catch (e) {}
+              // 100% железный резервный канал через системный перехватчик WebChromeClient
+              prompt("FINGLASS_NATIVE_PICK_FOLDER", "");
             };
+
             window.openFolderPickerModal = window.triggerSystemFolderPicker;
             window.pickCustomDirectory = window.triggerSystemFolderPicker;
 
             document.addEventListener('click', function(e) {
-              var btn = e.target.closest('#btn-pick-folder-settings, #btn-pick-folder-receipt, [onclick*="FolderPicker"], [onclick*="pickCustomDirectory"]');
-              if (btn) {
+              var el = e.target.closest('button, a, div[onclick]');
+              if (!el) return;
+              var txt = (el.innerText || el.textContent || '').toUpperCase();
+              var onclickAttr = (el.getAttribute('onclick') || '');
+              if (
+                el.id === 'btn-pick-folder-settings' ||
+                el.id === 'btn-pick-folder-receipt' ||
+                txt.indexOf('ВЫБРАТЬ ПАПКУ') !== -1 ||
+                txt.indexOf('ВЫБРАТЬ ИЛИ СОЗДАТЬ ПАПКУ') !== -1 ||
+                onclickAttr.indexOf('triggerSystemFolderPicker') !== -1 ||
+                onclickAttr.indexOf('openFolderPickerModal') !== -1 ||
+                onclickAttr.indexOf('pickCustomDirectory') !== -1
+              ) {
                 e.preventDefault();
                 e.stopPropagation();
                 window.triggerSystemFolderPicker();
@@ -52,21 +67,34 @@ jobs:
             }, true);
           })();
           </script>
+          </body>
           EOF
+
+          # Вставляем скрипт строго ПЕРЕД закрывающим тегом </body>
+          sed -i 's/<\/body>//g' www/index.html
+          sed -i 's/<\/html>//g' www/index.html
+          cat patch.js >> www/index.html
+          echo "</html>" >> www/index.html
 
           npm init -y
           npm pkg set name="finglass-pro"
           npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6 @capacitor/filesystem@6 @capacitor/share@6
-          npx cap init "FinGlass Pro" "com.finglass.pro" --web-dir www
+          npx cap init "FinGlassPro" "com.finglass.pro" --web-dir www
           npx cap add android
           npx cap sync android
 
-      - name: Inject Native Android Folder Picker & Permissions
+      - name: Locate Real MainActivity.java & Inject Native Folder Picker
         run: |
-          sed -i 's/<application/<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" \/><uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" \/><uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" \/><application android:requestLegacyExternalStorage="true"/g' android/app/src/main/AndroidManifest.xml
+          sed -i 's/<application/<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" \/><uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" \/><application android:requestLegacyExternalStorage="true"/g' android/app/src/main/AndroidManifest.xml
 
-          cat << 'EOF' > android/app/src/main/java/com/finglass/pro/MainActivity.java
-          package com.finglass.pro;
+          # Находим реальный файл MainActivity.java, который создал Capacitor
+          MAIN_ACT_FILE=$(find android/app/src/main/java -name "MainActivity.java" | head -n 1)
+          echo "Found MainActivity at: $MAIN_ACT_FILE"
+          PKG_LINE=$(grep "^package " "$MAIN_ACT_FILE" | head -n 1)
+          echo "Detected package: $PKG_LINE"
+
+          cat << EOF > "$MAIN_ACT_FILE"
+          $PKG_LINE
 
           import android.app.Activity;
           import android.content.Intent;
@@ -77,6 +105,8 @@ jobs:
           import android.os.Environment;
           import android.provider.DocumentsContract;
           import android.webkit.JavascriptInterface;
+          import android.webkit.JsPromptResult;
+          import android.webkit.WebChromeClient;
           import android.webkit.WebView;
           import android.widget.Toast;
           import com.getcapacitor.BridgeActivity;
@@ -91,13 +121,38 @@ jobs:
               @Override
               public void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
+                  attachNativeHooks();
+              }
+
+              @Override
+              public void onResume() {
+                  super.onResume();
+                  attachNativeHooks();
+              }
+
+              private void attachNativeHooks() {
                   try {
                       if (this.bridge != null && this.bridge.getWebView() != null) {
-                          WebView webView = this.bridge.getWebView();
+                          final WebView webView = this.bridge.getWebView();
                           webView.getSettings().setJavaScriptEnabled(true);
                           webView.getSettings().setDomStorageEnabled(true);
                           webView.addJavascriptInterface(new AndroidFolderBridge(this), "AndroidFolderBridge");
-                          webView.reload();
+
+                          final WebChromeClient existingClient = webView.getWebChromeClient();
+                          webView.setWebChromeClient(new WebChromeClient() {
+                              @Override
+                              public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+                                  if ("FINGLASS_NATIVE_PICK_FOLDER".equals(message)) {
+                                      result.confirm("OK");
+                                      openSystemFolderPicker();
+                                      return true;
+                                  }
+                                  if (existingClient != null) {
+                                      return existingClient.onJsPrompt(view, url, message, defaultValue, result);
+                                  }
+                                  return super.onJsPrompt(view, url, message, defaultValue, result);
+                              }
+                          });
                       }
                   } catch (Exception e) {
                       e.printStackTrace();
@@ -109,7 +164,7 @@ jobs:
                       @Override
                       public void run() {
                           try {
-                              Toast.makeText(MainActivity.this, "Выберите папку и нажмите кнопку подтверждения внизу", Toast.LENGTH_LONG).show();
+                              Toast.makeText(MainActivity.this, "Выберите папку для сохранения и подтвердите выбор внизу", Toast.LENGTH_LONG).show();
                               Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                               intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
                                               Intent.FLAG_GRANT_WRITE_URI_PERMISSION |
@@ -117,7 +172,7 @@ jobs:
                                               Intent.FLAG_GRANT_PREFIX_URI_PERMISSION);
                               startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY);
                           } catch (Exception e) {
-                              Toast.makeText(MainActivity.this, "Ошибка запуска проводника: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                              Toast.makeText(MainActivity.this, "Ошибка: " + e.getMessage(), Toast.LENGTH_LONG).show();
                           }
                       }
                   });
@@ -238,7 +293,10 @@ jobs:
                                   @Override
                                   public void run() {
                                       MainActivity.this.bridge.getWebView().evaluateJavascript(
-                                          "if(window.onAndroidFolderPicked){window.onAndroidFolderPicked('" + safePath + "', '" + safeUri + "');}",
+                                          "try { localStorage.setItem('finglass_picked_folder_v5', '" + safePath + "'); } catch(e){} " +
+                                          "if(window.onAndroidFolderPicked){window.onAndroidFolderPicked('" + safePath + "', '" + safeUri + "');} " +
+                                          "var el1=document.getElementById('settings-current-folder-path'); if(el1) el1.textContent='" + safePath + "'; " +
+                                          "var el2=document.getElementById('receipt-target-folder-label'); if(el2) el2.textContent='" + safePath + "';",
                                           null
                                       );
                                   }
