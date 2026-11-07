@@ -112,7 +112,7 @@
 
 
 
-        /* ИСПРАВЛЕННАЯ ВЫСОКОКОНТРАСТНАЯ ТЕМА «СВЕТЛЫЙ ЖЕМЧУГ» (PEARL) */
+        /* ВЫСОКОКОНТРАСТНАЯ ТЕМА «СВЕТЛЫЙ ЖЕМЧУГ» (PEARL) */
 
         [data-theme="pearl"] {
 
@@ -147,8 +147,6 @@
         }
 
 
-
-        /* Переопределение светлых цветов Tailwind для идеальной читаемости в теме Светлый Жемчуг */
 
         [data-theme="pearl"] .text-white { color: #0f172a !important; }
 
@@ -314,8 +312,6 @@
 
 
 
-        /* Плавная адаптивная анимация перемещения иконок категорий по орбите */
-
         .cat-node {
 
             transition: left 0.48s cubic-bezier(0.22, 1, 0.36, 1),
@@ -426,8 +422,6 @@
 
             <div class="flex items-center justify-between gap-1">
 
-                <!-- Левые кнопки: Список и Аналитика -->
-
                 <div class="flex items-center gap-1.5">
 
                     <button onclick="toggleMainView()" id="viewToggleBtn" class="glass-btn w-9 h-9 rounded-2xl flex items-center justify-center text-base" title="Переключить вид (Диаграмма / Список)">
@@ -445,8 +439,6 @@
                 </div>
 
 
-
-                <!-- Логотип и быстрый клик по зарплатному циклу -->
 
                 <div class="flex flex-col items-center cursor-pointer" onclick="openLimitModal()">
 
@@ -471,8 +463,6 @@
                 </div>
 
 
-
-                <!-- Правые кнопки: Категории, Поиск, Чек .TXT, Настройки -->
 
                 <div class="flex items-center gap-1">
 
@@ -506,7 +496,7 @@
 
 
 
-            <!-- КРУПНЫЙ И НАГЛЯДНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ТЕКУЩЕГО МЕСЯЦА (ТОЛЬКО СТРЕЛКИ ПО БОКАМ) -->
+            <!-- КРУПНЫЙ ПЕРЕКЛЮЧАТЕЛЬ ТЕКУЩЕГО МЕСЯЦА (ТОЛЬКО СТРЕЛКИ ПО БОКАМ) -->
 
             <div class="mt-2.5 flex items-center justify-between gap-2 px-0.5">
 
@@ -568,7 +558,7 @@
 
                     <span id="inactivityCountdown" class="font-mono font-semibold text-amber-300">05:00</span>
 
-                    <button onclick="simulateFiveMinTimeout()" class="px-1.5 py-0.5 rounded bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-300/30 text-[10px]" title="Проверить возврат на сегодняшнюю дату через 5 минут">
+                    <button onclick="simulateFiveMinTimeout()" class="px-1.5 py-0.5 rounded bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-300/30 text-[10px]">
 
                         Сброс
 
@@ -588,7 +578,7 @@
 
             
 
-            <!-- ЭКРАН 1: КРУГОВАЯ ДИАГРАММА + ИКОНКИ ПО ИЕРАРХИИ ТРАТ (МАКСИМУМ ВВЕРХУ, МИНИМУМ ВНИЗУ) -->
+            <!-- ЭКРАН 1: КРУГОВАЯ ДИАГРАММА + ИКОНКИ ПО ИЕРАРХИИ ТРАТ -->
 
             <section id="wheelView" class="w-full h-full flex flex-col items-center justify-center relative px-1 py-1">
 
@@ -597,8 +587,6 @@
                 <div id="wheelStage" class="relative w-full max-w-[400px] aspect-square flex items-center justify-center mx-auto">
 
                     
-
-                    <!-- SVG для гибких лучей и кольцевой диаграммы -->
 
                     <svg id="donutSvg" viewBox="0 0 400 400" class="w-full h-full overflow-visible">
 
@@ -612,21 +600,13 @@
 
                         </defs>
 
-                        <!-- Фоновое стеклянное кольцо -->
-
                         <circle cx="200" cy="200" r="84" fill="none" stroke="var(--ring-empty)" stroke-width="32"></circle>
 
-                        <!-- Сектора категорий -->
-
                         <g id="donutArcsGroup" filter="url(#glowFilter)"></g>
-
-                        <!-- Тонкие стеклянные грани кольца -->
 
                         <circle cx="200" cy="200" r="68" fill="none" stroke="var(--ring-border)" stroke-width="1"></circle>
 
                         <circle cx="200" cy="200" r="100" fill="none" stroke="var(--ring-border)" stroke-width="1"></circle>
-
-                        <!-- Группа гибких лучей с точным примыканием -->
 
                         <g id="connectorLinesGroup"></g>
 
@@ -634,9 +614,7 @@
 
 
 
-                    <!-- Центральный стеклянный круг с Лимитом (Зарплатой) и Расходами месяца -->
-
-                    <div onclick="openLimitModal()" class="absolute w-[130px] h-[130px] rounded-full glass-panel flex flex-col items-center justify-center text-center p-2 cursor-pointer hover:scale-105 transition-transform shadow-inner z-20" title="Нажмите, чтобы изменить зарплатный лимит для этого месяца">
+                    <div onclick="openLimitModal()" class="absolute w-[130px] h-[130px] rounded-full glass-panel flex flex-col items-center justify-center text-center p-2 cursor-pointer hover:scale-105 transition-transform shadow-inner z-20">
 
                         <span class="text-[9px] uppercase tracking-wider opacity-65 font-semibold">Лимит месяца</span>
 
@@ -667,8 +645,6 @@
                     </div>
 
 
-
-                    <!-- Контейнер для адаптивных иконок категорий (без лишних текстовых подписей) -->
 
                     <div id="perimeterIconsContainer" class="absolute inset-0 pointer-events-none"></div>
 
@@ -706,7 +682,7 @@
 
 
 
-        <!-- НИЖНЯЯ ПАНЕЛЬ: КАПСУЛА БАЛАНСА И КРУПНЫЕ КНОПКИ «-» И «+» -->
+        <!-- НИЖНЯЯ ПАНЕЛЬ -->
 
         <footer class="px-4 pt-1 pb-4 z-30 flex flex-col gap-2.5">
 
@@ -721,8 +697,6 @@
                 </button>
 
 
-
-                <!-- Капсула Баланса -->
 
                 <button id="balanceCapsule" onclick="toggleMainView()" class="flex-1 py-2 px-4 rounded-2xl glass-panel border transition-all duration-300 flex flex-col items-center justify-center shadow-lg active:scale-98">
 
@@ -749,8 +723,6 @@
             </div>
 
 
-
-            <!-- Две крупные стеклянные круглые кнопки: Расход (—) и Доход (+) -->
 
             <div class="flex items-center justify-around px-2 pt-0.5">
 
@@ -802,7 +774,7 @@
 
         <!-- ================================================================= -->
 
-        <!-- МОДАЛЬНОЕ ОКНО 1: НОВЫЙ РАСХОД / ДОХОД (КАЛЬКУЛЯТОР + УМНАЯ ДАТА) -->
+        <!-- МОДАЛЬНОЕ ОКНО 1: НОВЫЙ РАСХОД / ДОХОД                            -->
 
         <!-- ================================================================= -->
 
@@ -833,8 +805,6 @@
                 </div>
 
 
-
-                <!-- Выбор даты с умной памятью и быстрыми кнопками переключения месяца -->
 
                 <div class="my-2 flex flex-col gap-1.5 glass-panel px-3 py-2.5 rounded-2xl border border-emerald-400/25">
 
@@ -870,11 +840,9 @@
 
 
 
-                    <!-- Быстрые кнопки переключения месяца и дня прямо в окне платежа -->
-
                     <div class="grid grid-cols-5 gap-1 pt-1 border-t border-white/10 text-[10px] font-semibold">
 
-                        <button type="button" onclick="shiftTxModalDate(0, -1)" class="glass-btn py-1.5 px-1 rounded-lg text-amber-300 flex items-center justify-center gap-0.5 active:scale-95" title="На 1 месяц назад">
+                        <button type="button" onclick="shiftTxModalDate(0, -1)" class="glass-btn py-1.5 px-1 rounded-lg text-amber-300 flex items-center justify-center gap-0.5 active:scale-95">
 
                             <i class="ph-bold ph-caret-double-left"></i> Мес
 
@@ -898,7 +866,7 @@
 
                         </button>
 
-                        <button type="button" onclick="shiftTxModalDate(0, 1)" class="glass-btn py-1.5 px-1 rounded-lg text-sky-300 flex items-center justify-center gap-0.5 active:scale-95" title="На 1 месяц вперед">
+                        <button type="button" onclick="shiftTxModalDate(0, 1)" class="glass-btn py-1.5 px-1 rounded-lg text-sky-300 flex items-center justify-center gap-0.5 active:scale-95">
 
                             Мес <i class="ph-bold ph-caret-double-right"></i>
 
@@ -910,8 +878,6 @@
 
 
 
-                <!-- Полоса категорий -->
-
                 <div id="txCategorySelectorBar" class="mb-2">
 
                     <div class="text-[10px] opacity-70 mb-1 px-1 font-medium">Категория:</div>
@@ -921,8 +887,6 @@
                 </div>
 
 
-
-                <!-- Дисплей суммы -->
 
                 <div id="txDisplayBox" class="rounded-2xl p-3 mb-2 flex items-center justify-between border border-white/25 shadow-inner transition-colors" style="background: rgba(16, 185, 129, 0.18);">
 
@@ -960,8 +924,6 @@
 
 
 
-                <!-- Поле заметки -->
-
                 <div class="mb-2.5 relative">
 
                     <i class="ph ph-pencil-line absolute left-3.5 top-1/2 -translate-y-1/2 opacity-60 text-base"></i>
@@ -971,8 +933,6 @@
                 </div>
 
 
-
-                <!-- Калькулятор -->
 
                 <div class="grid grid-cols-4 gap-2 mb-3">
 
@@ -1190,21 +1150,21 @@
 
 
 
-                <!-- Индикатор активной папки сохранения с возможностью сменить её прямо тут -->
+                <!-- Индикатор активной папки сохранения + ОДНА КНОПКА запуска системного диспетчера -->
 
                 <div class="glass-panel px-3 py-2 rounded-xl flex items-center justify-between gap-2 text-[11px]">
 
                     <div class="truncate">
 
-                        <span class="opacity-65">Папка на смартфоне:</span>
+                        <span class="opacity-65">Папка:</span>
 
-                        <b id="receiptModalFolderBadge" class="text-emerald-300 font-mono ml-1">Documents/FinGlass_AutoSave</b>
+                        <b id="receiptModalFolderBadge" class="text-emerald-300 font-mono ml-1">Внутренняя память / Documents / FinGlass_AutoSave</b>
 
                     </div>
 
-                    <button type="button" onclick="openFolderBrowserModal()" class="glass-btn px-2 py-1 rounded-lg text-[10px] font-bold text-emerald-300 shrink-0">
+                    <button type="button" onclick="pickFolderWithSystemFileManager()" class="glass-btn px-2.5 py-1.5 rounded-lg text-[10px] font-bold text-emerald-300 shrink-0 flex items-center gap-1">
 
-                        Изменить папку
+                        <i class="ph-bold ph-folder-open"></i> ВЫБРАТЬ ПАПКУ
 
                     </button>
 
@@ -1226,7 +1186,7 @@
 
                         <i class="ph-bold ph-floppy-disk text-base"></i>
 
-                        <span>Сохранить .TXT в выбранную папку</span>
+                        <span>Сохранить .TXT в папку</span>
 
                     </button>
 
@@ -1236,7 +1196,7 @@
 
                             <i class="ph ph-share-network text-emerald-400"></i>
 
-                            <span>Куда угодно (Vivo Файлы)</span>
+                            <span>Поделиться файлом</span>
 
                         </button>
 
@@ -1260,7 +1220,7 @@
 
         <!-- ================================================================= -->
 
-        <!-- МОДАЛЬНОЕ ОКНО 4: НАСТРОЙКИ + ВЫБОР И СОЗДАНИЕ ПАПКИ НА СМАРТФОНЕ  -->
+        <!-- МОДАЛЬНОЕ ОКНО 4: НАСТРОЙКИ (С ОДНОЙ КНОПКОЙ ВЫЗОВА ДИСПЕТЧЕРА ТЕЛЕФОНА) -->
 
         <!-- ================================================================= -->
 
@@ -1300,7 +1260,7 @@
 
 
 
-                    <!-- УЛУЧШЕННЫЙ БЛОК: ВЫБОР / СОЗДАНИЕ ПАПКИ НА СМАРТФОНЕ И АВТОСОХРАНЕНИЕ -->
+                    <!-- ПАПКА ДЛЯ ЧЕКОВ И АВТОБЭКАПА: ПО УМОЛЧАНИЮ КАК СЕЙЧАС + ОДНА КНОПКА ВЫБРАТЬ ПАПКУ -->
 
                     <div class="glass-panel p-3.5 rounded-2xl space-y-3 border border-emerald-400/35">
 
@@ -1312,29 +1272,35 @@
 
                             </span>
 
-                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/30">Активно</span>
+                            <button id="resetDefaultFolderBtn" type="button" onclick="resetToDefaultAppFolder()" class="hidden text-[10px] px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-amber-300">
+
+                                Сбросить по умолч.
+
+                            </button>
 
                         </div>
 
 
 
-                        <!-- Текущая выбранная папка и кнопка открытия проводника папок -->
+                        <div class="p-3 rounded-xl bg-black/30 border border-white/10 space-y-2.5">
 
-                        <div class="p-2.5 rounded-xl bg-black/30 border border-white/10 space-y-2">
+                            <div class="text-[11px] opacity-75">Все чеки (.txt), копии и еженедельная база сохраняются сюда:</div>
 
-                            <div class="text-[10px] opacity-70">Все чеки (.txt), копии и еженедельная база сохраняются сюда:</div>
-
-                            <div id="autoSavePathPreview" class="text-xs font-mono font-bold text-emerald-300 break-all">
+                            <div id="autoSavePathPreview" class="text-xs font-mono font-bold text-emerald-300 break-all leading-snug">
 
                                 Внутренняя память / Documents / FinGlass_AutoSave
 
                             </div>
 
-                            <button type="button" onclick="openFolderBrowserModal()" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md active:scale-98" style="color: #ffffff !important;">
 
-                                <i class="ph-bold ph-folders text-base"></i>
 
-                                <span>Выбрать или создать папку на смартфоне</span>
+                            <!-- ЕДИНСТВЕННАЯ КНОПКА, ЗАПУСКАЮЩАЯ СИСТЕМНЫЙ ДИСПЕТЧЕР ТЕЛЕФОНА -->
+
+                            <button type="button" onclick="pickFolderWithSystemFileManager()" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg active:scale-98" style="color: #ffffff !important;">
+
+                                <i class="ph-bold ph-folder-open text-lg"></i>
+
+                                <span>ВЫБРАТЬ ПАПКУ</span>
 
                             </button>
 
@@ -1466,7 +1432,7 @@
 
 
 
-                    <!-- Зарплатный расчетный месяц (с любого числа, например с 10 по 9) -->
+                    <!-- Зарплатный расчетный месяц -->
 
                     <div class="glass-panel p-3.5 rounded-2xl space-y-3">
 
@@ -1584,151 +1550,9 @@
 
                 <div class="pt-4 text-center text-[11px] opacity-55">
 
-                    FinGlass Pro v4.0 • Vivo X200 Ultra Native Edition
+                    FinGlass Pro v4.2 • Vivo X200 Ultra Native Edition
 
                 </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- ================================================================= -->
-
-        <!-- МОДАЛЬНОЕ ОКНО 9 (НОВОЕ): ВСТРОЕННЫЙ ПРОВОДНИК ВЫБОРА И СОЗДАНИЯ ПАПОК НА СМАРТФОНЕ -->
-
-        <!-- ================================================================= -->
-
-        <div id="folderBrowserModal" class="hidden fixed inset-0 z-[80] flex items-center justify-center bg-black/75 backdrop-blur-md p-3">
-
-            <div class="w-full max-w-[420px] glass-modal rounded-[32px] p-4 flex flex-col gap-3 max-h-[90vh] overflow-hidden border border-emerald-400/40 shadow-2xl">
-
-                <div class="flex items-center justify-between pb-2 border-b border-white/10">
-
-                    <div class="flex items-center gap-2">
-
-                        <i class="ph-fill ph-folders text-emerald-400 text-xl"></i>
-
-                        <div>
-
-                            <h3 class="font-bold text-sm leading-tight">Выбор папки на смартфоне</h3>
-
-                            <p class="text-[10px] opacity-65">Выберите существующую или создайте новую</p>
-
-                        </div>
-
-                    </div>
-
-                    <button type="button" onclick="closeFolderBrowserModal()" class="glass-btn w-8 h-8 rounded-xl flex items-center justify-center">
-
-                        <i class="ph ph-x"></i>
-
-                    </button>
-
-                </div>
-
-
-
-                <!-- Шаг 1: Выбор основного раздела памяти смартфона -->
-
-                <div>
-
-                    <span class="text-[10px] font-semibold uppercase opacity-70 block mb-1">1. Раздел памяти телефона:</span>
-
-                    <div class="grid grid-cols-3 gap-1.5 text-[11px] font-bold">
-
-                        <button type="button" id="rootBtn_DOCUMENTS" onclick="selectBrowserStorageRoot('DOCUMENTS')" class="py-2 px-2 rounded-xl glass-btn flex flex-col items-center gap-0.5">
-
-                            <i class="ph-fill ph-file-text text-base text-emerald-400"></i>
-
-                            <span>Документы</span>
-
-                        </button>
-
-                        <button type="button" id="rootBtn_DOWNLOADS" onclick="selectBrowserStorageRoot('DOWNLOADS')" class="py-2 px-2 rounded-xl glass-btn flex flex-col items-center gap-0.5">
-
-                            <i class="ph-fill ph-download-simple text-base text-sky-400"></i>
-
-                            <span>Загрузки</span>
-
-                        </button>
-
-                        <button type="button" id="rootBtn_EXTERNAL" onclick="selectBrowserStorageRoot('EXTERNAL')" class="py-2 px-2 rounded-xl glass-btn flex flex-col items-center gap-0.5">
-
-                            <i class="ph-fill ph-device-mobile text-base text-purple-400"></i>
-
-                            <span>Память App</span>
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Текущий открытый путь -->
-
-                <div class="glass-panel px-3 py-2 rounded-xl flex items-center justify-between gap-2">
-
-                    <div class="truncate">
-
-                        <span class="text-[10px] opacity-65 block">Открытая папка:</span>
-
-                        <span id="browserCurrentPathLabel" class="text-xs font-mono font-bold text-emerald-300">Documents / FinGlass_AutoSave</span>
-
-                    </div>
-
-                    <button type="button" onclick="navigateBrowserUp()" class="glass-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 shrink-0" title="На уровень вверх">
-
-                        <i class="ph-bold ph-arrow-bend-left-up"></i> Вверх
-
-                    </button>
-
-                </div>
-
-
-
-                <!-- Список папок внутри выбранного раздела -->
-
-                <div class="flex-1 flex flex-col min-h-[150px] max-h-[210px] glass-panel rounded-2xl p-2 overflow-y-auto space-y-1.5" id="browserSubfoldersList">
-
-                </div>
-
-
-
-                <!-- Создание новой папки прямо здесь -->
-
-                <div class="glass-panel p-2.5 rounded-2xl space-y-2 border border-emerald-400/25">
-
-                    <span class="text-[10px] font-bold uppercase opacity-75 block">+ Создать новую папку здесь:</span>
-
-                    <div class="flex gap-2">
-
-                        <input type="text" id="newFolderNameInput" placeholder="Имя папки (напр. Мои_Чеки_Vivo)" class="flex-1 glass-panel px-3 py-2 rounded-xl text-xs font-semibold focus:outline-none" style="color: var(--text-main);">
-
-                        <button type="button" onclick="createNewSubfolderInBrowser()" class="px-3 py-2 rounded-xl bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 text-xs font-bold shrink-0 active:scale-95">
-
-                            + Создать
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Кнопка подтверждения выбора папки -->
-
-                <button type="button" onclick="confirmSelectedFolderFromBrowser()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg" style="color: #ffffff !important;">
-
-                    <i class="ph-bold ph-check-circle text-base"></i>
-
-                    <span>Сохранять все файлы в эту папку</span>
-
-                </button>
 
             </div>
 
@@ -2038,11 +1862,13 @@
 
         /********************************************************************
 
-         * АРХИТЕКТУРА ДАННЫХ И СОСТОЯНИЯ ПРИЛОЖЕНИЯ FINGLASS PRO V4.0
+         * АРХИТЕКТУРА ДАННЫХ И СОСТОЯНИЯ ПРИЛОЖЕНИЯ FINGLASS PRO V4.2
 
          ********************************************************************/
 
         const STORAGE_KEY = 'FINGLASS_PRO_DB_V4';
+
+        const DEFAULT_DISPLAY_FOLDER = 'Внутренняя память / Documents / FinGlass_AutoSave';
 
 
 
@@ -2142,11 +1968,11 @@
 
                     weeklyBackupEnabled: true,
 
-                    storageRoot: 'DOCUMENTS', // DOCUMENTS | DOWNLOADS | EXTERNAL
+                    storageRoot: 'DOCUMENTS',
 
                     folderName: 'FinGlass_AutoSave',
 
-                    customFoldersList: ['FinGlass_AutoSave', 'Мои_Чеки', 'Финансы_Бэкап'],
+                    customFolderDisplay: '', // Если пусто — используется папка по умолчанию Documents/FinGlass_AutoSave
 
                     savedMonthlyReceipts: {},
 
@@ -2170,7 +1996,7 @@
 
 
 
-        let customDirectoryHandle = null;
+        let webDirHandle = null;
 
 
 
@@ -2210,15 +2036,9 @@
 
             analyticsTab: 'month',
 
-            analyticsPeriodKey: '', // Выбранный месяц внутри окна Аналитики
+            analyticsPeriodKey: '',
 
-            analyticsYear: new Date().getFullYear(),
-
-            // Состояние встроенного проводника папок
-
-            browserRoot: 'DOCUMENTS',
-
-            browserPath: 'FinGlass_AutoSave'
+            analyticsYear: new Date().getFullYear()
 
         };
 
@@ -2590,12 +2410,6 @@
 
                     };
 
-                    if (!Array.isArray(appData.settings.autoSave.customFoldersList)) {
-
-                        appData.settings.autoSave.customFoldersList = ['FinGlass_AutoSave', 'Мои_Чеки', 'Финансы_Бэкап'];
-
-                    }
-
                 } else {
 
                     appData.transactions = getInitialDemoTransactions();
@@ -2607,6 +2421,26 @@
             } catch (e) {
 
                 appData.transactions = getInitialDemoTransactions();
+
+            }
+
+
+
+            // Проверяем, была ли уже выбрана своя папка через нативный диспетчер Android
+
+            if (window.FinGlassFolderPicker && typeof window.FinGlassFolderPicker.getSavedFolderDisplay === 'function') {
+
+                try {
+
+                    const nativeSavedPath = window.FinGlassFolderPicker.getSavedFolderDisplay();
+
+                    if (nativeSavedPath) {
+
+                        appData.settings.autoSave.customFolderDisplay = nativeSavedPath;
+
+                    }
+
+                } catch (err) {}
 
             }
 
@@ -2644,235 +2478,71 @@
 
         /********************************************************************
 
-         * ВСТРОЕННЫЙ ФАЙЛОВЫЙ МЕНЕДЖЕР ПАПОК НА СМАРТФОНЕ (ВЫБОР И СОЗДАНИЕ ПАПКИ)
+         * ВЫБОР ПАПКИ ОДНОЙ КНОПКОЙ ЧЕРЕЗ СИСТЕМНЫЙ ДИСПЕТЧЕР ТЕЛЕФОНА
 
          ********************************************************************/
 
-        function getHumanReadableStoragePath(rootKey, folderPath) {
+        function getActiveFolderDisplayPath() {
 
-            const rootMap = {
+            const custom = (appData.settings.autoSave.customFolderDisplay || '').trim();
 
-                'DOCUMENTS': 'Внутренняя память / Documents',
-
-                'DOWNLOADS': 'Внутренняя память / Download',
-
-                'EXTERNAL': 'Память телефона / Android / FinGlass'
-
-            };
-
-            const cleanFolder = (folderPath || 'FinGlass_AutoSave').replace(/^\/+|\/+$/g, '');
-
-            return `${rootMap[rootKey] || 'Documents'} / ${cleanFolder}`;
+            return custom ? custom : DEFAULT_DISPLAY_FOLDER;
 
         }
 
 
 
-        // Конвертация выбранного раздела в константу Capacitor Filesystem Directory
+        // Вызывается при нажатии на кнопку «ВЫБРАТЬ ПАПКУ»
 
-        function resolveCapacitorDirectoryAndPrefix(rootKey) {
+        async function pickFolderWithSystemFileManager() {
 
-            if (rootKey === 'DOWNLOADS') {
+            // 1. В собранном Android APK: вызываем нативный системный диспетчер выбора папок Android (ACTION_OPEN_DOCUMENT_TREE)
 
-                // На Android папка Download доступна через EXTERNAL_STORAGE + подпуть Download/
-
-                // а если EXTERNAL_STORAGE недоступен без спецразрешения — надежный фолбэк в DOCUMENTS
-
-                return { capDir: 'DOCUMENTS', subPrefix: 'Download/' };
-
-            }
-
-            if (rootKey === 'EXTERNAL') {
-
-                return { capDir: 'EXTERNAL', subPrefix: '' };
-
-            }
-
-            return { capDir: 'DOCUMENTS', subPrefix: '' };
-
-        }
-
-
-
-        async function openFolderBrowserModal() {
-
-            const autoCfg = appData.settings.autoSave;
-
-            uiState.browserRoot = autoCfg.storageRoot || 'DOCUMENTS';
-
-            uiState.browserPath = autoCfg.folderName || 'FinGlass_AutoSave';
-
-            document.getElementById('newFolderNameInput').value = '';
-
-            document.getElementById('folderBrowserModal').classList.remove('hidden');
-
-            await renderFolderBrowserContents();
-
-        }
-
-
-
-        function closeFolderBrowserModal() {
-
-            document.getElementById('folderBrowserModal').classList.add('hidden');
-
-        }
-
-
-
-        async function selectBrowserStorageRoot(rootKey) {
-
-            uiState.browserRoot = rootKey;
-
-            await renderFolderBrowserContents();
-
-        }
-
-
-
-        async function navigateBrowserUp() {
-
-            const parts = (uiState.browserPath || '').split('/').filter(Boolean);
-
-            if (parts.length > 0) {
-
-                parts.pop();
-
-                uiState.browserPath = parts.join('/');
-
-            } else {
-
-                uiState.browserPath = '';
-
-            }
-
-            await renderFolderBrowserContents();
-
-        }
-
-
-
-        async function openSubfolderInBrowser(folderName) {
-
-            const current = (uiState.browserPath || '').replace(/^\/+|\/+$/g, '');
-
-            uiState.browserPath = current ? `${current}/${folderName}` : folderName;
-
-            await renderFolderBrowserContents();
-
-        }
-
-
-
-        async function renderFolderBrowserContents() {
-
-            // Подсветка выбранного корневого раздела
-
-            ['DOCUMENTS', 'DOWNLOADS', 'EXTERNAL'].forEach(rk => {
-
-                const btn = document.getElementById('rootBtn_' + rk);
-
-                if (!btn) return;
-
-                if (rk === uiState.browserRoot) {
-
-                    btn.className = 'py-2 px-2 rounded-xl bg-emerald-500/25 border border-emerald-400 text-emerald-300 flex flex-col items-center gap-0.5 shadow-md';
-
-                } else {
-
-                    btn.className = 'py-2 px-2 rounded-xl glass-btn opacity-75 flex flex-col items-center gap-0.5';
-
-                }
-
-            });
-
-
-
-            const cleanPath = (uiState.browserPath || '').replace(/^\/+|\/+$/g, '');
-
-            document.getElementById('browserCurrentPathLabel').textContent = getHumanReadableStoragePath(uiState.browserRoot, cleanPath || '(Корень раздела)');
-
-
-
-            const listEl = document.getElementById('browserSubfoldersList');
-
-            listEl.innerHTML = `<div class="text-xs opacity-60 p-2">Чтение папок...</div>`;
-
-
-
-            const folderSet = new Set();
-
-
-
-            // Добавляем сохраненные пользователем папки верхнего уровня, если мы в корне
-
-            if (!cleanPath) {
-
-                (appData.settings.autoSave.customFoldersList || []).forEach(f => folderSet.add(f));
-
-            }
-
-
-
-            // Если запущено на смартфоне (Capacitor Filesystem) — читаем реальные подпапки с устройства!
-
-            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Filesystem) {
+            if (window.FinGlassFolderPicker && typeof window.FinGlassFolderPicker.pickFolder === 'function') {
 
                 try {
 
-                    const { Filesystem } = window.Capacitor.Plugins;
+                    window.FinGlassFolderPicker.pickFolder();
 
-                    const { capDir, subPrefix } = resolveCapacitorDirectoryAndPrefix(uiState.browserRoot);
+                    return;
 
-                    const targetReadPath = subPrefix + cleanPath;
+                } catch (e) {
 
+                    console.warn('Ошибка вызова нативного диспетчера:', e);
 
+                }
 
-                    // Гарантируем существование пути перед чтением
-
-                    if (targetReadPath) {
-
-                        try {
-
-                            await Filesystem.mkdir({ path: targetReadPath, directory: capDir, recursive: true });
-
-                        } catch (e) {}
-
-                    }
+            }
 
 
 
-                    const res = await Filesystem.readdir({
+            // 2. В браузере ПК / Chrome: вызываем системный диалог выбора папки
 
-                        path: targetReadPath,
+            if ('showDirectoryPicker' in window) {
 
-                        directory: capDir
+                try {
 
-                    });
+                    const handle = await window.showDirectoryPicker({ mode: 'readwrite' });
 
+                    if (handle) {
 
+                        webDirHandle = handle;
 
-                    if (res && Array.isArray(res.files)) {
+                        appData.settings.autoSave.customFolderDisplay = `Выбранная папка / ${handle.name}`;
 
-                        res.files.forEach(item => {
+                        saveDatabase();
 
-                            const name = typeof item === 'string' ? item : item.name;
+                        updateAutoSaveSettingsUI();
 
-                            const type = typeof item === 'object' && item.type ? item.type : 'directory';
+                        showToast(`Выбрана папка: ${handle.name}`);
 
-                            if (name && (type === 'directory' || !name.includes('.'))) {
-
-                                folderSet.add(name);
-
-                            }
-
-                        });
+                        return;
 
                     }
 
                 } catch (err) {
 
-                    console.log('Readdir fallback:', err);
+                    if (err.name === 'AbortError') return;
 
                 }
 
@@ -2880,185 +2550,51 @@
 
 
 
-            const folders = Array.from(folderSet).sort();
-
-            listEl.innerHTML = '';
-
-
-
-            if (folders.length === 0) {
-
-                listEl.innerHTML = `
-
-                    <div class="flex flex-col items-center justify-center h-32 text-center px-4 opacity-65">
-
-                        <i class="ph ph-folder-open text-2xl text-emerald-400 mb-1"></i>
-
-                        <span class="text-xs font-semibold">Внутри «${cleanPath || 'раздела'}» пока нет вложенных папок</span>
-
-                        <span class="text-[10px]">Вы можете выбрать эту папку кнопкой ниже или создать внутри неё новую подпапку</span>
-
-                    </div>
-
-                `;
-
-                return;
-
-            }
-
-
-
-            folders.forEach(fName => {
-
-                const row = document.createElement('div');
-
-                row.className = 'glass-panel px-3 py-2.5 rounded-xl flex items-center justify-between cursor-pointer hover:bg-emerald-500/15 transition-colors';
-
-                row.onclick = () => openSubfolderInBrowser(fName);
-
-                row.innerHTML = `
-
-                    <div class="flex items-center gap-2.5 truncate">
-
-                        <i class="ph-fill ph-folder text-lg text-amber-400 shrink-0"></i>
-
-                        <span class="text-xs font-bold truncate">${escapeHtml(fName)}</span>
-
-                    </div>
-
-                    <div class="flex items-center gap-1 text-[10px] text-emerald-300 font-semibold shrink-0">
-
-                        <span>Открыть</span>
-
-                        <i class="ph-bold ph-caret-right"></i>
-
-                    </div>
-
-                `;
-
-                listEl.appendChild(row);
-
-            });
+            showToast('Диспетчер папок откроется в установленном APK на смартфоне');
 
         }
 
 
 
-        // Создание новой папки на смартфоне прямо из окна проводника
+        // Колбэк, который автоматически вызывается Android-системой, когда пользователь выбрал папку в диспетчере телефона
 
-        async function createNewSubfolderInBrowser() {
+        window.onNativeFolderPicked = function (displayPath, uriString) {
 
-            const input = document.getElementById('newFolderNameInput');
+            if (displayPath) {
 
-            const rawName = (input.value || '').trim().replace(/[^a-zA-Z0-9а-яА-ЯёЁ_\-\s]/g, '_');
+                appData.settings.autoSave.customFolderDisplay = displayPath;
 
-            if (!rawName) {
+                saveDatabase();
 
-                showToast('Введите название новой папки');
+                updateAutoSaveSettingsUI();
 
-                return;
-
-            }
-
-
-
-            const current = (uiState.browserPath || '').replace(/^\/+|\/+$/g, '');
-
-            const newTargetPath = current ? `${current}/${rawName}` : rawName;
-
-
-
-            // Сохраняем в список пользовательских папок
-
-            if (!appData.settings.autoSave.customFoldersList.includes(rawName)) {
-
-                appData.settings.autoSave.customFoldersList.push(rawName);
+                showToast(`Папка сохранена: ${displayPath}`);
 
             }
 
+        };
 
 
-            // Создаем физическую папку на смартфоне через Capacitor Filesystem
 
-            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Filesystem) {
+        // Сброс обратно на папку по умолчанию (Documents / FinGlass_AutoSave)
 
-                try {
+        function resetToDefaultAppFolder() {
 
-                    const { Filesystem } = window.Capacitor.Plugins;
+            appData.settings.autoSave.customFolderDisplay = '';
 
-                    const { capDir, subPrefix } = resolveCapacitorDirectoryAndPrefix(uiState.browserRoot);
+            webDirHandle = null;
 
-                    await Filesystem.mkdir({
+            if (window.FinGlassFolderPicker && typeof window.FinGlassFolderPicker.clearSavedFolder === 'function') {
 
-                        path: subPrefix + newTargetPath,
-
-                        directory: capDir,
-
-                        recursive: true
-
-                    });
-
-                } catch (e) {
-
-                    console.log('mkdir info:', e);
-
-                }
+                try { window.FinGlassFolderPicker.clearSavedFolder(); } catch (e) {}
 
             }
-
-
-
-            uiState.browserPath = newTargetPath;
-
-            input.value = '';
-
-            saveDatabase();
-
-            await renderFolderBrowserContents();
-
-            showToast(`Папка «${rawName}» создана и открыта!`);
-
-        }
-
-
-
-        // Подтверждение выбранной папки для всех чеков и автосохранений
-
-        async function confirmSelectedFolderFromBrowser() {
-
-            const autoCfg = appData.settings.autoSave;
-
-            const finalFolder = (uiState.browserPath || 'FinGlass_AutoSave').replace(/^\/+|\/+$/g, '') || 'FinGlass_AutoSave';
-
-
-
-            autoCfg.storageRoot = uiState.browserRoot;
-
-            autoCfg.folderName = finalFolder;
-
-
-
-            if (!autoCfg.customFoldersList.includes(finalFolder)) {
-
-                autoCfg.customFoldersList.push(finalFolder);
-
-            }
-
-
-
-            // Создаем папку на устройстве и записываем проверочный файл, чтобы папка сразу появилась в "Файлах Vivo"
-
-            await writeAutoSaveFileToDevice('Папка_Подключена_FinGlass.txt', `Папка успешно подключена к FinGlass Pro!\nДата: ${new Date().toLocaleString('ru-RU')}\nСюда будут сохраняться ваши чеки (.txt) и еженедельные копии базы.`, true, false);
-
-
 
             saveDatabase();
 
             updateAutoSaveSettingsUI();
 
-            closeFolderBrowserModal();
-
-            showToast(`Выбрана папка: ${getHumanReadableStoragePath(autoCfg.storageRoot, autoCfg.folderName)}`);
+            showToast(`Возвращена папка по умолчанию: ${DEFAULT_DISPLAY_FOLDER}`);
 
         }
 
@@ -3066,7 +2602,7 @@
 
         /********************************************************************
 
-         * СИСТЕМА ЗАПИСИ ФАЙЛОВ И АВТОСОХРАНЕНИЯ В ВЫБРАННУЮ ПАПКУ
+         * СИСТЕМА ЗАПИСИ ФАЙЛОВ И АВТОСОХРАНЕНИЯ (В ПАПКУ ПО УМОЛЧАНИЮ ИЛИ В ВЫБРАННУЮ)
 
          ********************************************************************/
 
@@ -3180,25 +2716,71 @@
 
 
 
-        // Запись любого файла напрямую в выбранную пользователем папку на смартфоне
+        // Запись любого файла:
+
+        // - если пользователь выбрал свою папку через системный диспетчер телефона — пишет прямо в неё (с перезаписью);
+
+        // - если не выбирал — пишет в папку по умолчанию Внутренняя память / Documents / FinGlass_AutoSave.
 
         async function writeAutoSaveFileToDevice(fileName, contentString, overwrite = true, triggerBrowserFallback = false) {
 
-            const autoCfg = appData.settings.autoSave;
+            const activeFolderDisplay = getActiveFolderDisplayPath();
 
-            const cleanFolder = (autoCfg.folderName || 'FinGlass_AutoSave').replace(/^\/+|\/+$/g, '');
-
-            const { capDir, subPrefix } = resolveCapacitorDirectoryAndPrefix(autoCfg.storageRoot || 'DOCUMENTS');
-
-            const fullFolderPath = subPrefix + cleanFolder;
-
-            const fullFilePath = `${fullFolderPath}/${fileName}`;
-
-            const displayPath = `${getHumanReadableStoragePath(autoCfg.storageRoot, cleanFolder)} / ${fileName}`;
+            const mimeType = fileName.endsWith('.json') ? 'application/json' : 'text/plain';
 
 
 
-            // 1. Нативная запись в память смартфона Android через Capacitor Filesystem
+            // 1. Если пользователь выбрал свою папку через системный диспетчер Android (SAF)
+
+            if (window.FinGlassFolderPicker && typeof window.FinGlassFolderPicker.hasCustomFolder === 'function') {
+
+                try {
+
+                    if (window.FinGlassFolderPicker.hasCustomFolder()) {
+
+                        const savedOk = window.FinGlassFolderPicker.saveFileToCustomFolder(fileName, contentString, mimeType);
+
+                        if (savedOk) {
+
+                            return { ok: true, path: `${activeFolderDisplay} / ${fileName}`, method: 'AndroidSAF' };
+
+                        }
+
+                    }
+
+                } catch (safErr) {
+
+                    console.warn('SAF write error, fallback to default folder:', safErr);
+
+                }
+
+            }
+
+
+
+            // 2. Если на ПК выбрана папка через браузерный showDirectoryPicker
+
+            if (webDirHandle) {
+
+                try {
+
+                    const fileHandle = await webDirHandle.getFileHandle(fileName, { create: true });
+
+                    const writable = await fileHandle.createWritable();
+
+                    await writable.write(contentString);
+
+                    await writable.close();
+
+                    return { ok: true, path: `${activeFolderDisplay} / ${fileName}`, method: 'WebDirectoryHandle' };
+
+                } catch (wErr) {}
+
+            }
+
+
+
+            // 3. Папка по умолчанию (как сейчас в приложении): Внутренняя память / Documents / FinGlass_AutoSave
 
             if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Filesystem) {
 
@@ -3206,13 +2788,15 @@
 
                     const { Filesystem } = window.Capacitor.Plugins;
 
+                    const defaultFolder = 'FinGlass_AutoSave';
+
                     try {
 
                         await Filesystem.mkdir({
 
-                            path: fullFolderPath,
+                            path: defaultFolder,
 
-                            directory: capDir,
+                            directory: 'DOCUMENTS',
 
                             recursive: true
 
@@ -3224,23 +2808,19 @@
 
                     await Filesystem.writeFile({
 
-                        path: fullFilePath,
+                        path: `${defaultFolder}/${fileName}`,
 
                         data: btoa(unescape(encodeURIComponent(contentString))),
 
-                        directory: capDir,
+                        directory: 'DOCUMENTS',
 
                         recursive: true
 
                     });
 
-                    return { ok: true, path: displayPath, method: 'CapacitorNative' };
+                    return { ok: true, path: `${DEFAULT_DISPLAY_FOLDER} / ${fileName}`, method: 'CapacitorDefault' };
 
                 } catch (capErr) {
-
-                    console.warn('Capacitor write fallback to EXTERNAL:', capErr);
-
-                    // Надежный резервный вариант в собственную папку приложения на Android, если система ограничила доступ
 
                     try {
 
@@ -3248,7 +2828,7 @@
 
                         await Filesystem.writeFile({
 
-                            path: `${cleanFolder}/${fileName}`,
+                            path: `FinGlass_AutoSave/${fileName}`,
 
                             data: btoa(unescape(encodeURIComponent(contentString))),
 
@@ -3258,7 +2838,7 @@
 
                         });
 
-                        return { ok: true, path: `Память App / ${cleanFolder} / ${fileName}`, method: 'CapacitorExternal' };
+                        return { ok: true, path: `Память App / FinGlass_AutoSave / ${fileName}`, method: 'CapacitorExternal' };
 
                     } catch (extErr) {}
 
@@ -3268,7 +2848,7 @@
 
 
 
-            // 2. Если тестируется на ПК в браузере
+            // 4. Fallback для теста в веб-браузере
 
             try {
 
@@ -3280,7 +2860,7 @@
 
             if (triggerBrowserFallback) {
 
-                const blob = new Blob([contentString], { type: 'text/plain;charset=utf-8' });
+                const blob = new Blob([contentString], { type: `${mimeType};charset=utf-8` });
 
                 const url = URL.createObjectURL(blob);
 
@@ -3302,7 +2882,7 @@
 
 
 
-            return { ok: true, path: displayPath, method: 'BrowserDownload' };
+            return { ok: true, path: `${activeFolderDisplay} / ${fileName}`, method: 'BrowserDownload' };
 
         }
 
@@ -3400,7 +2980,7 @@
 
                         if (lastMs > 0 || isManualCheck) {
 
-                            showToast(`Еженедельная база обновлена в папке (${fixedBackupFileName})`);
+                            showToast(`Еженедельная база обновлена (${fixedBackupFileName})`);
 
                         }
 
@@ -3450,11 +3030,23 @@
 
             const receiptBadge = document.getElementById('receiptModalFolderBadge');
 
+            const resetBtn = document.getElementById('resetDefaultFolderBtn');
 
 
-            const fullHumanPath = getHumanReadableStoragePath(autoCfg.storageRoot, autoCfg.folderName);
+
+            const fullHumanPath = getActiveFolderDisplayPath();
 
             if (receiptBadge) receiptBadge.textContent = fullHumanPath;
+
+
+
+            if (resetBtn) {
+
+                if (autoCfg.customFolderDisplay) resetBtn.classList.remove('hidden');
+
+                else resetBtn.classList.add('hidden');
+
+            }
 
 
 
@@ -3518,7 +3110,7 @@
 
             updateAutoSaveSettingsUI();
 
-            showToast(`База перезаписана в папке: ${fixedBackupFileName}`);
+            showToast(`База перезаписана: ${res.path}`);
 
         }
 
@@ -3880,24 +3472,6 @@
 
 
 
-        /*
-
-         * НОВЫЙ АЛГОРИТМ ИЕРАРХИИ ИКОНОК И СЕКТОРОВ СВЕРХУ ВНИЗ:
-
-         * 1. Категория с самыми большими тратами (Rank 0) ВСЕГДА располагается строго наверху на 12 часах (-90°).
-
-         * 2. Следующие категории по убыванию трат (Rank 1, 2, 3...) располагаются по очереди справа и слева,
-
-         *    опускаясь всё ниже и ниже к 6 часам (+90°). Чем меньше траты — тем ниже на экране находится иконка!
-
-         * 3. Сектора на кольцевой диаграмме выстраиваются вокруг вершины (-90°) в том же порядке (Правая ветвь по часовой,
-
-         *    Левая ветвь против часовой от вершины Top), чтобы каждая иконка стояла напротив своего сектора,
-
-         *    а гибкие лучи идеально касались рамок иконок без пересечений.
-
-         */
-
         function renderWheelAndAdaptiveIcons(expensesByCat, totalExpenses) {
 
             const arcsGroup = document.getElementById('donutArcsGroup');
@@ -3936,8 +3510,6 @@
 
 
 
-            // Сортируем категории строго по убыванию суммы расходов: от самых больших трат к нулевым
-
             const sortedByExpense = [...rawCats].sort((a, b) => {
 
                 const diff = (expensesByCat[b.id] || 0) - (expensesByCat[a.id] || 0);
@@ -3947,12 +3519,6 @@
             });
 
 
-
-            // Формируем список слотов углов сверху вниз:
-
-            // Слот 0: строго вверху (-90°, 12 часов) для максимальной траты.
-
-            // Далее пары слотов (Правый, Левый), спускающиеся сверху (-90°) вниз (+90°):
 
             const stepDeg = 360 / count;
 
@@ -3968,13 +3534,9 @@
 
                 if (rankIdx === 0) {
 
-                    // Самая большая трата — строго в самом верху (-90°)
-
                     iconSlotAngleMap[cat.id] = -90;
 
                 } else if (rankIdx % 2 === 1) {
-
-                    // Нечетные ранги (2-е, 4-е, 6-е место по тратам) идут по правой стороне сверху вниз
 
                     const level = Math.ceil(rankIdx / 2);
 
@@ -3983,8 +3545,6 @@
                     rightBranchCats.push(cat);
 
                 } else {
-
-                    // Четные ранги (3-е, 5-е, 7-е место по тратам) идут по левой стороне сверху вниз
 
                     const level = Math.ceil(rankIdx / 2);
 
@@ -3998,10 +3558,6 @@
 
 
 
-            // Вычисляем углы секторов на кольце так, чтобы сектор #1 (макс. траты) имел центр ровно наверху (-90°),
-
-            // категории правой ветви шли от него по часовой стрелке вниз, а левой ветви — против часовой стрелки вниз!
-
             const sectorData = {};
 
             if (totalExpenses > 0) {
@@ -4013,8 +3569,6 @@
                 const topSweep = (topAmt / totalExpenses) * 360;
 
 
-
-                // Сектор самой большой категории центрирован вверху на -90°
 
                 const topStart = -90 - topSweep / 2;
 
@@ -4037,8 +3591,6 @@
                 }
 
 
-
-                // Правая полусфера: идет от topEnd по часовой стрелке сверху вниз
 
                 let cursorRight = topEnd;
 
@@ -4070,8 +3622,6 @@
 
 
 
-                // Левая полусфера: идет от topStart против часовой стрелки сверху вниз
-
                 let cursorLeft = topStart;
 
                 leftBranchCats.forEach(cat => {
@@ -4101,8 +3651,6 @@
                 });
 
 
-
-                // Отрисовываем сектора на кольце
 
                 const activeSectorCount = Object.keys(sectorData).length;
 
@@ -4140,9 +3688,7 @@
 
 
 
-            // Отрисовываем иконки строго по вертикальной иерархии (максимум наверху, чем меньше траты — тем ниже)
-
-            sortedByExpense.forEach((cat, rankIdx) => {
+            sortedByExpense.forEach((cat) => {
 
                 const amount = expensesByCat[cat.id] || 0;
 
@@ -4153,8 +3699,6 @@
                 const boxCenter = polarToCartesian(cx, cy, iconOrbitR, angle);
 
 
-
-                // Если у категории есть траты — рисуем плавный гибкий луч от сектора ровно к краю рамки иконки
 
                 if (amount > 0 && sectorData[cat.id]) {
 
@@ -4269,8 +3813,6 @@
                 }
 
 
-
-                // Стеклянная кнопка-иконка БЕЗ текстовой подписи названия (только иконка и процент)
 
                 const btn = document.createElement('button');
 
@@ -4604,8 +4146,6 @@
 
             });
 
-            // Всегда добавляем текущий активный период, чтобы он тоже был в списке
-
             if (!map[uiState.activePeriodKey]) {
 
                 map[uiState.activePeriodKey] = 0;
@@ -4657,8 +4197,6 @@
         function selectAnalyticsPeriod(periodKey) {
 
             uiState.analyticsPeriodKey = periodKey;
-
-            // Синхронизируем с главным экраном, чтобы при закрытии можно было сразу работать с этим месяцем
 
             uiState.activePeriodKey = periodKey;
 
@@ -4727,8 +4265,6 @@
             const titles = getPeriodDisplayTitles(targetPeriodKey);
 
 
-
-            // Список всех месяцев, где есть траты, для быстрого переключения в 1 клик
 
             const availablePeriods = getAllPeriodsWithExpenses();
 
@@ -6044,7 +5580,7 @@
 
         /********************************************************************
 
-         * ВЫПИСКА В ВИДЕ ЧЕКА (.TXT) С СОХРАНЕНИЕМ В ВЫБРАННУЮ ПАПКУ
+         * ВЫПИСКА В ВИДЕ ЧЕКА (.TXT) С СОХРАНЕНИЕМ В ПАПКУ
 
          ********************************************************************/
 
@@ -6294,11 +5830,11 @@
 
                         title: fileName,
 
-                        text: 'Выберите папку в "Файлы Vivo" для сохранения чека .TXT',
+                        text: 'Выберите приложение или папку для отправки чека .TXT',
 
                         url: writeRes.uri,
 
-                        dialogTitle: 'Сохранить чек .TXT'
+                        dialogTitle: 'Поделиться чеком .TXT'
 
                     });
 
